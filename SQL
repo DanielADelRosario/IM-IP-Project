@@ -1,20 +1,23 @@
 -- Create ITEM table
 CREATE TABLE ITEM (
-    Standard_No NVARCHAR(100) PRIMARY KEY NOT NULL,
-    Publisher NVARCHAR(100) NOT NULL,
-    Publish_Date DATE NOT NULL,
-    Author NVARCHAR(100) NOT NULL,
-    Title NVARCHAR(100) NOT NULL,
-    Item_Type NVARCHAR(10) NOT NULL
+    Standard_No  NVARCHAR (100) PRIMARY KEY
+                                NOT NULL,
+    Publisher    NVARCHAR (100) NOT NULL,
+    Publish_Date DATE           NOT NULL,
+    Author       NVARCHAR (100) NOT NULL,
+    Title        NVARCHAR (100) NOT NULL,
+    Item_Type    NVARCHAR (10)  NOT NULL,
+    Status       TEXT           DEFAULT 'Available'
 );
 
 -- Create MEMBER table
 CREATE TABLE MEMBER (
-    Member_ID INT PRIMARY KEY NOT NULL,
-    Address NVARCHAR(100) NOT NULL,
-    Contact_No NVARCHAR(12) NOT NULL,
-    Name NVARCHAR(100) NOT NULL,
-    Member_Type VARCHAR(20) NOT NULL
+    Member_ID   INTEGER        PRIMARY KEY AUTOINCREMENT
+                               NOT NULL,
+    Address     NVARCHAR (100) NOT NULL,
+    Contact_No  NVARCHAR (12)  NOT NULL,
+    Name        NVARCHAR (100) NOT NULL,
+    Member_Type VARCHAR (20)   NOT NULL
 );
 
 -- Create JOURNAL table
