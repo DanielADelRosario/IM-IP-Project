@@ -15,7 +15,7 @@ CREATE TABLE MEMBER (
     Member_ID   INTEGER        PRIMARY KEY AUTOINCREMENT
                                NOT NULL,
     Address     NVARCHAR (100) NOT NULL,
-    Contact_No  NVARCHAR (12)  NOT NULL,
+    Contact_No  NVARCHAR (12)  NOT NULL/ NULL,
     Name        NVARCHAR (100) NOT NULL,
     Member_Type VARCHAR (20)   NOT NULL
 );
