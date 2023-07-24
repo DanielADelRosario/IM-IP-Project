@@ -1,7 +1,6 @@
 -- Create ITEM table
 CREATE TABLE ITEM (
-    Standard_No  NVARCHAR (100) PRIMARY KEY
-                                NOT NULL,
+    Standard_No  NVARCHAR (100) PRIMARY KEY NOT NULL,
     Publisher    NVARCHAR (100) NOT NULL,
     Publish_Date DATE           NOT NULL,
     Author       NVARCHAR (100) NOT NULL,
@@ -12,33 +11,16 @@ CREATE TABLE ITEM (
 
 -- Create MEMBER table
 CREATE TABLE MEMBER (
-    Member_ID   INTEGER        PRIMARY KEY AUTOINCREMENT
-                               NOT NULL,
+    Member_ID   INTEGER        PRIMARY KEY AUTOINCREMENT NOT NULL,
     Address     NVARCHAR (100) NOT NULL,
-    Contact_No  NVARCHAR (12)  NOT NULL/ NULL,
+    Contact_No  NVARCHAR (12),
     Name        NVARCHAR (100) NOT NULL,
     Member_Type VARCHAR (20)   NOT NULL
 );
 
--- Create JOURNAL table
-CREATE TABLE JOURNAL (
-    Standard_No NVARCHAR(10) PRIMARY KEY,
-    Volume NVARCHAR (50),
-    Issue NVARCHAR(5),
-    FOREIGN KEY (Standard_No) REFERENCES ITEM (Standard_No)
-);
-
--- Create BOOK table
-CREATE TABLE BOOK (
-    Standard_No VARCHAR(10) PRIMARY KEY,
-    Edition NVARCHAR (50) NOT NULL,
-    Series NVARCHAR (50),
-    FOREIGN KEY (Standard_No) REFERENCES ITEM (Standard_No)
-);
-
 -- Create STUDENT table
 CREATE TABLE STUDENT (
-    Member_ID INT PRIMARY KEY,
+    Member_ID INT PRIMARY KEY AUTOINCREMENT NOT NULL,
     Year_Level INT NOT NULL,
     Course VARCHAR(100) NOT NULL,
     FOREIGN KEY (Member_ID) REFERENCES MEMBER (Member_ID)
@@ -46,23 +28,23 @@ CREATE TABLE STUDENT (
 
 -- Create FACULTY table
 CREATE TABLE FACULTY (
-    Member_ID INT PRIMARY KEY,
+   Member_ID INT PRIMARY KEY AUTOINCREMENT NOT NULL,
     Department VARCHAR(100),
     FOREIGN KEY (Member_ID) REFERENCES MEMBER (Member_ID)
 );
 
 -- Create PROFESSIONAL table
 CREATE TABLE PROFESSIONAL (
-    Member_ID INT PRIMARY KEY,
+    Member_ID INT PRIMARY KEY AUTOINCREMENT NOT NULL,
     Profession VARCHAR(100),
     FOREIGN KEY (Member_ID) REFERENCES MEMBER (Member_ID)
 );
 
 -- Create LOAN table
 CREATE TABLE LOAN (
-    Loan_ID INT PRIMARY KEY NOT NULL,
-    Standard_No VARCHAR(10),
-    Member_ID INT,
+    Loan_ID INT PRIMARY KEY AUTOINCREMENT NOT NULL,
+    Standard_No NVARCHAR(100) NOT NULL,
+    Member_ID INT NOT NULL,
     Loan_Date DATE NOT NULL,
     Due_Date DATE NOT NULL,
     Return_Date DATE NOT NULL,
@@ -72,10 +54,10 @@ CREATE TABLE LOAN (
 
 -- Create FINE table
 CREATE TABLE FINE (
-    Fine_ID INT PRIMARY KEY,
-    Standard_No VARCHAR(10),
-    Member_ID INT,
-    Fine_Date DATE NOT NULL ,
+    Fine_ID INT PRIMARY KEY AUTOINCREMENT NOT NULL,
+    Standard_No VARCHAR(100) NOT NULL,
+    Member_ID INT NOT NULL,
+    Fine_Date DATE NOT NULL,
     Amount DECIMAL(10,2) NOT NULL,
     Reason_Fine VARCHAR(100) NOT NULL,
     Payment_Method VARCHAR(50) NOT NULL,
