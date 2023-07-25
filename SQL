@@ -47,7 +47,7 @@ CREATE TABLE LOAN (
     Member_ID INT NOT NULL,
     Loan_Date DATE NOT NULL,
     Due_Date DATE NOT NULL,
-    Return_Date DATE NOT NULL,
+    Return_Date DATE,
     FOREIGN KEY (Standard_No) REFERENCES ITEM (Standard_No),
     FOREIGN KEY (Member_ID) REFERENCES MEMBER (Member_ID)
 );
