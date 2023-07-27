@@ -6,7 +6,7 @@ import time
 from datetime import date, timedelta
 import tkinter.messagebox as messagebox
 
-conn = sqlite3.connect('library.db')
+conn = sqlite3.connect('system.db')
 
 # CREATE GUI WINDOW
 lmsGui = tk.Tk()
@@ -23,7 +23,7 @@ def Header(lmsGui):
     fm2.place(x=0, y=0)
     lbb = tk.Label(lmsGui, bg='#00008B')
     lbb.place(x=15, y=5)
-    ig = tk.PhotoImage(file='library.png')
+    ig = tk.PhotoImage(file='ito.png')
     lbb.config(image=ig)
     lb3 = tk.Label(lmsGui, text='LIBRARY MATERIAL DASHBOARD', fg='#fff', bg='#00008B', font=('Arial', 30, 'bold'))
     lb3.place(x=125, y=17)
@@ -644,120 +644,6 @@ def return_books():
                               command=return_material)
     return_button.place(x=390, y=391)
 
-
-def addmember_window(tree_view, edit_button, add_button, remove_button):
-    edit_button.config(state=tk.DISABLED)
-    add_button.config(state=tk.DISABLED)
-    remove_button.config(state=tk.DISABLED)
-
-    input_win = tk.Toplevel(lmsGui)
-    input_win.title("Add a Member")
-    input_win.configure(bg="#00008B")
-    input_win.geometry("400x400+480+200")
-    input_win.resizable(False, False)
-
-    # Address
-    lbl_address = tk.Label(input_win, text="Address:", bg='#00008B', fg='#fff')
-    entry_address = tk.Entry(input_win, width=50)
-    lbl_address.grid(row=1, column=0, padx=50, pady=3)
-    entry_address.grid(row=2, column=0, padx=50, pady=3)
-
-    # Contact No
-    lbl_contact_no = tk.Label(input_win, text="Contact No:", bg='#00008B', fg='#fff')
-    entry_contact_no = tk.Entry(input_win, width=50)
-    lbl_contact_no.grid(row=3, column=0, padx=50, pady=3)
-    entry_contact_no.grid(row=4, column=0, padx=50, pady=3)
-
-    # Name
-    lbl_name = tk.Label(input_win, text="Name:", bg='#00008B', fg='#fff')
-    entry_name = tk.Entry(input_win, width=50)
-    lbl_name.grid(row=5, column=0, padx=50, pady=3)
-    entry_name.grid(row=6, column=0, padx=50, pady=3)
-
-    def select_member_type(event):
-        member_type = member_type_combobox.get()
-        if member_type == "Student":
-            show_student_info(input_win)
-        elif member_type == "Faculty":
-            show_faculty_info(input_win)
-
-    # Member Type
-    member_type_label = tk.Label(input_win, text="Member Type:", bg='#00008B', fg='#fff')
-    member_type_combobox = ttk.Combobox(input_win, values=["Student", "Faculty"], width=47, state="readonly")
-    member_type_combobox.bind("<<ComboboxSelected>>", select_member_type)
-    member_type_label.grid(row=7, column=0, padx=50, pady=3)
-    member_type_combobox.grid(row=8, column=0, padx=50, pady=3)
-
-    def show_student_info(frame):
-        year_level_label = tk.Label(frame, text='    Year Level:', fg='#000000', font=('calibri', 10))
-        year_level_label.place(x=150, y=205)
-        year_level_entry = tk.Entry(frame, width=20, bg='white')
-        year_level_entry.place(x=140, y=225)
-
-        course_label = tk.Label(frame, text='    Course:     ', fg='#000000', font=('calibri', 10))
-        course_label.place(x=150, y=250)
-        course_entry = tk.Entry(frame, width=20, bg='white')
-        course_entry.place(x=140, y=275)
-
-    def show_faculty_info(frame):
-        department_label = tk.Label(frame, text='Department:', fg='#000000', font=('calibri', 10))
-        department_label.place(x=150, y=205)
-        department_entry = tk.Entry(frame, width=20, bg='white')
-        department_entry.place(x=140, y=225)
-
-        profession_label = tk.Label(frame, text='Profession:', fg='#000000', font=('calibri', 10))
-        profession_label.place(x=150, y=250)
-        profession_entry = tk.Entry(frame, width=20, bg='white')
-        profession_entry.place(x=140, y=275)
-
-    def confirm_member():
-        address = entry_address.get()
-        contact_no = entry_contact_no.get()
-        name = entry_name.get()
-        member_type = member_type_combobox.get()
-
-        # Check if any of the required fields are empty
-        if not (address and contact_no and name and member_type):
-            messagebox.showerror("Error", "Please fill in all the required fields.")
-            input_win.focus_force()
-            return
-
-        # Execute the INSERT statement to add member information to the MEMBER table
-        conn.execute("INSERT INTO MEMBER (Address, Contact_No, Name, Member_Type) VALUES (?, ?, ?, ?)",
-                     (address, contact_no, name, member_type))
-
-        cursor = conn.execute("SELECT last_insert_rowid()")
-
-        # Fetch the member_id value
-        member_id = cursor.fetchone()[0]
-
-        # Commit the changes to the database
-        conn.commit()
-
-        # Insert the new member's data into the Treeview
-        tree_view.insert("", tk.END, values=(member_id, address, contact_no, name, member_type))
-
-        input_win.destroy()
-
-        # REENABLE EDIT UPON EXIT
-        edit_button.config(state=tk.NORMAL)
-        add_button.config(state=tk.NORMAL)
-        remove_button.config(state=tk.NORMAL)
-
-    # Confirm Borrow button
-    btn_confirm_borrow = tk.Button(input_win, text="Add Member", fg='#fff', bg='#8B0000',
-                                   font=('Arial', 10, 'bold'), command=confirm_member)
-    btn_confirm_borrow.grid(row=9, column=0, pady=140)
-
-    def on_window_close():
-        edit_button.config(state=tk.NORMAL)  # Enable the "Edit" button when the window is closed
-        add_button.config(state=tk.NORMAL)
-        remove_button.config(state=tk.NORMAL)
-        input_win.destroy()
-
-    input_win.protocol("WM_DELETE_WINDOW", on_window_close)
-
-
 def editmember(tree_view, edit_button, add_button, remove_button):
     selected_item = tree_view.selection()
     if selected_item:
@@ -875,6 +761,175 @@ def editmember(tree_view, edit_button, add_button, remove_button):
                                 command=lambda: new_info())
         save_button.grid(row=12, columnspan=2, pady=150)
 
+def addmember_window(tree_view, edit_button, add_button, remove_button):
+    edit_button.config(state=tk.DISABLED)
+    add_button.config(state=tk.DISABLED)
+    remove_button.config(state=tk.DISABLED)
+
+    input_win = tk.Toplevel(lmsGui)
+    input_win.title("Add a Member")
+    input_win.configure(bg="#00008B")
+    input_win.geometry("400x400+480+200")
+    input_win.resizable(False, False)
+
+    # Address
+    lbl_address = tk.Label(input_win, text="Address:", bg='#00008B', fg='#fff')
+    entry_address = tk.Entry(input_win, width=50)
+    lbl_address.grid(row=1, column=0, padx=50, pady=3)
+    entry_address.grid(row=2, column=0, padx=50, pady=3)
+
+    # Contact No
+    lbl_contact_no = tk.Label(input_win, text="Contact No:", bg='#00008B', fg='#fff')
+    entry_contact_no = tk.Entry(input_win, width=50)
+    lbl_contact_no.grid(row=3, column=0, padx=50, pady=3)
+    entry_contact_no.grid(row=4, column=0, padx=50, pady=3)
+
+    # Name
+    lbl_name = tk.Label(input_win, text="Name:", bg='#00008B', fg='#fff')
+    entry_name = tk.Entry(input_win, width=50)
+    lbl_name.grid(row=5, column=0, padx=50, pady=3)
+    entry_name.grid(row=6, column=0, padx=50, pady=3)
+
+    def select_member_type(event):
+        member_type = member_type_combobox.get()
+        if member_type == "Student":
+            show_student_info()
+        elif member_type == "Faculty":
+            show_faculty_info()
+
+    # Member Type
+    member_type_label = tk.Label(input_win, text="Member Type:", bg='#00008B', fg='#fff')
+    member_type_combobox = ttk.Combobox(input_win, values=["Student", "Faculty"], width=47, state="readonly")
+    member_type_combobox.bind("<<ComboboxSelected>>", select_member_type)
+    member_type_label.grid(row=7, column=0, padx=50, pady=3)
+    member_type_combobox.grid(row=8, column=0, padx=50, pady=3)
+
+    def show_student_info():
+        year_level_label = tk.Label(input_win, text='Year Level:', fg='#000000', font=('calibri', 10))
+        year_level_label.grid(row=9, column=0, padx=50, pady=3)
+        year_level_entry = tk.Entry(input_win, width=20, bg='white')
+        year_level_entry.grid(row=10, column=0, padx=50, pady=3)
+
+        course_label = tk.Label(input_win, text='Course:', fg='#000000', font=('calibri', 10))
+        course_label.grid(row=11, column=0, padx=50, pady=3)
+        course_entry = tk.Entry(input_win, width=20, bg='white')
+        course_entry.grid(row=12, column=0, padx=50, pady=3)
+
+        def confirm_student_member():
+            address = entry_address.get()
+            contact_no = entry_contact_no.get()
+            name = entry_name.get()
+            member_type = member_type_combobox.get()
+            year_level = year_level_entry.get()
+            course = course_entry.get()
+
+            # Check if any of the required fields are empty
+            if not (address and contact_no and name and member_type and year_level and course):
+                messagebox.showerror("Error", "Please fill in all the required fields.")
+                input_win.focus_force()
+                return
+
+            try:
+                # Insert data into the MEMBER table
+                conn.execute("INSERT INTO MEMBER (Address, Contact_No, Name, Member_Type) VALUES (?, ?, ?, ?)",
+                             (address, contact_no, name, 'Student'))
+
+                # Get the last inserted Member_ID (AUTOINCREMENT value)
+                member_id = conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+
+                # Insert data into the STUDENT table with references to the MEMBER table
+                conn.execute("INSERT INTO STUDENT (Member_ID, Year_Level, Course) VALUES (?, ?, ?)",
+                             (member_id, year_level, course))
+
+                conn.commit()
+
+                # Insert the new member's data into the Treeview
+                tree_view.insert("", tk.END, values=(member_id, address, contact_no, name, member_type))
+
+                input_win.destroy()
+
+                # REENABLE EDIT UPON EXIT
+                edit_button.config(state=tk.NORMAL)
+                add_button.config(state=tk.NORMAL)
+                remove_button.config(state=tk.NORMAL)
+
+            except sqlite3.Error as e:
+                conn.rollback()
+                messagebox.showerror("Error", f"An error occurred: {e}")
+
+        # Confirm Borrow button
+        btn_confirm_borrow = tk.Button(input_win, text="Add Member", fg='#fff', bg='#8B0000',
+                                       font=('Arial', 10, 'bold'), command=confirm_student_member)
+        btn_confirm_borrow.grid(row=13, column=0, pady=10)
+
+    def show_faculty_info():
+        department_label = tk.Label(input_win, text='Department:', fg='#000000', font=('calibri', 10))
+        department_label.grid(row=9, column=0, padx=50, pady=3)
+        department_entry = tk.Entry(input_win, width=20, bg='white')
+        department_entry.grid(row=10, column=0, padx=50, pady=3)
+
+        profession_label = tk.Label(input_win, text='Profession:', fg='#000000', font=('calibri', 10))
+        profession_label.grid(row=11, column=0, padx=50, pady=3)
+        profession_entry = tk.Entry(input_win, width=20, bg='white')
+        profession_entry.grid(row=12, column=0, padx=50, pady=3)
+
+        def confirm_faculty_member():
+            address = entry_address.get()
+            contact_no = entry_contact_no.get()
+            name = entry_name.get()
+            member_type = member_type_combobox.get()
+            department = department_entry.get()
+            profession = profession_entry.get()
+
+            # Check if any of the required fields are empty
+            if not (address and contact_no and name and member_type and department and profession):
+                messagebox.showerror("Error", "Please fill in all the required fields.")
+                input_win.focus_force()
+                return
+
+            try:
+                # Insert data into the MEMBER table
+                conn.execute("INSERT INTO MEMBER (Address, Contact_No, Name, Member_Type) VALUES (?, ?, ?, ?)",
+                             (address, contact_no, name, 'Faculty'))
+
+                # Get the last inserted Member_ID (AUTOINCREMENT value)
+                member_id = conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+
+                # Insert data into the FACULTY and PROFESSIONAL tables with references to the MEMBER table
+                conn.execute("INSERT INTO FACULTY (Member_ID, Department) VALUES (?, ?)",
+                             (member_id, department))
+                conn.execute("INSERT INTO PROFESSIONAL (Member_ID, Profession) VALUES (?, ?)",
+                             (member_id, profession))
+
+                conn.commit()
+
+                # Insert the new member's data into the Treeview
+                tree_view.insert("", tk.END, values=(member_id, address, contact_no, name, member_type))
+
+                input_win.destroy()
+
+                # REENABLE EDIT UPON EXIT
+                edit_button.config(state=tk.NORMAL)
+                add_button.config(state=tk.NORMAL)
+                remove_button.config(state=tk.NORMAL)
+
+            except sqlite3.Error as e:
+                conn.rollback()
+                messagebox.showerror("Error", f"An error occurred: {e}")
+
+        # Confirm Borrow button
+        btn_confirm_borrow = tk.Button(input_win, text="Add Member", fg='#fff', bg='#8B0000',
+                                       font=('Arial', 10, 'bold'), command=confirm_faculty_member)
+        btn_confirm_borrow.grid(row=13, column=0, pady=10)
+
+    def on_window_close():
+        edit_button.config(state=tk.NORMAL)  # Enable the "Edit" button when the window is closed
+        add_button.config(state=tk.NORMAL)
+        remove_button.config(state=tk.NORMAL)
+        input_win.destroy()
+
+    input_win.protocol("WM_DELETE_WINDOW", on_window_close)
+
 
 def members():
     addgui = newFrame()
@@ -900,10 +955,9 @@ def members():
     tree_view = viewmembers(addgui)
 
     add_member = lambda: addmember()
-
     remove_member = lambda: removemember(tree_view)
-
     edit_member = lambda: editmember(tree_view, edit_button, add_button, remove_button)
+
 
     # Add button
     add_button = tk.Button(addgui, text="Add", fg='#fff', bg='#006400', font=('Arial', 10, 'bold'), width=10,
@@ -915,10 +969,182 @@ def members():
                               command=remove_member)
     remove_button.place(x=300, y=391)
 
-    # Remove button
+    # Edit button
     edit_button = tk.Button(addgui, text="Edit", fg='#fff', bg='#28a7c7', font=('Arial', 10, 'bold'), width=10,
                             command=edit_member)
     edit_button.place(x=500, y=391)
+
+    def view_student_data():
+        # Create a new window
+        student_window = tk.Toplevel()
+        student_window.title("Student Data")
+
+        def edit_student_data():
+            # Get the selected item in the Treeview
+            selected_item = tree_view_student.selection()
+
+            # Ensure that only one item is selected for editing
+            if len(selected_item) != 1:
+                messagebox.showerror("Error", "Please select one student to edit.")
+                return
+
+            # Get the student data from the selected row
+            member_id, year_level, course = tree_view_student.item(selected_item, "values")
+
+            # Create a new window for editing student data
+            edit_win = tk.Toplevel()
+            edit_win.title("Edit Student Data")
+            edit_win.configure(bg="#00008B")
+            edit_win.geometry("300x200+550+300")
+            edit_win.resizable(False, False)
+
+            # Year Level
+            lbl_year_level = tk.Label(edit_win, text="Year Level:", bg='#00008B', fg='#fff')
+            lbl_year_level.grid(row=0, column=0, padx=30, pady=3)
+            entry_year_level = tk.Entry(edit_win, width=20, bg='white')
+            entry_year_level.grid(row=0, column=1, padx=30, pady=3)
+            entry_year_level.insert(0, year_level)
+
+            # Course
+            lbl_course = tk.Label(edit_win, text="Course:", bg='#00008B', fg='#fff')
+            lbl_course.grid(row=1, column=0, padx=30, pady=3)
+            entry_course = tk.Entry(edit_win, width=20, bg='white')
+            entry_course.grid(row=1, column=1, padx=30, pady=3)
+            entry_course.insert(0, course)
+
+            def save_changes():
+                new_year_level = entry_year_level.get()
+                new_course = entry_course.get()
+
+                # Update the student data in the database
+                conn.execute("UPDATE STUDENT SET Year_Level = ?, Course = ? WHERE Member_ID = ?",
+                             (new_year_level, new_course, member_id))
+                conn.commit()
+
+                # Update the Treeview with the new data
+                tree_view_student.item(selected_item, values=(member_id, new_year_level, new_course))
+
+                edit_win.destroy()
+
+            # Save Changes button
+            btn_save_changes = tk.Button(edit_win, text="Save Changes", fg='#fff', bg='#8B0000',
+                                         font=('Arial', 10, 'bold'), command=save_changes)
+            btn_save_changes.grid(row=2, column=0, columnspan=2, pady=10)
+
+        # Create a Treeview in the new window
+        tree_view_student = ttk.Treeview(student_window, columns=("Member ID", "Year Level", "Course"), show="headings")
+        tree_view_student.heading("Member ID", text="Member ID")
+        tree_view_student.heading("Year Level", text="Year Level")
+        tree_view_student.heading("Course", text="Course")
+        tree_view_student.pack()
+
+        # Fetch data from the 'STUDENT' table with references to the 'MEMBER' table using JOIN
+        cursor = conn.execute("""
+            SELECT M.Member_ID, S.Year_Level, S.Course
+            FROM MEMBER M
+            LEFT JOIN STUDENT S ON M.Member_ID = S.Member_ID
+            WHERE M.Member_Type = 'Student'  -- Show only student data
+        """)
+
+        # Insert data into the Treeview
+        for row in cursor:
+            tree_view_student.insert("", "end", values=row)
+
+        # Edit button
+        btn_edit_student = tk.Button(student_window, text="Edit", fg='#fff', bg='#28a7c7', font=('Arial', 10, 'bold'),
+                                     width=10, command=edit_student_data)
+        btn_edit_student.place(x=10, y=180)
+
+    def view_faculty_data():
+        # Create a new window
+        data_window = tk.Toplevel()
+        data_window.title("Faculty Data")
+
+        def edit_faculty_data():
+            # Get the selected item in the Treeview
+            selected_item = tree_view_data.selection()
+
+            # Ensure that only one item is selected for editing
+            if len(selected_item) != 1:
+                messagebox.showerror("Error", "Please select one faculty member to edit.")
+                return
+
+            # Get the faculty data from the selected row
+            member_id, department, profession = tree_view_data.item(selected_item, "values")
+
+            # Create a new window for editing faculty data
+            edit_win = tk.Toplevel()
+            edit_win.title("Edit Faculty Data")
+            edit_win.configure(bg="#00008B")
+            edit_win.geometry("300x200+550+300")
+            edit_win.resizable(False, False)
+
+            # Department
+            lbl_department = tk.Label(edit_win, text="Department:", bg='#00008B', fg='#fff')
+            lbl_department.grid(row=0, column=0, padx=30, pady=3)
+            entry_department = tk.Entry(edit_win, width=20, bg='white')
+            entry_department.grid(row=0, column=1, padx=30, pady=3)
+            entry_department.insert(0, department)
+
+            # Profession
+            lbl_profession = tk.Label(edit_win, text="Profession:", bg='#00008B', fg='#fff')
+            lbl_profession.grid(row=1, column=0, padx=30, pady=3)
+            entry_profession = tk.Entry(edit_win, width=20, bg='white')
+            entry_profession.grid(row=1, column=1, padx=30, pady=3)
+            entry_profession.insert(0, profession)
+
+            def save_changes():
+                new_department = entry_department.get()
+                new_profession = entry_profession.get()
+
+                # Update the faculty data in the database
+                conn.execute("UPDATE FACULTY SET Department = ? WHERE Member_ID = ?", (new_department, member_id))
+                conn.execute("UPDATE PROFESSIONAL SET Profession = ? WHERE Member_ID = ?", (new_profession, member_id))
+                conn.commit()
+
+                # Update the Treeview with the new data
+                tree_view_data.item(selected_item, values=(member_id, new_department, new_profession))
+
+                edit_win.destroy()
+
+            # Save Changes button
+            btn_save_changes = tk.Button(edit_win, text="Save Changes", fg='#fff', bg='#8B0000',
+                                         font=('Arial', 10, 'bold'), command=save_changes)
+            btn_save_changes.grid(row=2, column=0, columnspan=2, pady=10)
+
+        # Create a Treeview in the new window
+        tree_view_data = ttk.Treeview(data_window, columns=("Member ID", "Department", "Profession"), show="headings")
+        tree_view_data.heading("Member ID", text="Member ID")
+        tree_view_data.heading("Department", text="Department")
+        tree_view_data.heading("Profession", text="Profession")
+        tree_view_data.pack()
+
+        # Fetch data from the 'FACULTY' and 'PROFESSIONAL' tables using JOIN
+        cursor = conn.execute("""
+            SELECT M.Member_ID, F.Department, P.Profession
+            FROM MEMBER M
+            LEFT JOIN FACULTY F ON M.Member_ID = F.Member_ID
+            LEFT JOIN PROFESSIONAL P ON M.Member_ID = P.Member_ID
+            WHERE M.Member_Type = 'Faculty'
+        """)
+
+        # Insert data into the Treeview
+        for row in cursor:
+            tree_view_data.insert("", "end", values=row)
+
+        # Edit button
+        btn_edit_faculty = tk.Button(data_window, text="Edit", fg='#fff', bg='#28a7c7', font=('Arial', 10, 'bold'),
+                                     width=10, command=edit_faculty_data)
+        btn_edit_faculty.place(x=10, y=180)
+    # Student button
+    student_button = tk.Button(addgui, text="Student Data", fg='#fff', bg='#800080', font=('Arial', 10, 'bold'), width=15,
+                               command=view_student_data)
+    student_button.place(x=160, y=391)
+
+    # Faculty button
+    faculty_button = tk.Button(addgui, text="Faculty Data", fg='#fff', bg='#800080', font=('Arial', 10, 'bold'), width=15,
+                               command=view_faculty_data)
+    faculty_button.place(x=600, y=391)
 
 
 def loan():
