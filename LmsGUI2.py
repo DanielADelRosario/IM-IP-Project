@@ -450,16 +450,11 @@ def disp_books():
                 for row in cursor:
                     itemtree.insert("", tk.END, values=row)
 
+                edit_button.config(state=tk.NORMAL)
+
             save_button = tk.Button(input_win, text="Save",  fg='#fff', bg='#8B0000', font=('Arial', 10, 'bold'), width=10,
                             command=lambda: new_info())
             save_button.pack()
-
-            def on_window_close():
-                edit_button.config(state=tk.NORMAL)  # Enable the "Edit" button when the window is closed
-                input_win.destroy()
-
-            input_win.protocol("WM_DELETE_WINDOW", on_window_close)
-
 
     edit_button = tk.Button(addgui, text="Edit",  fg='#fff', bg='#8B0000', font=('Arial', 10, 'bold'), width=10,
                             command=edit_item)
