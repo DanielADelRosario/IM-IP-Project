@@ -186,7 +186,7 @@ def add_books():
     data4.place(x=290, y=250)
     ad5 = tk.Label(addgui, text='Item Type:', fg='#fff', bg='#00008B', font=('times new roman', 12))
     ad5.place(x=130, y=300)
-    data5 = tk.Entry(addgui, width=70, bg='white')
+    data5 = ttk.Combobox(addgui, values=["Book", "Journal"], width= 67, state="readonly")
     data5.place(x=290, y=300)
 
     def add_data_to_db():
@@ -198,6 +198,11 @@ def add_books():
         item_type = data5.get()
         status = 'Available'
 
+        # Check if any of the required fields are empty
+        if not (standard_no and publisher and publish_date and author and title and item_type):
+            messagebox.showerror("Error", "Please fill in all the required fields.")
+            return
+    
         # Execute SQL query to insert the data into the ITEM table
         conn.execute(
             "INSERT INTO ITEM (Standard_No, Publisher, Publish_Date, Author, Title, Item_Type, Status) VALUES (?, ?, ?, ?, ?, "
@@ -211,7 +216,7 @@ def add_books():
         data2.delete(0, tk.END)
         data3.delete(0, tk.END)
         data4.delete(0, tk.END)
-        data5.delete(0, tk.END)
+        data5.set("")
 
     addData = tk.Button(addgui, text='Add Material', fg='#fff', bg='#008000', font=('Arial', 10, 'bold'), width=52,
                         command=add_data_to_db)
@@ -253,7 +258,7 @@ def treeView(addgui):
     # Display data in the table
     for row in cursor:
         tree.insert("", tk.END, values=row)
-
+    
     # Scrollbar
     scrollbar = ttk.Scrollbar(addgui, orient="vertical", command=tree.yview)
     scrollbar.place(x=860, y=45, height=340)
@@ -362,11 +367,104 @@ def remove_books():
     remove_button.place(x=430, y=391)
 
 
-# FUNCTION TO SET BUTTON COMMANDS
 def disp_books():
     addgui = newFrame()
     goBack(addgui)
-    treeView(addgui)
+            
+    itemtree = treeView(addgui)
+
+    # ENSURE EDIT BUTTON IS CLICKED ONCE ONLY 
+    def edit_once():
+        edit_button.config(state=tk.DISABLED)
+
+    def edit_item():
+        selected_item = itemtree.selection()
+        if selected_item:
+            #DISABLE EDIT BUTTON
+            edit_once()
+
+            values = itemtree.item(selected_item)['values']
+            Item_ID = values[0]
+    
+            input_win = tk.Toplevel(lmsGui)
+            input_win.title("Edit an Item")
+            input_win.configure(bg="#00008B")
+            input_win.geometry("400x400+480+200")
+            input_win.resizable(False, False)
+
+            # Publisher
+            lbl_pub = tk.Label(input_win, text="Publisher:", bg='#00008B', fg='#fff')
+            lbl_pub.pack()
+            entry_pub = tk.Entry(input_win, width=50)
+            entry_pub.pack()
+            entry_pub.insert(0, values[1])  # Populate with existing value
+
+            # date
+            lbl_pdat = tk.Label(input_win, text="Publish Date:", bg='#00008B', fg='#fff')
+            lbl_pdat.pack()
+            entry_pdat = tk.Entry(input_win, width=50)
+            entry_pdat.pack()
+            entry_pdat.insert(0, values[2])  # Populate with existing value
+
+            # Author
+            lbl_au = tk.Label(input_win, text="Author:", bg='#00008B', fg='#fff')
+            lbl_au.pack()
+            entry_au = tk.Entry(input_win, width=50)
+            entry_au.pack()
+            entry_au.insert(0, values[3])  # Populate with existing value
+
+            # Title
+            lbl_t = tk.Label(input_win, text="Title:", bg='#00008B', fg='#fff')
+            lbl_t.pack()
+            entry_t = tk.Entry(input_win, width=50)
+            entry_t.pack()
+            entry_t.insert(0, values[4])  # Populate with existing value
+
+            # Type
+            lbl_typ = tk.Label(input_win, text="Type", bg='#00008B', fg='#fff')
+            lbl_typ.pack()
+            entry_typ = ttk.Combobox(input_win, values=["Book", "Journal"], width=47, state="readonly")
+            entry_typ.pack()
+            entry_typ.set(values[5])  # Set the combobox to the existing value
+          
+            def clear_treeview(tree):
+                for item in tree.get_children():
+                    tree.delete(item)
+            
+            def new_info():
+                publisher = entry_pub.get()
+                publish_date = entry_pdat.get()
+                author = entry_au.get()
+                title = entry_t.get()
+                item_type = entry_typ.get()
+
+                conn.execute("UPDATE ITEM SET Publisher=?, Publish_Date=?, "
+                       "Author=?, Title=?, Item_Type=? WHERE Standard_No=?", (publisher, 
+                       publish_date, author, title, item_type, Item_ID))
+                conn.commit()
+                
+                input_win.destroy()
+
+                clear_treeview(itemtree)
+                cursor = conn.execute("SELECT * FROM ITEM")
+                for row in cursor:
+                    itemtree.insert("", tk.END, values=row)
+
+            save_button = tk.Button(input_win, text="Save",  fg='#fff', bg='#8B0000', font=('Arial', 10, 'bold'), width=10,
+                            command=lambda: new_info())
+            save_button.pack()
+
+            def on_window_close():
+                edit_button.config(state=tk.NORMAL)  # Enable the "Edit" button when the window is closed
+                input_win.destroy()
+
+            input_win.protocol("WM_DELETE_WINDOW", on_window_close)
+
+
+    edit_button = tk.Button(addgui, text="Edit",  fg='#fff', bg='#8B0000', font=('Arial', 10, 'bold'), width=10,
+                            command=edit_item)
+    edit_button.place(x=390, y=391)
+
 
 
 def borrow_input_window(treeview):
@@ -397,7 +495,7 @@ def borrow_input_window(treeview):
     membertree.heading("Member_Type", text="Member Type", anchor=tk.CENTER)
 
     #Retrieve data from the MEMBER table
-    cursor = conn.execute("SELECT Member_ID, Name, Member_Type FROM MEMBER")
+    cursor = conn.execute("SELECT Member_ID, Name, Member_Type FROM MEMBER") 
 
     #Display data in the table
     for row in cursor:
@@ -414,31 +512,42 @@ def borrow_input_window(treeview):
         # Update the "Status" of the material to "Borrowed" in the ITEM table
         select_ID = treeview.selection()
         selected_items = membertree.selection()
+
         if selected_items:
             # Get the selected item values
             selected_item = treeview.item(select_ID[0])['values']
             selected_standard_no = selected_item[0]  # Assuming Standard_no is the first column
-            status = selected_item[-1]
+            status = selected_item[-1] # Get Status of Item
 
             if status == 'Borrowed':
                 messagebox.showerror("Error", "Item currently unavailable.")
                 input_win.destroy()
                 return
+            
             else:
-                # Update the "Status" of the material to "Borrowed" in the ITEM table
-                conn.execute("UPDATE ITEM SET Status = ? WHERE Standard_No = ?", ('Borrowed', selected_standard_no))
-                conn.commit()
-
-                # Set Date today and Due date
-                current_date = date.today()
-                due_date = current_date + timedelta(days=1)
-
                 # Get the Member_ID from the selected row and insert it into the LOAN table
                 getmemID = membertree.item(selected_items[0])["values"]
-                member_id = getmemID[0]  # Assuming Member_ID is the second column
+                member_id = getmemID[0]  # Assuming Member_ID is in the first
 
-                conn.execute("INSERT INTO LOAN (Standard_no, Member_ID, Loan_Date, Due_Date) VALUES (?, ?, ?, ?)", (selected_standard_no, member_id, current_date, due_date))
-                conn.commit()
+                member_id_to_check = member_id
+                check_member_query = conn.execute("SELECT Member_ID FROM LOAN WHERE Member_ID = ? AND Return_Date IS NULL", (member_id_to_check,))
+                existing_loan = check_member_query.fetchone()
+                if existing_loan:
+                    messagebox.showerror("Error", "Member can only borrow one book.")
+                    input_win.destroy()
+                    return
+                
+                else:
+                    # Update the "Status" of the material to "Borrowed" in the ITEM table
+                    conn.execute("UPDATE ITEM SET Status = ? WHERE Standard_No = ?", ('Borrowed', selected_standard_no))
+                    conn.commit()
+
+                    # Set Date today and Due date
+                    current_date = date.today()
+                    due_date = current_date + timedelta(days=1)
+
+                    conn.execute("INSERT INTO LOAN (Standard_no, Member_ID, Loan_Date, Due_Date) VALUES (?, ?, ?, ?)", (selected_standard_no, member_id, current_date, due_date))
+                    conn.commit()
 
         input_win.destroy()
         treeview.set(select_ID, "Status", "Borrowed")
@@ -518,9 +627,9 @@ def return_books():
             tree.delete(item)
 
     # Return button
-    borrow_button = tk.Button(addgui, text="Return", fg='#fff', bg='#8B0000', font=('Arial', 10, 'bold'), width=10,
+    return_button = tk.Button(addgui, text="Return", fg='#fff', bg='#8B0000', font=('Arial', 10, 'bold'), width=10,
                               command=return_material)
-    borrow_button.place(x=430, y=391)
+    return_button.place(x=390, y=391)
 
 
 def addmember_window(tree_view):
@@ -696,17 +805,43 @@ def fine():
     tree.heading("Reason_Fine", text="Reason of Fine", anchor=tk.CENTER)
     tree.heading("Payment_Method", text="Payment Method", anchor=tk.CENTER)
 
-    # Retrieve data from the ITEM table
-    cursor = conn.execute("SELECT * FROM FINE")
+    cursor = conn.cursor()
 
-    # Display data in the table
-    for row in cursor:
-        tree.insert("", tk.END, values=row)
+    # Retrieve data from the LOAN table
+    cursor.execute("""
+        SELECT Due_date, standard_no, member_id
+        FROM LOAN
+        WHERE Due_Date < Return_Date
+    """)
+    loan_data = cursor.fetchall()
+
+    # Insert the loan_data into the FINE table
+    for data in loan_data:
+        # Assuming you have a function to generate a new Fine_ID
+        fine_date = date.today()  # Assuming you want to use today's date for Fine_Date
+        amount = 0  # Assuming you want to set the initial amount to 0 for new fines
+        reason_fine = "N/A"  # Assuming you want to set a default reason for new fines
+        payment_method = "N/A"  # Assuming you want to set a default payment method for new fines
+
+        # Insert the data into the FINE table
+        cursor.execute("""
+            INSERT INTO FINE (fine_date, amount, reason_fine, payment_method, standard_no, member_id)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (fine_date, amount, reason_fine, payment_method, data[1], data[2]))
+
+        cursor.execute("SELECT * FROM FINE")
+        for row in cursor:
+            tree.insert("", tk.END, values=row)
+
+    # Commit the changes to the database
+    conn.commit()
+    print("Data inserted into FINE table successfully.")
 
     # Scrollbar
     scrollbar = ttk.Scrollbar(addgui, orient="vertical", command=tree.yview)
     scrollbar.place(x=860, y=45, height=340)
     tree.configure(yscrollcommand=scrollbar.set)
+
     return tree
 
 
