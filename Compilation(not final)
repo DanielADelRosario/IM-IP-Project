@@ -17,13 +17,13 @@ lmsGui.geometry("900x550+250+100")
 
 # GUI LIBRARY HEADER
 def Header(lmsGui):
-    fm = tk.Frame(lmsGui, height=500, width=900, bg='#fff')
+    fm = tk.Frame(lmsGui, height=550, width=900, bg='#fff')
     fm.place(x=0, y=0)
     fm2 = tk.Frame(lmsGui, bg='#00008B', height=80, width=900)
     fm2.place(x=0, y=0)
     lbb = tk.Label(lmsGui, bg='#00008B')
     lbb.place(x=15, y=5)
-    ig = tk.PhotoImage(file='ito.png')
+    ig = tk.PhotoImage(file='library.png')
     lbb.config(image=ig)
     lb3 = tk.Label(lmsGui, text='LIBRARY MATERIAL DASHBOARD', fg='#fff', bg='#00008B', font=('Arial', 30, 'bold'))
     lb3.place(x=125, y=17)
@@ -376,15 +376,11 @@ def disp_books():
 
     itemtree = treeView(addgui)
 
-    # ENSURE EDIT BUTTON IS CLICKED ONCE ONLY
-    def edit_once():
-        edit_button.config(state=tk.DISABLED)
-
     def edit_item():
         selected_item = itemtree.selection()
         if selected_item:
             # DISABLE EDIT BUTTON
-            edit_once()
+            edit_button.config(state=tk.DISABLED)
 
             values = itemtree.item(selected_item)['values']
             Item_ID = values[0]
@@ -397,43 +393,45 @@ def disp_books():
 
             # Publisher
             lbl_pub = tk.Label(input_win, text="Publisher:", bg='#00008B', fg='#fff')
-            lbl_pub.pack()
             entry_pub = tk.Entry(input_win, width=50)
-            entry_pub.pack()
             entry_pub.insert(0, values[1])  # Populate with existing value
+            lbl_pub.grid(row=1, column=0, padx=50, pady=3)
+            entry_pub.grid(row=2, column=0, padx=50, pady=3)
 
             # date
             lbl_pdat = tk.Label(input_win, text="Publish Date:", bg='#00008B', fg='#fff')
-            lbl_pdat.pack()
             entry_pdat = tk.Entry(input_win, width=50)
-            entry_pdat.pack()
             entry_pdat.insert(0, values[2])  # Populate with existing value
+            lbl_pdat.grid(row=3, column=0, pady=3)
+            entry_pdat.grid(row=4, column=0, pady=3)
 
             # Author
             lbl_au = tk.Label(input_win, text="Author:", bg='#00008B', fg='#fff')
-            lbl_au.pack()
             entry_au = tk.Entry(input_win, width=50)
-            entry_au.pack()
             entry_au.insert(0, values[3])  # Populate with existing value
+            lbl_au.grid(row=5, column=0, pady=3)
+            entry_au.grid(row=6, column=0, pady=3)
 
             # Title
             lbl_t = tk.Label(input_win, text="Title:", bg='#00008B', fg='#fff')
-            lbl_t.pack()
             entry_t = tk.Entry(input_win, width=50)
-            entry_t.pack()
             entry_t.insert(0, values[4])  # Populate with existing value
+            lbl_t.grid(row=7, column=0, pady=3)
+            entry_t.grid(row=8, column=0, pady=3)
 
             # Type
             lbl_typ = tk.Label(input_win, text="Type", bg='#00008B', fg='#fff')
-            lbl_typ.pack()
             entry_typ = ttk.Combobox(input_win, values=["Book", "Journal"], width=47, state="readonly")
-            entry_typ.pack()
             entry_typ.set(values[5])  # Set the combobox to the existing value
+            lbl_typ.grid(row=9, column=0, pady=3)
+            entry_typ.grid(row=10, column=0, pady=3)
 
+            # FUNCTION TO UPDATE AND REFRESH TREEVIEW
             def clear_treeview(tree):
                 for item in tree.get_children():
                     tree.delete(item)
 
+            # FUNCTION TO COMMMIT CHANGES
             def new_info():
                 publisher = entry_pub.get()
                 publish_date = entry_pdat.get()
@@ -449,19 +447,30 @@ def disp_books():
 
                 input_win.destroy()
 
+                # REFRESH TREEVIEW
                 clear_treeview(itemtree)
                 cursor = conn.execute("SELECT * FROM ITEM")
                 for row in cursor:
                     itemtree.insert("", tk.END, values=row)
 
+                # REENABLE EDIT UPON EXIT
                 edit_button.config(state=tk.NORMAL)
 
+            # REENABLE EDIT UPON CANCEL
+            def on_window_close():
+                edit_button.config(state=tk.NORMAL)  # Enable the "Edit" button when the window is closed
+                input_win.destroy()
+
+            input_win.protocol("WM_DELETE_WINDOW", on_window_close)
+
+            # SAVE BUTTON
             save_button = tk.Button(input_win, text="Save", fg='#fff', bg='#8B0000', font=('Arial', 10, 'bold'),
                                     width=10,
                                     command=lambda: new_info())
-            save_button.pack()
+            save_button.grid(row=11, columnspan=2, padx=10, pady=10)
 
-    edit_button = tk.Button(addgui, text="Edit", fg='#fff', bg='#8B0000', font=('Arial', 10, 'bold'), width=10,
+    # EDIT BUTTON
+    edit_button = tk.Button(addgui, text="Edit", fg='#fff', bg='#28a7c7', font=('Arial', 10, 'bold'), width=10,
                             command=edit_item)
     edit_button.place(x=390, y=391)
 
@@ -636,7 +645,11 @@ def return_books():
     return_button.place(x=390, y=391)
 
 
-def addmember_window(tree_view):
+def addmember_window(tree_view, edit_button, add_button, remove_button):
+    edit_button.config(state=tk.DISABLED)
+    add_button.config(state=tk.DISABLED)
+    remove_button.config(state=tk.DISABLED)
+
     input_win = tk.Toplevel(lmsGui)
     input_win.title("Add a Member")
     input_win.configure(bg="#00008B")
@@ -645,21 +658,21 @@ def addmember_window(tree_view):
 
     # Address
     lbl_address = tk.Label(input_win, text="Address:", bg='#00008B', fg='#fff')
-    lbl_address.pack()
     entry_address = tk.Entry(input_win, width=50)
-    entry_address.pack()
+    lbl_address.grid(row=1, column=0, padx=50, pady=3)
+    entry_address.grid(row=2, column=0, padx=50, pady=3)
 
     # Contact No
     lbl_contact_no = tk.Label(input_win, text="Contact No:", bg='#00008B', fg='#fff')
-    lbl_contact_no.pack()
     entry_contact_no = tk.Entry(input_win, width=50)
-    entry_contact_no.pack()
+    lbl_contact_no.grid(row=3, column=0, padx=50, pady=3)
+    entry_contact_no.grid(row=4, column=0, padx=50, pady=3)
 
     # Name
     lbl_name = tk.Label(input_win, text="Name:", bg='#00008B', fg='#fff')
-    lbl_name.pack()
     entry_name = tk.Entry(input_win, width=50)
-    entry_name.pack()
+    lbl_name.grid(row=5, column=0, padx=50, pady=3)
+    entry_name.grid(row=6, column=0, padx=50, pady=3)
 
     def select_member_type(event):
         member_type = member_type_combobox.get()
@@ -668,11 +681,12 @@ def addmember_window(tree_view):
         elif member_type == "Faculty":
             show_faculty_info(input_win)
 
+    # Member Type
     member_type_label = tk.Label(input_win, text="Member Type:", bg='#00008B', fg='#fff')
-    member_type_label.pack()
-    member_type_combobox = ttk.Combobox(input_win, values=["Student", "Faculty"], width=50, state="readonly")
-    member_type_combobox.pack()
+    member_type_combobox = ttk.Combobox(input_win, values=["Student", "Faculty"], width=47, state="readonly")
     member_type_combobox.bind("<<ComboboxSelected>>", select_member_type)
+    member_type_label.grid(row=7, column=0, padx=50, pady=3)
+    member_type_combobox.grid(row=8, column=0, padx=50, pady=3)
 
     def show_student_info(frame):
         year_level_label = tk.Label(frame, text='    Year Level:', fg='#000000', font=('calibri', 10))
@@ -696,12 +710,17 @@ def addmember_window(tree_view):
         profession_entry = tk.Entry(frame, width=20, bg='white')
         profession_entry.place(x=140, y=275)
 
-    # Function to perform the borrowing process
     def confirm_member():
         address = entry_address.get()
         contact_no = entry_contact_no.get()
         name = entry_name.get()
         member_type = member_type_combobox.get()
+
+        # Check if any of the required fields are empty
+        if not (address and contact_no and name and member_type):
+            messagebox.showerror("Error", "Please fill in all the required fields.")
+            input_win.focus_force()
+            return
 
         # Execute the INSERT statement to add member information to the MEMBER table
         conn.execute("INSERT INTO MEMBER (Address, Contact_No, Name, Member_Type) VALUES (?, ?, ?, ?)",
@@ -712,8 +731,6 @@ def addmember_window(tree_view):
         # Fetch the member_id value
         member_id = cursor.fetchone()[0]
 
-        print(f"Member ID: {member_id} added successfully!")
-
         # Commit the changes to the database
         conn.commit()
 
@@ -722,9 +739,141 @@ def addmember_window(tree_view):
 
         input_win.destroy()
 
+        # REENABLE EDIT UPON EXIT
+        edit_button.config(state=tk.NORMAL)
+        add_button.config(state=tk.NORMAL)
+        remove_button.config(state=tk.NORMAL)
+
     # Confirm Borrow button
-    btn_confirm_borrow = tk.Button(input_win, text="Add Member", command=confirm_member)
-    btn_confirm_borrow.place(x=150, y=300)
+    btn_confirm_borrow = tk.Button(input_win, text="Add Member", fg='#fff', bg='#8B0000',
+                                   font=('Arial', 10, 'bold'), command=confirm_member)
+    btn_confirm_borrow.grid(row=9, column=0, pady=140)
+
+    def on_window_close():
+        edit_button.config(state=tk.NORMAL)  # Enable the "Edit" button when the window is closed
+        add_button.config(state=tk.NORMAL)
+        remove_button.config(state=tk.NORMAL)
+        input_win.destroy()
+
+    input_win.protocol("WM_DELETE_WINDOW", on_window_close)
+
+
+def editmember(tree_view, edit_button, add_button, remove_button):
+    selected_item = tree_view.selection()
+    if selected_item:
+
+        edit_button.config(state=tk.DISABLED)
+        add_button.config(state=tk.DISABLED)
+        remove_button.config(state=tk.DISABLED)
+
+        values = tree_view.item(selected_item)['values']
+        Item_ID = values[0]
+        input_win = tk.Toplevel(lmsGui)
+        input_win.title("Add a Member")
+        input_win.configure(bg="#00008B")
+        input_win.geometry("400x400+480+200")
+        input_win.resizable(False, False)
+
+        # Address
+        lbl_address = tk.Label(input_win, text="Address:", bg='#00008B', fg='#fff')
+        entry_address = tk.Entry(input_win, width=50)
+        entry_address.insert(0, values[1])  # Populate with existing value
+        lbl_address.grid(row=1, column=0, padx=50, pady=3)
+        entry_address.grid(row=2, column=0, padx=50, pady=3)
+
+        # Contact No
+        lbl_contact_no = tk.Label(input_win, text="Contact No:", bg='#00008B', fg='#fff')
+        entry_contact_no = tk.Entry(input_win, width=50)
+        entry_contact_no.insert(0, values[2])  # Populate with existing value
+        lbl_contact_no.grid(row=3, column=0, padx=50, pady=3)
+        entry_contact_no.grid(row=4, column=0, padx=50, pady=3)
+
+        # Name
+        lbl_name = tk.Label(input_win, text="Name:", bg='#00008B', fg='#fff')
+        entry_name = tk.Entry(input_win, width=50)
+        entry_name.insert(0, values[3])  # Populate with existing value
+        lbl_name.grid(row=5, column=0, padx=50, pady=3)
+        entry_name.grid(row=6, column=0, padx=50, pady=3)
+
+        def select_member_type(event):
+            member_type = member_type_combobox.get()
+            if member_type == "Student":
+                show_student_info(input_win)
+            elif member_type == "Faculty":
+                show_faculty_info(input_win)
+
+        # Member Type
+        member_type_label = tk.Label(input_win, text="Member Type:", bg='#00008B', fg='#fff')
+        member_type_combobox = ttk.Combobox(input_win, values=["Student", "Faculty"], width=47, state="readonly")
+        member_type_combobox.bind("<<ComboboxSelected>>", select_member_type)
+        member_type_combobox.set(values[4])  # Populate with existing value
+        member_type_label.grid(row=7, column=0, padx=50, pady=3)
+        member_type_combobox.grid(row=8, column=0, padx=50, pady=3)
+
+        def show_student_info(frame):
+            year_level_label = tk.Label(frame, text='    Year Level:', fg='#000000', font=('calibri', 10))
+            year_level_label.place(x=150, y=205)
+            year_level_entry = tk.Entry(frame, width=20, bg='white')
+            year_level_entry.place(x=140, y=225)
+
+            course_label = tk.Label(frame, text='    Course:     ', fg='#000000', font=('calibri', 10))
+            course_label.place(x=150, y=250)
+            course_entry = tk.Entry(frame, width=20, bg='white')
+            course_entry.place(x=140, y=275)
+
+        def show_faculty_info(frame):
+            department_label = tk.Label(frame, text='Department:', fg='#000000', font=('calibri', 10))
+            department_label.place(x=150, y=205)
+            department_entry = tk.Entry(frame, width=20, bg='white')
+            department_entry.place(x=140, y=225)
+
+            profession_label = tk.Label(frame, text='Profession:', fg='#000000', font=('calibri', 10))
+            profession_label.place(x=150, y=250)
+            profession_entry = tk.Entry(frame, width=20, bg='white')
+            profession_entry.place(x=140, y=275)
+
+        # FUNCTION TO UPDATE AND REFRESH TREEVIEW
+        def clear_treeview(tree):
+            for item in tree.get_children():
+                tree.delete(item)
+
+        def new_info():
+            addr = entry_address.get()
+            contacts = entry_contact_no.get()
+            name = entry_name.get()
+            member_type = member_type_combobox.get()
+
+            conn.execute("UPDATE MEMBER SET Address=?, "
+                         "Contact_No=?, Name=?, Member_Type=? WHERE Member_ID=?", (addr,
+                                                                                   contacts, name, member_type,
+                                                                                   Item_ID))
+            conn.commit()
+
+            input_win.destroy()
+
+            # REFRESH TREEVIEW
+            clear_treeview(tree_view)
+            cursor = conn.execute("SELECT * FROM MEMBER")
+            for row in cursor:
+                tree_view.insert("", tk.END, values=row)
+
+            # REENABLE EDIT UPON EXIT
+            edit_button.config(state=tk.NORMAL)
+            add_button.config(state=tk.NORMAL)
+            remove_button.config(state=tk.NORMAL)
+
+        def on_window_close():
+            edit_button.config(state=tk.NORMAL)  # Enable the "Edit" button when the window is closed
+            add_button.config(state=tk.NORMAL)
+            remove_button.config(state=tk.NORMAL)
+            input_win.destroy()
+
+        input_win.protocol("WM_DELETE_WINDOW", on_window_close)
+
+        # SAVE BUTTON
+        save_button = tk.Button(input_win, text="Save", fg='#fff', bg='#8B0000', font=('Arial', 10, 'bold'), width=10,
+                                command=lambda: new_info())
+        save_button.grid(row=12, columnspan=2, pady=150)
 
 
 def members():
@@ -732,7 +881,7 @@ def members():
     goBack(addgui)
 
     def addmember():
-        addmember_window(tree_view)
+        addmember_window(tree_view, edit_button, add_button, remove_button)
 
     def removemember(tree_view):
         selected_items = tree_view.selection()
@@ -754,15 +903,22 @@ def members():
 
     remove_member = lambda: removemember(tree_view)
 
+    edit_member = lambda: editmember(tree_view, edit_button, add_button, remove_button)
+
     # Add button
     add_button = tk.Button(addgui, text="Add", fg='#fff', bg='#006400', font=('Arial', 10, 'bold'), width=10,
                            command=add_member)
-    add_button.place(x=350, y=391)
+    add_button.place(x=400, y=391)
 
     # Remove button
     remove_button = tk.Button(addgui, text="Remove", fg='#fff', bg='#8B0000', font=('Arial', 10, 'bold'), width=10,
                               command=remove_member)
-    remove_button.place(x=450, y=391)
+    remove_button.place(x=300, y=391)
+
+    # Remove button
+    edit_button = tk.Button(addgui, text="Edit", fg='#fff', bg='#28a7c7', font=('Arial', 10, 'bold'), width=10,
+                            command=edit_member)
+    edit_button.place(x=500, y=391)
 
 
 def loan():
@@ -775,7 +931,6 @@ def loan():
     # Display data in the table
     for row in cursor:
         tree.insert("", tk.END, values=row)
-
 
 # Global variable to store the selected row data
 selected_row_data = None
@@ -848,40 +1003,52 @@ def payment_callback(tree):
         payment_window.geometry("300x300")
         payment_window.title("Select Payment Method")
 
+        # Set the background color of the payment window to dark blue
+        payment_window.configure(bg="#00008B")
+
         # Create and add content to the payment window
-        label = ttk.Label(payment_window, text="Select Payment Method:")
+        label = ttk.Label(payment_window, text="Select Payment Method:", background='#00008B', foreground='#fff')
         label.pack(pady=10)
+
+        # Create a custom style for the radio buttons with dark blue background and white text
+        style = ttk.Style()
+        style.configure("DarkBlue.TRadiobutton", background="#00008B", foreground="#fff")
 
         # Create radio buttons for payment method options
         payment_method_var = tk.StringVar()
 
-        cash_radio = ttk.Radiobutton(payment_window, text="Cash", variable=payment_method_var, value="Cash")
+        cash_radio = ttk.Radiobutton(payment_window, text="Cash", variable=payment_method_var, value="Cash",
+                                     style="DarkBlue.TRadiobutton")
         cash_radio.pack(anchor=tk.W, pady=5, padx=80)
 
         credit_card_radio = ttk.Radiobutton(payment_window, text="Credit Card", variable=payment_method_var,
-                                            value="Credit Card")
+                                            value="Credit Card", style="DarkBlue.TRadiobutton")
         credit_card_radio.pack(anchor=tk.W, pady=5, padx=80)
 
-        paypal_radio = ttk.Radiobutton(payment_window, text="PayPal", variable=payment_method_var, value="PayPal")
+        paypal_radio = ttk.Radiobutton(payment_window, text="PayPal", variable=payment_method_var, value="PayPal",
+                                       style="DarkBlue.TRadiobutton")
         paypal_radio.pack(anchor=tk.W, pady=5, padx=80)
 
         mobile_payment_radio = ttk.Radiobutton(payment_window, text="Gcash", variable=payment_method_var,
-                                               value="Gcash")
+                                               value="Gcash", style="DarkBlue.TRadiobutton")
         mobile_payment_radio.pack(anchor=tk.W, pady=5, padx=80)
 
         mobile_payment_radio = ttk.Radiobutton(payment_window, text="Paymaya", variable=payment_method_var,
-                                               value="Paymaya")
+                                               value="Paymaya", style="DarkBlue.TRadiobutton")
         mobile_payment_radio.pack(anchor=tk.W, pady=5, padx=80)
 
         bank_transfer_radio = ttk.Radiobutton(payment_window, text="Bank Transfer", variable=payment_method_var,
-                                              value="Bank Transfer")
+                                              value="Bank Transfer", style="DarkBlue.TRadiobutton")
         bank_transfer_radio.pack(anchor=tk.W, pady=5, padx=80)
 
-        # Submit button
-        submit_button = ttk.Button(payment_window, text="Submit", command=lambda: submit_payment(payment_method_var, tree))
-        submit_button.pack(pady=10)
+        confirm_button = tk.Button(payment_window, text="Confirm", fg='#fff', bg='#006400', font=('Arial', 9, 'bold'),
+                                   width=8,
+                                   command=lambda: submit_payment(payment_method_var, tree))
+        confirm_button.place(x=100, y=230)
+
     else:
         print("Please select a row from the table first.")
+
 def fine_add():
     cursor = conn.cursor()
 
@@ -962,15 +1129,15 @@ def fine():
     for data in fine_data:
         tree.insert("", tk.END, values=data)
 
-    payment_button = ttk.Button(addgui, text="Payment",
-                                command=lambda: payment_callback(tree))  # Pass 'addgui' to the callback
-    payment_button.place(x=20, y=400, width=100, height=30)
+
+    payment_button = tk.Button(addgui, text=" Mode of Payment", fg='#fff', bg='#006400', font=('Arial', 10, 'bold'), width=18,
+                           command=lambda: payment_callback(tree))
+    payment_button.place(x=350, y=391)
 
     # Scrollbar
     scrollbar = ttk.Scrollbar(addgui, orient="vertical", command=tree.yview)
     scrollbar.place(x=860, y=45, height=340)
     tree.configure(yscrollcommand=scrollbar.set)
-
 
 # def log_out():
 #     print("logout button clicked")
