@@ -352,7 +352,12 @@ def remove_books():
         for item in selected_items:
             values = tree.item(item)['values']
             standard_no = values[0]  # Standard_No of the selected material
-
+            check_stat = values[-1]
+            
+            if check_stat == 'Borrowed':
+                messagebox.showerror("Error", "Cannot Remove Borrowed Item.")
+                return
+            
             # Remove the material from the ITEM table
             conn.execute("DELETE FROM ITEM WHERE Standard_No = ?", (standard_no,))
             conn.commit()
@@ -441,6 +446,11 @@ def disp_books():
                 author = entry_au.get()
                 title = entry_t.get()
                 item_type = entry_typ.get()
+
+                if not (publisher and publish_date and author and title and item_type):
+                    messagebox.showerror("Error", "Please fill in all the required fields.")
+                    input_win.focus()
+                    return
 
                 conn.execute("UPDATE ITEM SET Publisher=?, Publish_Date=?, "
                              "Author=?, Title=?, Item_Type=? WHERE Standard_No=?", (publisher,
@@ -1010,7 +1020,8 @@ def members():
         # Create a new window
         student_window = tk.Toplevel()
         student_window.title("Student Data")
-        student_window.geometry("400x400+480+200")
+        student_window.configure(bg="#00008B")
+        student_window.geometry("600x280+400+250")
         edit_button.config(state=tk.DISABLED)
         add_button.config(state=tk.DISABLED)
         remove_button.config(state=tk.DISABLED)
@@ -1024,6 +1035,7 @@ def members():
             # Ensure that only one item is selected for editing
             if len(selected_item) != 1:
                 messagebox.showerror("Error", "Please select one student to edit.")
+                student_window.focus_force()
                 return
 
             # Get the student data from the selected row
@@ -1056,6 +1068,7 @@ def members():
 
                 if not (new_year_level and new_course):
                     messagebox.showerror("Error", "Please fill in all the required fields.")
+                    student_window.focus_force()
                     return
 
                 # Update the student data in the database
@@ -1092,15 +1105,35 @@ def members():
         for row in cursor:
             tree_view_student.insert("", "end", values=row)
 
+        def on_window_close():
+            edit_button.config(state=tk.NORMAL)  # Enable the "Edit" button when the window is closed
+            add_button.config(state=tk.NORMAL)
+            remove_button.config(state=tk.NORMAL)
+            student_button.config(state=tk.NORMAL)
+            faculty_button.config(state=tk.NORMAL)
+            student_window.destroy()
+        student_window.protocol("WM_DELETE_WINDOW", on_window_close)
+
         # Edit button
         btn_edit_student = tk.Button(student_window, text="Edit", fg='#fff', bg='#28a7c7', font=('Arial', 10, 'bold'),
                                      width=10, command=edit_student_data)
-        btn_edit_student.place(x=10, y=180)
+        btn_edit_student.place(x=10, y=240)
+
+        scrollbar = ttk.Scrollbar(student_window, orient="vertical", command=tree_view_student.yview)
+        scrollbar.place(x=583, y=1, height=224)
+        tree_view_student.configure(yscrollcommand=scrollbar.set)
 
     def view_faculty_data():
         # Create a new window
         data_window = tk.Toplevel()
         data_window.title("Faculty Data")
+        data_window.configure(bg="#00008B")
+        data_window.geometry("600x280+400+250")
+        edit_button.config(state=tk.DISABLED)
+        add_button.config(state=tk.DISABLED)
+        remove_button.config(state=tk.DISABLED)
+        student_button.config(state=tk.DISABLED)
+        faculty_button.config(state=tk.DISABLED)
 
         def edit_faculty_data():
             # Get the selected item in the Treeview
@@ -1109,6 +1142,7 @@ def members():
             # Ensure that only one item is selected for editing
             if len(selected_item) != 1:
                 messagebox.showerror("Error", "Please select one faculty member to edit.")
+                data_window.focus_force()
                 return
 
             # Get the faculty data from the selected row
@@ -1141,6 +1175,7 @@ def members():
 
                 if not (new_profession and new_department):
                     messagebox.showerror("Error", "Please fill in all the required fields.")
+                    edit_win.focus_force()
                     return
 
                 # Update the faculty data in the database
@@ -1178,10 +1213,24 @@ def members():
         for row in cursor:
             tree_view_data.insert("", "end", values=row)
 
+        def on_window_close():
+            edit_button.config(state=tk.NORMAL)  # Enable the "Edit" button when the window is closed
+            add_button.config(state=tk.NORMAL)
+            remove_button.config(state=tk.NORMAL)
+            student_button.config(state=tk.NORMAL)
+            faculty_button.config(state=tk.NORMAL)
+            data_window.destroy()
+        
+        data_window.protocol("WM_DELETE_WINDOW", on_window_close)
+
         # Edit button
         btn_edit_faculty = tk.Button(data_window, text="Edit", fg='#fff', bg='#28a7c7', font=('Arial', 10, 'bold'),
                                      width=10, command=edit_faculty_data)
-        btn_edit_faculty.place(x=10, y=180)
+        btn_edit_faculty.place(x=10, y=240)
+
+        scrollbar = ttk.Scrollbar(data_window, orient="vertical", command=tree_view_data.yview)
+        scrollbar.place(x=583, y=1, height=224)
+        tree_view_data.configure(yscrollcommand=scrollbar.set)
 
     # Student button
     student_button = tk.Button(addgui, text="Student Data", fg='#fff', bg='#800080', font=('Arial', 10, 'bold'), width=15,
@@ -1291,8 +1340,6 @@ def payment_callback(tree):
 
         # Create radio buttons for payment method options
         payment_method_var = tk.StringVar()
-
-
 
         cash_radio = ttk.Radiobutton(payment_window, text="Cash", variable=payment_method_var, value="Cash",
                                      style="DarkBlue.TRadiobutton")
