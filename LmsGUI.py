@@ -103,7 +103,7 @@ def homescreenImage(lmsGui):
 
 # FUNCTION TO INITIALIZE BUTTONS
 def addLibMat(button, command):
-    button.config(text='Add Material', fg='#fff', bg='#0c9c16', font=('Arial', 15, 'bold'), anchor='center', width=183,
+    button.config(text='Add Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
                        command=command)
     logo = tk.PhotoImage(file='bt1.png')
     button.config(image=logo, compound=tk.LEFT)
@@ -113,7 +113,7 @@ def addLibMat(button, command):
 
 
 def remLibMat(button, command):
-    button.config(text='Delete Material', fg='#fff', bg='#0c9c16', font=('Arial', 15, 'bold'), anchor='center', width=183,
+    button.config(text='Delete Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
                        command=command)
     logo = tk.PhotoImage(file='bt5.png')
     button.config(image=logo, compound=tk.LEFT)
@@ -121,9 +121,8 @@ def remLibMat(button, command):
     button.image = small_logo  # Store a reference to the image to prevent garbage collection
     button.config(image=small_logo)
 
-
 def dspLibMat(button,command):
-    button.config(text='Display Material', fg='#fff', bg='#0c9c16', font=('Arial', 15, 'bold'), anchor='center', width=183,
+    button.config(text='Display Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
                        command=command)
     logo = tk.PhotoImage(file='bt2.png')
     button.config(image=logo, compound=tk.LEFT)
@@ -133,7 +132,7 @@ def dspLibMat(button,command):
 
 
 def borLibMat(button, command):
-    button.config(text='Borrow Material', fg='#fff', bg='#0c9c16', font=('Arial', 15, 'bold'), anchor='center', width=183,
+    button.config(text='Borrow Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
                        command=command)
     logo = tk.PhotoImage(file='bt3.png')
     button.config(image=logo, compound=tk.LEFT)
@@ -143,7 +142,7 @@ def borLibMat(button, command):
 
 
 def retLibMat(button, command):
-    button.config(text='Return Material', fg='#fff', bg='#0c9c16', font=('Arial', 15, 'bold'), anchor='center', width=183,
+    button.config(text='Return Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
                        command=command)
     logo = tk.PhotoImage(file='bt4.png')
     button.config(image=logo, compound=tk.LEFT)
@@ -153,7 +152,7 @@ def retLibMat(button, command):
 
 
 def dspMember(button, command):
-    button.config(text='List Members', fg='#fff', bg='#0c9c16', font=('Arial', 15, 'bold'), anchor='center', width=183,
+    button.config(text='List Members', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
                        command=command)
     logo = tk.PhotoImage(file='bt6.png')
     button.config(image=logo, compound=tk.LEFT)
@@ -163,7 +162,7 @@ def dspMember(button, command):
 
 
 def dspLoan(button, command):
-    button.config(text='Record Log', fg='#fff', bg='#0c9c16', font=('Arial', 15, 'bold'), anchor='center', width=183,
+    button.config(text='Record Log', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
                        command=command)
     logo = tk.PhotoImage(file='bt8.png')
     button.config(image=logo, compound=tk.LEFT)
@@ -173,14 +172,13 @@ def dspLoan(button, command):
 
 
 def fineDetail(button, command):
-    button.config(text='View Late Fees', fg='#fff', bg='#0c9c16', font=('Arial', 15, 'bold'), anchor='center', width=183,
+    button.config(text='View Late Fees', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
                        command=command)
     logo = tk.PhotoImage(file='bt7.png')
     button.config(image=logo, compound=tk.LEFT)
     small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
     button.image = small_logo  # Store a reference to the image to prevent garbage collection
     button.config(image=small_logo)
-
 
 # def logOut(command):
 #     button = tk.Button(text='Log Out', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), width=15, command=command)
@@ -326,7 +324,7 @@ def treeView(addgui):
 def viewmembers(addgui):
     # Create a Treeview widget
     tree = ttk.Treeview(addgui)
-    tree.place(x=20, y=45, width=840, height=340)
+    tree.place(x=120, y=45, width=740, height=340)
 
     # Define columns
     tree["columns"] = ("Member_ID", "Address", "Contact_No", "Name", "Member_Type")
@@ -1065,7 +1063,7 @@ def addmember_window(tree_view, edit_button, add_button, remove_button, student_
 def members():
     addgui = newFrame()
     back = goBack(addgui)
-    back.place(x=40, y=10)
+    back.place(x=30, y=10)
 
     def removemember(tree_view):
         selected_items = tree_view.selection()
@@ -1093,19 +1091,19 @@ def members():
 
 
     # Add button
-    add_button = tk.Button(addgui, text="Add", fg='#fff', bg='#006400', font=('Arial', 10, 'bold'), width=10,
+    add_button = tk.Button(addgui, text="Add", fg='#fff', bg='#006400', font=('Arial', 10, 'bold'), width=8,
                            command=add_member)
-    add_button.place(x=400, y=391)
+    add_button.place(x=20, y=90)
 
     # Remove button
-    remove_button = tk.Button(addgui, text="Remove", fg='#fff', bg='#8B0000', font=('Arial', 10, 'bold'), width=10,
+    remove_button = tk.Button(addgui, text="Remove", fg='#fff', bg='#006400', font=('Arial', 10, 'bold'), width=8,
                               command=remove_member)
-    remove_button.place(x=300, y=391)
+    remove_button.place(x=20, y=140)
 
     # Edit button
-    edit_button = tk.Button(addgui, text="Edit", fg='#fff', bg='#28a7c7', font=('Arial', 10, 'bold'), width=10,
+    edit_button = tk.Button(addgui, text="Edit", fg='#fff', bg='#006400', font=('Arial', 10, 'bold'), width=8,
                             command=edit_member)
-    edit_button.place(x=500, y=391)
+    edit_button.place(x=20, y=190)
 
     def view_student_data():
         # Create a new window
@@ -1342,14 +1340,14 @@ def members():
         tree_view_data.configure(yscrollcommand=scrollbar.set)
 
     # Student button
-    student_button = tk.Button(addgui, text="Student Data", fg='#fff', bg='#800080', font=('Arial', 10, 'bold'), width=15,
+    student_button = tk.Button(addgui, text="Student", fg='#fff', bg='#800080', font=('Arial', 10, 'bold'), width=8,
                                command=view_student_data)
-    student_button.place(x=160, y=391)
+    student_button.place(x=20, y=240)
 
     # Faculty button
-    faculty_button = tk.Button(addgui, text="Faculty Data", fg='#fff', bg='#800080', font=('Arial', 10, 'bold'), width=15,
+    faculty_button = tk.Button(addgui, text="Faculty", fg='#fff', bg='#800080', font=('Arial', 10, 'bold'), width=8,
                                command=view_faculty_data)
-    faculty_button.place(x=600, y=391)
+    faculty_button.place(x=20, y=290)
 
 
 def loan():
