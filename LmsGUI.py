@@ -23,17 +23,17 @@ lmsGui.geometry("900x550+250+100")
 def Header(lmsGui):
     fm = tk.Frame(lmsGui, height=550, width=900, bg='#fff')
     fm.place(x=0, y=0)
-    f_m = tk.Frame(lmsGui, height=350, width=850, bg='#00008B', relief='ridge', bd=10)
+    f_m = tk.Frame(lmsGui, height=350, width=850, bg='#0d2a4f', relief='ridge', bd=10)
     f_m.place(x=22, y=130)
     f_m = tk.Frame(lmsGui, height=328, width=828, bg='white')
     f_m.place(x=32, y=140)
-    fm2 = tk.Frame(lmsGui, bg='#00008B', height=80, width=900)
+    fm2 = tk.Frame(lmsGui, bg='#0d2a4f', height=80, width=900)
     fm2.place(x=0, y=0)
-    lbb = tk.Label(lmsGui, bg='#00008B')
+    lbb = tk.Label(lmsGui, bg='#0d2a4f')
     lbb.place(x=70, y=5)
     ig = tk.PhotoImage(file='library.png')
     lbb.config(image=ig)
-    lb3 = tk.Label(lmsGui, text='LIBRARY MATERIAL DASHBOARD', fg='#fff', bg='#00008B', font=('Arial', 30, 'bold'))
+    lb3 = tk.Label(lmsGui, text='LIBRARY MATERIAL DASHBOARD', fg='#fff', bg='#0d2a4f', font=('Arial', 30, 'bold'))
     lb3.place(x=160, y=17)
     return ig
 
@@ -103,7 +103,7 @@ def homescreenImage(lmsGui):
 
 # FUNCTION TO INITIALIZE BUTTONS
 def addLibMat(button, command):
-    button.config(text='Add Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
+    button.config(text='Add Material', fg='#fff', bg='#0c9c16', font=('Arial', 15, 'bold'), anchor='center', width=183,
                        command=command)
     logo = tk.PhotoImage(file='bt1.png')
     button.config(image=logo, compound=tk.LEFT)
@@ -113,7 +113,7 @@ def addLibMat(button, command):
 
 
 def remLibMat(button, command):
-    button.config(text='Delete Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
+    button.config(text='Delete Material', fg='#fff', bg='#0c9c16', font=('Arial', 15, 'bold'), anchor='center', width=183,
                        command=command)
     logo = tk.PhotoImage(file='bt5.png')
     button.config(image=logo, compound=tk.LEFT)
@@ -123,7 +123,7 @@ def remLibMat(button, command):
 
 
 def dspLibMat(button,command):
-    button.config(text='Display Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
+    button.config(text='Display Material', fg='#fff', bg='#0c9c16', font=('Arial', 15, 'bold'), anchor='center', width=183,
                        command=command)
     logo = tk.PhotoImage(file='bt2.png')
     button.config(image=logo, compound=tk.LEFT)
@@ -133,7 +133,7 @@ def dspLibMat(button,command):
 
 
 def borLibMat(button, command):
-    button.config(text='Borrow Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
+    button.config(text='Borrow Material', fg='#fff', bg='#0c9c16', font=('Arial', 15, 'bold'), anchor='center', width=183,
                        command=command)
     logo = tk.PhotoImage(file='bt3.png')
     button.config(image=logo, compound=tk.LEFT)
@@ -143,7 +143,7 @@ def borLibMat(button, command):
 
 
 def retLibMat(button, command):
-    button.config(text='Return Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
+    button.config(text='Return Material', fg='#fff', bg='#0c9c16', font=('Arial', 15, 'bold'), anchor='center', width=183,
                        command=command)
     logo = tk.PhotoImage(file='bt4.png')
     button.config(image=logo, compound=tk.LEFT)
@@ -153,7 +153,7 @@ def retLibMat(button, command):
 
 
 def dspMember(button, command):
-    button.config(text='List Members', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
+    button.config(text='List Members', fg='#fff', bg='#0c9c16', font=('Arial', 15, 'bold'), anchor='center', width=183,
                        command=command)
     logo = tk.PhotoImage(file='bt6.png')
     button.config(image=logo, compound=tk.LEFT)
@@ -163,7 +163,7 @@ def dspMember(button, command):
 
 
 def dspLoan(button, command):
-    button.config(text='Record Log', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
+    button.config(text='Record Log', fg='#fff', bg='#0c9c16', font=('Arial', 15, 'bold'), anchor='center', width=183,
                        command=command)
     logo = tk.PhotoImage(file='bt8.png')
     button.config(image=logo, compound=tk.LEFT)
@@ -173,7 +173,7 @@ def dspLoan(button, command):
 
 
 def fineDetail(button, command):
-    button.config(text='View Late Fees', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
+    button.config(text='View Late Fees', fg='#fff', bg='#0c9c16', font=('Arial', 15, 'bold'), anchor='center', width=183,
                        command=command)
     logo = tk.PhotoImage(file='bt7.png')
     button.config(image=logo, compound=tk.LEFT)
@@ -192,11 +192,10 @@ def newFrame():
     addfm.place(x=0, y=110)
     return addfm
 
-
 # GO BACK TO HOMEPAGE
 def goBack(homePage):
     go_back_button = tk.Button(homePage, text="Go Back", fg='#fff', bg='#FF0000', command=lambda: homePage.destroy())
-    go_back_button.place(x=40, y=10)
+    return go_back_button
 
 
 # Create the ITEM table if it doesn't exist
@@ -215,7 +214,8 @@ def goBack(homePage):
 # FUNCTION TO SET BUTTON COMMANDS
 def add_books():
     addgui = newFrame()
-    goBack(addgui)
+    back = goBack(addgui)
+    back.place(x=40, y=10)
     ad = tk.Label(addgui, text='Standard Number:', fg='#fff', bg='#00008B', font=('times new roman', 12))
     ad.place(x=130, y=50)
     data = tk.Entry(addgui, width=70, bg='white')
@@ -255,20 +255,25 @@ def add_books():
             messagebox.showerror("Error", "Please fill in all the required fields.")
             return
 
-        # Execute SQL query to insert the data into the ITEM table
-        conn.execute(
-            "INSERT INTO ITEM (Standard_No, Publisher, Publish_Date, Author, Title, Item_Type, Status) VALUES (?, ?, ?, ?, ?, "
-            "?, ?)",
-            (standard_no, publisher, publish_date, author, title, item_type, status))
-        conn.commit()
+        try:
+            # Execute SQL query to insert the data into the ITEM table
+            conn.execute(
+                "INSERT INTO ITEM (Standard_No, Publisher, Publish_Date, Author, Title, Item_Type, Status) VALUES (?, ?, ?, ?, ?, "
+                "?, ?)",
+                (standard_no, publisher, publish_date, author, title, item_type, status))
+            conn.commit()
+            # Clear the entry fields after adding the data
+            data.delete(0, tk.END)
+            data1.delete(0, tk.END)
+            data2.delete(0, tk.END)
+            data3.delete(0, tk.END)
+            data4.delete(0, tk.END)
+            data5.set("")
 
-        # Clear the entry fields after adding the data
-        data.delete(0, tk.END)
-        data1.delete(0, tk.END)
-        data2.delete(0, tk.END)
-        data3.delete(0, tk.END)
-        data4.delete(0, tk.END)
-        data5.set("")
+        except sqlite3.Error as e:
+            conn.rollback()
+            messagebox.showerror("Error", f"An error occurred: {e}")
+
 
     addData = tk.Button(addgui, text='Add Material', fg='#fff', bg='#008000', font=('Arial', 10, 'bold'), width=52,
                         command=add_data_to_db)
@@ -350,7 +355,7 @@ def viewmembers(addgui):
 
     # Scrollbar
     scrollbar = ttk.Scrollbar(addgui, orient="vertical", command=tree.yview)
-    scrollbar.place(x=860, y=45, height=340)
+    scrollbar.place(x=843, y=45, height=340)
     tree.configure(yscrollcommand=scrollbar.set)
 
     return tree
@@ -368,7 +373,7 @@ def viewlogs(addgui):
     tree.column("Loan_ID", width=120, anchor=tk.CENTER)
     tree.column("Standard_No", width=120, anchor=tk.CENTER)
     tree.column("Member_ID", width=120, anchor=tk.CENTER)
-    tree.column("Loan_Date", width=120, anchor=tk.W)
+    tree.column("Loan_Date", width=120, anchor=tk.CENTER)
     tree.column("Due_Date", width=120, anchor=tk.CENTER)
     tree.column("Return_Date", width=120, anchor=tk.CENTER)
 
@@ -383,15 +388,15 @@ def viewlogs(addgui):
 
     # Scrollbar
     scrollbar = ttk.Scrollbar(addgui, orient="vertical", command=tree.yview)
-    scrollbar.place(x=860, y=45, height=340)
+    scrollbar.place(x=843, y=45, height=340)
     tree.configure(yscrollcommand=scrollbar.set)
     return tree
 
 
 def remove_books():
     addgui = newFrame()
-    goBack(addgui)
-
+    back = goBack(addgui)
+    back.place(x=40, y=10)
     def remove_selected_materials(tree):
         selected_items = tree.selection()
         for item in selected_items:
@@ -425,7 +430,8 @@ def remove_books():
 
 def disp_books():
     addgui = newFrame()
-    goBack(addgui)
+    back = goBack(addgui)
+    back.place(x=40, y=10)
 
     itemtree = treeView(addgui)
 
@@ -434,6 +440,7 @@ def disp_books():
         if selected_item:
             # DISABLE EDIT BUTTON
             edit_button.config(state=tk.DISABLED)
+            back.config(state=tk.DISABLED)
 
             values = itemtree.item(selected_item)['values']
             Item_ID = values[0]
@@ -454,6 +461,7 @@ def disp_books():
             # date
             lbl_pdat = tk.Label(input_win, text="Publish Date:", bg='#00008B', fg='#fff')
             entry_pdat = DateEntry(input_win, width=12, background='green', foreground='white', borderwidth=2)
+            entry_pdat.delete(0, tk.END)
             entry_pdat.insert(0, values[2])  # Populate with existing value
             lbl_pdat.grid(row=3, column=0, pady=3)
             entry_pdat.grid(row=4, column=0, pady=3)
@@ -513,10 +521,12 @@ def disp_books():
 
                 # REENABLE EDIT UPON EXIT
                 edit_button.config(state=tk.NORMAL)
+                back.config(state=tk.NORMAL)
 
             # REENABLE EDIT UPON CANCEL
             def on_window_close():
                 edit_button.config(state=tk.NORMAL)  # Enable the "Edit" button when the window is closed
+                back.config(state=tk.NORMAL)
                 input_win.destroy()
 
             input_win.protocol("WM_DELETE_WINDOW", on_window_close)
@@ -533,8 +543,9 @@ def disp_books():
     edit_button.place(x=390, y=391)
 
 
-def borrow_input_window(treeview, borrow_button):
+def borrow_input_window(treeview, borrow_button, back):
     borrow_button['state'] = tk.DISABLED
+    back['state']=tk.DISABLED
     input_win = tk.Toplevel(lmsGui)
     input_win.title("Select Member")
     input_win.configure(bg="#fff")
@@ -618,6 +629,7 @@ def borrow_input_window(treeview, borrow_button):
                                  (selected_standard_no, member_id, current_date, due_date))
                     conn.commit()
                     borrow_button['state'] = tk.NORMAL
+                    back['state'] = tk.NORMAL
         
         input_win.destroy()
         treeview.set(select_ID, "Status", "Borrowed")
@@ -625,6 +637,7 @@ def borrow_input_window(treeview, borrow_button):
     # REENABLE EDIT UPON CANCEL
     def on_window_close():
         borrow_button.config(state=tk.NORMAL)  # Enable the "Edit" button when the window is closed
+        back.config(state=tk.NORMAL)
         input_win.destroy()
 
     input_win.protocol("WM_DELETE_WINDOW", on_window_close)
@@ -648,10 +661,12 @@ def borrow_input_window(treeview, borrow_button):
 
 def borrow_book():
     addgui = newFrame()
-    goBack(addgui)
+    back = goBack(addgui)
+    back.place(x=40, y=10)
 
     treeview = treeView(addgui)
-    borrowmaterial = lambda: borrow_input_window(treeview, borrow_button)
+
+    borrowmaterial = lambda: borrow_input_window(treeview, borrow_button, back)
 
     # Borrow button
     borrow_button = tk.Button(addgui, text="Borrow", fg='#fff', bg='#8B0000', font=('Arial', 10, 'bold'), width=10,
@@ -672,8 +687,8 @@ def borrow_book():
 
 def return_books():
     addgui = newFrame()
-    goBack(addgui)
-
+    back = goBack(addgui)
+    back.place(x=40, y=10)
     tree = viewlogs(addgui)
 
     # Retrieve data from the LOAN table where Return_Date is null
@@ -711,7 +726,7 @@ def return_books():
                               command=return_material)
     return_button.place(x=390, y=391)
 
-def editmember(tree_view, edit_button, add_button, remove_button, student_button, faculty_button):
+def editmember(tree_view, edit_button, add_button, remove_button, student_button, faculty_button, back):
     selected_item = tree_view.selection()
     if selected_item:
 
@@ -720,6 +735,7 @@ def editmember(tree_view, edit_button, add_button, remove_button, student_button
         remove_button.config(state=tk.DISABLED)
         student_button.config(state=tk.DISABLED)
         faculty_button.config(state=tk.DISABLED)
+        back.config(state=tk.DISABLED)
 
         values = tree_view.item(selected_item)['values']
         Item_ID = values[0]
@@ -803,6 +819,14 @@ def editmember(tree_view, edit_button, add_button, remove_button, student_button
                 messagebox.showerror("Error", "Please fill in all the required fields.")
                 input_win.focus_force()
                 return
+            
+            check_member_query = conn.execute("SELECT Member_ID FROM MEMBER WHERE Name = ?", (name,))
+            existing_member = check_member_query.fetchone()
+
+            if existing_member:
+                messagebox.showerror("Error", "Member Name already exist.")
+                input_win.focus_force()
+                return
 
             conn.execute("UPDATE MEMBER SET Address=?, "
                          "Contact_No=?, Name=?, Member_Type=? WHERE Member_ID=?", (addr,
@@ -824,6 +848,8 @@ def editmember(tree_view, edit_button, add_button, remove_button, student_button
             remove_button.config(state=tk.NORMAL)
             faculty_button.config(state=tk.NORMAL)
             student_button.config(state=tk.NORMAL)
+            back.config(state=tk.NORMAL)
+
 
         def on_window_close():
             edit_button.config(state=tk.NORMAL)  # Enable the "Edit" button when the window is closed
@@ -831,6 +857,7 @@ def editmember(tree_view, edit_button, add_button, remove_button, student_button
             remove_button.config(state=tk.NORMAL)
             student_button.config(state=tk.NORMAL)
             faculty_button.config(state=tk.NORMAL)
+            back.config(state=tk.NORMAL)
             input_win.destroy()
 
         input_win.protocol("WM_DELETE_WINDOW", on_window_close)
@@ -840,12 +867,13 @@ def editmember(tree_view, edit_button, add_button, remove_button, student_button
                                 command=lambda: new_info())
         save_button.grid(row=12, columnspan=2, pady=150)
 
-def addmember_window(tree_view, edit_button, add_button, remove_button, student_button, faculty_button):
+def addmember_window(tree_view, edit_button, add_button, remove_button, student_button, faculty_button, back):
     edit_button.config(state=tk.DISABLED)
     add_button.config(state=tk.DISABLED)
     remove_button.config(state=tk.DISABLED)
     student_button.config(state=tk.DISABLED)
     faculty_button.config(state=tk.DISABLED)
+    back.config(state=tk.DISABLED)
 
     input_win = tk.Toplevel(lmsGui)
     input_win.title("Add a Member")
@@ -909,19 +937,24 @@ def addmember_window(tree_view, edit_button, add_button, remove_button, student_
                 messagebox.showerror("Error", "Please fill in all the required fields.")
                 input_win.focus_force()
                 return
+            
+            check_member_query = conn.execute("SELECT Member_ID FROM MEMBER WHERE Name = ?", (name,))
+            existing_member = check_member_query.fetchone()
+
+            if existing_member:
+                messagebox.showerror("Error", "Member Name already exist.")
+                input_win.focus_force()
+                return
 
             try:
                 # Insert data into the MEMBER table
                 conn.execute("INSERT INTO MEMBER (Address, Contact_No, Name, Member_Type) VALUES (?, ?, ?, ?)",
                              (address, contact_no, name, 'Student'))
-
                 # Get the last inserted Member_ID (AUTOINCREMENT value)
                 member_id = conn.execute("SELECT last_insert_rowid()").fetchone()[0]
-
                 # Insert data into the STUDENT table with references to the MEMBER table
                 conn.execute("INSERT INTO STUDENT (Member_ID, Year_Level, Course) VALUES (?, ?, ?)",
                              (member_id, year_level, course))
-
                 conn.commit()
 
                 # Insert the new member's data into the Treeview
@@ -935,6 +968,7 @@ def addmember_window(tree_view, edit_button, add_button, remove_button, student_
                 remove_button.config(state=tk.NORMAL)
                 student_button.config(state=tk.NORMAL)
                 faculty_button.config(state=tk.NORMAL)
+                back.config(state=tk.NORMAL)
 
             except sqlite3.Error as e:
                 conn.rollback()
@@ -970,6 +1004,14 @@ def addmember_window(tree_view, edit_button, add_button, remove_button, student_
                 input_win.focus_force()
                 return
 
+            check_member_query = conn.execute("SELECT Member_ID FROM MEMBER WHERE Name = ?", (name,))
+            existing_member = check_member_query.fetchone()
+
+            if existing_member:
+                messagebox.showerror("Error", "Member Name already exist.")
+                input_win.focus_force()
+                return
+            
             try:
                 # Insert data into the MEMBER table
                 conn.execute("INSERT INTO MEMBER (Address, Contact_No, Name, Member_Type) VALUES (?, ?, ?, ?)",
@@ -997,15 +1039,16 @@ def addmember_window(tree_view, edit_button, add_button, remove_button, student_
                 remove_button.config(state=tk.NORMAL)
                 student_button.config(state=tk.NORMAL)
                 faculty_button.config(state=tk.NORMAL)
+                back.config(state=tk.NORMAL)
 
             except sqlite3.Error as e:
                 conn.rollback()
                 messagebox.showerror("Error", f"An error occurred: {e}")
 
         # Confirm Borrow button
-        btn_confirm_borrow = tk.Button(input_win, text="Add Member", fg='#fff', bg='#8B0000',
+        btn_add = tk.Button(input_win, text="Add Member", fg='#fff', bg='#8B0000',
                                        font=('Arial', 10, 'bold'), command=confirm_faculty_member)
-        btn_confirm_borrow.grid(row=13, column=0, pady=10)
+        btn_add.grid(row=13, column=0, pady=10)
 
     def on_window_close():
         edit_button.config(state=tk.NORMAL)  # Enable the "Edit" button when the window is closed
@@ -1013,6 +1056,7 @@ def addmember_window(tree_view, edit_button, add_button, remove_button, student_
         remove_button.config(state=tk.NORMAL)
         student_button.config(state=tk.NORMAL)
         faculty_button.config(state=tk.NORMAL)
+        back.config(state=tk.NORMAL)
         input_win.destroy()
 
     input_win.protocol("WM_DELETE_WINDOW", on_window_close)
@@ -1020,10 +1064,8 @@ def addmember_window(tree_view, edit_button, add_button, remove_button, student_
 
 def members():
     addgui = newFrame()
-    goBack(addgui)
-
-    def addmember():
-        addmember_window(tree_view, edit_button, add_button, remove_button, student_button, faculty_button)
+    back = goBack(addgui)
+    back.place(x=40, y=10)
 
     def removemember(tree_view):
         selected_items = tree_view.selection()
@@ -1041,9 +1083,13 @@ def members():
 
     tree_view = viewmembers(addgui)
 
-    add_member = lambda: addmember()
+    add_member = lambda: addmember_window(tree_view, edit_button, add_button, 
+                                remove_button, student_button, faculty_button, back)
+    
     remove_member = lambda: removemember(tree_view)
-    edit_member = lambda: editmember(tree_view, edit_button, add_button, remove_button, student_button, faculty_button)
+
+    edit_member = lambda: editmember(tree_view, edit_button, add_button, 
+                                remove_button, student_button, faculty_button, back)
 
 
     # Add button
@@ -1072,14 +1118,16 @@ def members():
         remove_button.config(state=tk.DISABLED)
         student_button.config(state=tk.DISABLED)
         faculty_button.config(state=tk.DISABLED)
+        back.config(state=tk.DISABLED)
 
-        def edit_student_data():
+        def edit_student_data(btn_edit_student):
             # Get the selected item in the Treeview
             selected_item = tree_view_student.selection()
-
+            btn_edit_student.config(state=tk.DISABLED)
             # Ensure that only one item is selected for editing
             if len(selected_item) != 1:
                 messagebox.showerror("Error", "Please select one student to edit.")
+                btn_edit_student.config(state=tk.NORMAL)
                 student_window.focus_force()
                 return
 
@@ -1124,7 +1172,13 @@ def members():
                 # Update the Treeview with the new data
                 tree_view_student.item(selected_item, values=(member_id, new_year_level, new_course))
 
+                btn_edit_student.config(state=tk.NORMAL)
                 edit_win.destroy()
+
+            def on_window_close():
+                btn_edit_student.config(state=tk.NORMAL)  # Enable the "Edit" button when the window is closed
+                edit_win.destroy()
+            edit_win.protocol("WM_DELETE_WINDOW", on_window_close)
 
             # Save Changes button
             btn_save_changes = tk.Button(edit_win, text="Save Changes", fg='#fff', bg='#8B0000',
@@ -1156,12 +1210,13 @@ def members():
             remove_button.config(state=tk.NORMAL)
             student_button.config(state=tk.NORMAL)
             faculty_button.config(state=tk.NORMAL)
+            back.config(state=tk.NORMAL)
             student_window.destroy()
         student_window.protocol("WM_DELETE_WINDOW", on_window_close)
 
         # Edit button
         btn_edit_student = tk.Button(student_window, text="Edit", fg='#fff', bg='#28a7c7', font=('Arial', 10, 'bold'),
-                                     width=10, command=edit_student_data)
+                                     width=10, command=lambda: edit_student_data(btn_edit_student))
         btn_edit_student.place(x=10, y=240)
 
         scrollbar = ttk.Scrollbar(student_window, orient="vertical", command=tree_view_student.yview)
@@ -1179,14 +1234,17 @@ def members():
         remove_button.config(state=tk.DISABLED)
         student_button.config(state=tk.DISABLED)
         faculty_button.config(state=tk.DISABLED)
+        back.config(state=tk.DISABLED)
 
-        def edit_faculty_data():
+        def edit_faculty_data(btn_edit_faculty):
             # Get the selected item in the Treeview
             selected_item = tree_view_data.selection()
+            btn_edit_faculty.config(state=tk.DISABLED)
 
             # Ensure that only one item is selected for editing
             if len(selected_item) != 1:
                 messagebox.showerror("Error", "Please select one faculty member to edit.")
+                btn_edit_faculty.config(state=tk.NORMAL) 
                 data_window.focus_force()
                 return
 
@@ -1230,8 +1288,13 @@ def members():
 
                 # Update the Treeview with the new data
                 tree_view_data.item(selected_item, values=(member_id, new_department, new_profession))
-
+                btn_edit_faculty.config(state=tk.NORMAL)
                 edit_win.destroy()
+
+            def on_window_close():
+                btn_edit_faculty.config(state=tk.NORMAL)  # Enable the "Edit" button when the window is closed
+                edit_win.destroy()
+            edit_win.protocol("WM_DELETE_WINDOW", on_window_close)
 
             # Save Changes button
             btn_save_changes = tk.Button(edit_win, text="Save Changes", fg='#fff', bg='#8B0000',
@@ -1264,13 +1327,14 @@ def members():
             remove_button.config(state=tk.NORMAL)
             student_button.config(state=tk.NORMAL)
             faculty_button.config(state=tk.NORMAL)
+            back.config(state=tk.NORMAL)
             data_window.destroy()
         
         data_window.protocol("WM_DELETE_WINDOW", on_window_close)
 
         # Edit button
         btn_edit_faculty = tk.Button(data_window, text="Edit", fg='#fff', bg='#28a7c7', font=('Arial', 10, 'bold'),
-                                     width=10, command=edit_faculty_data)
+                                     width=10, command=lambda: edit_faculty_data(btn_edit_faculty))
         btn_edit_faculty.place(x=10, y=240)
 
         scrollbar = ttk.Scrollbar(data_window, orient="vertical", command=tree_view_data.yview)
@@ -1290,7 +1354,8 @@ def members():
 
 def loan():
     addgui = newFrame()
-    goBack(addgui)
+    back = goBack(addgui)
+    back.place(x=40, y=10)
     tree = viewlogs(addgui)
     # Retrieve data from the MEMBER table
     cursor = conn.execute("SELECT * FROM LOAN")
@@ -1313,7 +1378,7 @@ def update_treeview(tree_view):
     for data in fine_data:
         tree_view.insert("", tk.END, values=data)
 
-def submit_payment(payment_method_var, tree_view):
+def submit_payment(payment_method_var, tree_view, payment_window, payment_button, back):
     global selected_row_data
 
     if selected_row_data:
@@ -1321,6 +1386,7 @@ def submit_payment(payment_method_var, tree_view):
         selected_method = payment_method_var.get()
         if not (selected_method):
             messagebox.showerror("Error", "Please fill in all the required fields.")
+            payment_window.focus()
             return
         # Get the necessary data from the selected row
         fine_date = datetime.date.today()
@@ -1360,16 +1426,23 @@ def submit_payment(payment_method_var, tree_view):
 
         # Update the Treeview with the latest data
         update_treeview(tree_view)
-    else:
-        print("Please select a row from the table first.")
 
-def payment_callback(tree):
+        payment_button.config(state=tk.NORMAL)
+        back.config(state=tk.NORMAL)
+        payment_window.destroy()
+    else:
+        messagebox.showerror("Error", "Please select a row from the table first.")
+        return
+
+def payment_callback(tree, payment_button, back):
     global selected_row_data
     selected_row = tree.focus()  # Get the selected row ID
     if selected_row:
+        payment_button.config(state=tk.DISABLED)
+        back.config(state=tk.DISABLED)
         selected_row_data = tree.item(selected_row, 'values')
         payment_window = tk.Toplevel()
-        payment_window.geometry("300x300")
+        payment_window.geometry("300x300+550+250")
         payment_window.title("Select Payment Method")
 
         # Set the background color of the payment window to dark blue
@@ -1412,11 +1485,19 @@ def payment_callback(tree):
 
         confirm_button = tk.Button(payment_window, text="Confirm", fg='#fff', bg='#006400', font=('Arial', 9, 'bold'),
                                    width=8,
-                                   command=lambda: submit_payment(payment_method_var, tree))
+                                   command=lambda: submit_payment(payment_method_var, tree, payment_window, payment_button, back))
         confirm_button.place(x=100, y=230)
 
     else:
-        print("Please select a row from the table first.")
+        messagebox.showerror("Error", "Please select a row from the table first.")
+        return
+
+    def on_window_close():
+        payment_button.config(state=tk.NORMAL)
+        back.config(state=tk.NORMAL)
+        payment_window.destroy()
+
+    payment_window.protocol("WM_DELETE_WINDOW", on_window_close)
 
 def fine_add():
     cursor = conn.cursor()
@@ -1461,16 +1542,15 @@ def fine_add():
 
     # Commit the changes to the database
     conn.commit()
-    print("Data inserted into FINE table successfully.")
-
 
 def fine():
     addgui = newFrame()
-    goBack(addgui)
+    back = goBack(addgui)
+    back.place(x=40, y=10)
 
     # Create a Treeview widget
     tree = ttk.Treeview(addgui)
-    tree.place(x=20, y=45, width=840, height=340)
+    tree.place(x=20, y=45, width=830, height=340)
 
     # Define columns
     tree["columns"] = ("Fine_ID", "Standard_No", "Member_ID", "Fine_Date", "Amount", "Reason_Fine", "Payment_Method")
@@ -1481,7 +1561,7 @@ def fine():
     tree.column("Standard_No", width=120, anchor=tk.CENTER)
     tree.column("Member_ID", width=120, anchor=tk.CENTER)
     tree.column("Fine_Date", width=120, anchor=tk.CENTER)
-    tree.column("Amount", width=120, anchor=tk.W)
+    tree.column("Amount", width=110, anchor=tk.CENTER)
     tree.column("Reason_Fine", width=120, anchor=tk.CENTER)
     tree.column("Payment_Method", width=118, anchor=tk.CENTER)
 
@@ -1506,12 +1586,12 @@ def fine():
 
 
     payment_button = tk.Button(addgui, text=" Mode of Payment", fg='#fff', bg='#006400', font=('Arial', 10, 'bold'), width=18,
-                           command=lambda: payment_callback(tree))
+                           command=lambda: payment_callback(tree, payment_button, back))
     payment_button.place(x=350, y=391)
 
     # Scrollbar
     scrollbar = ttk.Scrollbar(addgui, orient="vertical", command=tree.yview)
-    scrollbar.place(x=860, y=45, height=340)
+    scrollbar.place(x=843, y=45, height=340)
     tree.configure(yscrollcommand=scrollbar.set)
 
 # def log_out():
