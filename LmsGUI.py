@@ -654,6 +654,8 @@ def borrow_input_window(treeview, borrow_button, back):
 
             if status == 'Borrowed':
                 messagebox.showerror("Error", "Item currently unavailable.")
+                borrow_button['state'] = tk.NORMAL
+                back['state'] = tk.NORMAL
                 input_win.destroy()
                 return
 
@@ -662,13 +664,26 @@ def borrow_input_window(treeview, borrow_button, back):
                 getmemID = membertree.item(selected_items[0])["values"]
                 member_id = getmemID[0]  # Assuming Member_ID is in the first
 
+                cursor.execute("""
+                SELECT L.Loan_ID
+                FROM LOAN L
+                LEFT JOIN FINE F ON L.Loan_ID = F.Loan_ID
+                WHERE L.Member_ID = ? AND F.Amount > 0
+                """, (member_id,))
+                existing_amount = cursor.fetchone()
+                if existing_amount:
+                    # If there is a pending fine with a non-zero amount, show an error message
+                    messagebox.showerror("Error", "Member has pending fines and cannot borrow a book.")
+                    input_win.focus()
+                    return
+
                 member_id_to_check = member_id
                 check_member_query = conn.execute(
                     "SELECT Member_ID FROM LOAN WHERE Member_ID = ? AND Return_Date IS NULL", (member_id_to_check,))
                 existing_loan = check_member_query.fetchone()
                 if existing_loan:
                     messagebox.showerror("Error", "Member can only borrow one book.")
-                    input_win.destroy()
+                    input_win.focus()
                     return
 
                 else:
@@ -1805,8 +1820,8 @@ def fees(search_entry):
 
     # Retrieve data from the ITEM table that matches the search query
     cursor = conn.execute(
-        "SELECT * FROM FINE WHERE lower(Fine_ID) = ? OR lower(Standard_NO) = ? OR lower(Member_ID) = ? OR lower(Fine_Date) = ?",
-        (search_query.lower(), search_query.lower(), search_query.lower(), search_query.lower()))
+        "SELECT * FROM FINE WHERE lower(Fine_ID) = ? OR lower(Loan_ID) = ? OR lower(Payment_Date) = ?",
+        (search_query.lower(), search_query.lower(), search_query.lower()))
 
     # Fetch all rows from the cursor
     search_results = cursor.fetchall()
@@ -1826,31 +1841,28 @@ def fees(search_entry):
     tree.place(x=20, y=20, width=760, height=340)
 
     # Define columns
-    tree["columns"] = ("Fine_ID", "Standard_No", "Member_ID", "Fine_Date", "Amount", "Reason_Fine", "Payment_Method")
+    tree["columns"] = ("Fine_ID", "Loan_ID", "Payment_Date", "Amount", "Reason_Fine", "Payment_Method")
 
     # Format columns
     tree.column("#0", width=0, stretch=tk.NO)
     tree.column("Fine_ID", width=100, anchor=tk.CENTER)
-    tree.column("Standard_No", width=100, anchor=tk.CENTER)
-    tree.column("Member_ID", width=100, anchor=tk.CENTER)
-    tree.column("Fine_Date", width=100, anchor=tk.CENTER)
-    tree.column("Amount", width=100, anchor=tk.W)
+    tree.column("Loan_ID", width=100, anchor=tk.CENTER)
+    tree.column("Payment_Date", width=100, anchor=tk.CENTER)
+    tree.column("Amount", width=100, anchor=tk.CENTER)
     tree.column("Reason_Fine", width=100, anchor=tk.CENTER)
     tree.column("Payment_Method", width=100, anchor=tk.CENTER)
 
     # Create headings
     tree.heading("#0", text="", anchor=tk.CENTER)
-    tree.heading("Fine_ID", text="Fine_ID", anchor=tk.CENTER)
-    tree.heading("Standard_No", text="Standard_No", anchor=tk.CENTER)
-    tree.heading("Member_ID", text="Member_ID", anchor=tk.CENTER)
-    tree.heading("Fine_Date", text="Fine_Date", anchor=tk.CENTER)
+    tree.heading("Fine_ID", text="Fine ID", anchor=tk.CENTER)
+    tree.heading("Loan_ID", text="Loan ID", anchor=tk.CENTER)
+    tree.heading("Payment_Date", text="Payment Date", anchor=tk.CENTER)
     tree.heading("Amount", text="Amount", anchor=tk.CENTER)
     tree.heading("Reason_Fine", text="Reason_Fine", anchor=tk.CENTER)
     tree.heading("Payment_Method", text="Payment_Method", anchor=tk.CENTER)
 
     for row in search_results:
         tree.insert("", tk.END, values=row)
-
 
 def search_fine(parent_frame):
     # Create the search entry
