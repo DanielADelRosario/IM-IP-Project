@@ -1315,10 +1315,20 @@ def members():
         selected_items = tree_view.selection()
 
         for item in selected_items:
-            # Get the member ID of the selected row
+            # Get the member ID and member type of the selected row
             member_id = tree_view.item(item, "values")[0]
+            member_type = tree_view.item(item, "values")[4]  # Assuming Member_Type is the fifth column
 
-            # Delete the corresponding record from the 'members' table
+            # Check if the member_type is Student or Faculty
+            if member_type == "Student":
+                # Delete the corresponding record from the 'STUDENT' table
+                conn.execute("DELETE FROM STUDENT WHERE Member_ID = ?", (member_id,))
+            elif member_type == "Faculty":
+                # Delete the corresponding records from the 'FACULTY' and 'PROFESSIONAL' tables
+                conn.execute("DELETE FROM FACULTY WHERE Member_ID = ?", (member_id,))
+                conn.execute("DELETE FROM PROFESSIONAL WHERE Member_ID = ?", (member_id,))
+
+            # Delete the corresponding record from the 'MEMBER' table
             conn.execute("DELETE FROM MEMBER WHERE Member_ID = ?", (member_id,))
 
         # Commit the changes and update the Treeview
