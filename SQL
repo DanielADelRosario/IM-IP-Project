@@ -28,16 +28,14 @@ CREATE TABLE STUDENT (
 
 -- Create FACULTY table
 CREATE TABLE FACULTY (
-   Member_ID INT PRIMARY KEY AUTOINCREMENT NOT NULL,
-    Department VARCHAR(100),
-    FOREIGN KEY (Member_ID) REFERENCES MEMBER (Member_ID)
-);
-
--- Create PROFESSIONAL table
-CREATE TABLE PROFESSIONAL (
-    Member_ID INT PRIMARY KEY AUTOINCREMENT NOT NULL,
-    Profession VARCHAR(100),
-    FOREIGN KEY (Member_ID) REFERENCES MEMBER (Member_ID)
+    Member_ID  INTEGER       PRIMARY KEY AUTOINCREMENT
+                             NOT NULL,
+    Department VARCHAR (100),
+    Profession VARCHAR (100),
+    FOREIGN KEY (
+        Member_ID
+    )
+    REFERENCES MEMBER (Member_ID) 
 );
 
 -- Create LOAN table
@@ -54,13 +52,16 @@ CREATE TABLE LOAN (
 
 -- Create FINE table
 CREATE TABLE FINE (
-    Fine_ID INT PRIMARY KEY AUTOINCREMENT NOT NULL,
-    Standard_No VARCHAR(100) NOT NULL,
-    Member_ID INT NOT NULL,
-    Fine_Date DATE NOT NULL,
-    Amount DECIMAL(10,2) NOT NULL,
-    Reason_Fine VARCHAR(100) NOT NULL,
-    Payment_Method VARCHAR(50) NOT NULL,
-    FOREIGN KEY (Standard_No) REFERENCES ITEM (Standard_No),
-    FOREIGN KEY (Member_ID) REFERENCES MEMBER (Member_ID)
+    Fine_ID        INTEGER         PRIMARY KEY AUTOINCREMENT
+                                   NOT NULL,
+    Loan_ID        INTEGER         NOT NULL,
+    Payment_Date   DATE            NOT NULL,
+    Amount         DECIMAL (10, 2) NOT NULL,
+    Reason_Fine    VARCHAR (100)   NOT NULL,
+    Payment_Method VARCHAR (50)    NOT NULL,
+    FOREIGN KEY (
+        Loan_ID
+    )
+    REFERENCES Loan (Loan_ID) 
 );
+
