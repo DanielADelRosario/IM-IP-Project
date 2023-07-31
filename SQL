@@ -62,6 +62,6 @@ CREATE TABLE FINE (
     FOREIGN KEY (
         Loan_ID
     )
-    REFERENCES Loan (Loan_ID) 
+    REFERENCES LOAN (Loan_ID) 
 );
 
