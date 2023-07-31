@@ -380,6 +380,7 @@ def viewlogs(addgui):
     tree.configure(yscrollcommand=scrollbar.set)
     return tree
 
+
 def search_materials(search_entry):
     search_query = search_entry.get()
 
@@ -431,6 +432,7 @@ def search_materials(search_entry):
     for row in search_results:
         tree.insert("", tk.END, values=row)
 
+
 def search_title(parent_frame):
     # Create the search entry
     search_entry = tk.Entry(parent_frame, width=40, bg='white')
@@ -448,6 +450,7 @@ def remove_books():
     back.place(x=40, y=10)
 
     search_title(addgui)
+
     def remove_selected_materials(tree):
         selected_items = tree.selection()
         for item in selected_items:
@@ -486,6 +489,7 @@ def disp_books():
 
     itemtree = treeView(addgui)
     search_title(addgui)
+
     def edit_item():
         selected_item = itemtree.selection()
         if selected_item:
@@ -736,6 +740,7 @@ def borrow_book():
     # Bind the select event of the Treeview to the on_treeview_select function
     treeview.bind("<<TreeviewSelect>>", selectrow)
 
+
 def search_return(search_entry):
     search_query = search_entry.get()
 
@@ -760,7 +765,7 @@ def search_return(search_entry):
     # Create a Treeview widget in the pop-up window
     tree = ttk.Treeview(popup)
     tree.place(x=20, y=20, width=760, height=340)
-    
+
     # Create a Treeview widget in the pop-up window
     tree["columns"] = ("Loan_ID", "Standard_No", "Member_ID", "Loan_Date", "Due_Date", "Return_Date")
 
@@ -784,6 +789,7 @@ def search_return(search_entry):
 
     for row in search_results:
         tree.insert("", tk.END, values=row)
+
 
 def search_widget(parent_frame):
     # Create the search entry
@@ -1193,45 +1199,6 @@ def person(search_entry):
     # Fetch student data
     student_results = student_cursor.fetchall()
 
-    # If no student results are found, display a message
-    if not student_results:
-        messagebox.showinfo("No Results", "No matching student results found.")
-        return
-
-    # Create a pop-up window to display the student search results
-    student_popup = tk.Toplevel()
-    student_popup.title("Student Search Results")
-    student_popup.geometry("800x400")
-
-    # Create Treeview for students
-    tree_student = ttk.Treeview(student_popup)
-    tree_student.place(x=20, y=20, width=760, height=340)
-
-    # Define columns and format columns for students
-    tree_student["columns"] = ("Member_ID", "Address", "Contact_No", "Name", "Year_Level", "Course")
-    # ... (your column formatting code for students)
-
-    # Format columns for students
-    tree_student.column("#0", width=0, stretch=tk.NO)
-    tree_student.column("Member_ID", width=100, anchor=tk.CENTER)
-    tree_student.column("Address", width=100, anchor=tk.CENTER)
-    tree_student.column("Contact_No", width=100, anchor=tk.CENTER)
-    tree_student.column("Name", width=100, anchor=tk.CENTER)
-    tree_student.column("Year_Level", width=100, anchor=tk.CENTER)
-    tree_student.column("Course", width=100, anchor=tk.CENTER)
-
-    # Create headings for students
-    tree_student.heading("#0", text="", anchor=tk.CENTER)
-    tree_student.heading("Member_ID", text="Member ID", anchor=tk.CENTER)
-    tree_student.heading("Address", text="Address", anchor=tk.CENTER)
-    tree_student.heading("Contact_No", text="Contact No", anchor=tk.CENTER)
-    tree_student.heading("Name", text="Name", anchor=tk.CENTER)
-    tree_student.heading("Year_Level", text="Year Level", anchor=tk.CENTER)
-    tree_student.heading("Course", text="Course", anchor=tk.CENTER)
-    # Display data for students in the treeview
-    for row in student_results:
-        tree_student.insert("", tk.END, values=row)
-
     # Retrieve faculty data that matches the search query
     faculty_cursor = conn.execute("""
         SELECT M.Member_ID, M.Address, M.Contact_No, M.Name, F.Department, P.Profession
@@ -1249,8 +1216,45 @@ def person(search_entry):
     # Fetch faculty data
     faculty_results = faculty_cursor.fetchall()
 
-    # If faculty results are found, show the faculty pop-up
-    if faculty_results:
+    # Check if any student results are found
+    if student_results:
+        # Create a pop-up window to display the student search results
+        student_popup = tk.Toplevel()
+        student_popup.title("Student Search Results")
+        student_popup.geometry("800x400")
+
+        # Create Treeview for students
+        tree_student = ttk.Treeview(student_popup)
+        tree_student.place(x=20, y=20, width=760, height=340)
+
+        # Define columns and format columns for students
+        tree_student["columns"] = ("Member_ID", "Address", "Contact_No", "Name", "Year_Level", "Course")
+        # ... (your column formatting code for students)
+
+        # Format columns for students
+        tree_student.column("#0", width=0, stretch=tk.NO)
+        tree_student.column("Member_ID", width=100, anchor=tk.CENTER)
+        tree_student.column("Address", width=100, anchor=tk.CENTER)
+        tree_student.column("Contact_No", width=100, anchor=tk.CENTER)
+        tree_student.column("Name", width=100, anchor=tk.CENTER)
+        tree_student.column("Year_Level", width=100, anchor=tk.CENTER)
+        tree_student.column("Course", width=100, anchor=tk.CENTER)
+
+        # Create headings for students
+        tree_student.heading("#0", text="", anchor=tk.CENTER)
+        tree_student.heading("Member_ID", text="Member ID", anchor=tk.CENTER)
+        tree_student.heading("Address", text="Address", anchor=tk.CENTER)
+        tree_student.heading("Contact_No", text="Contact No", anchor=tk.CENTER)
+        tree_student.heading("Name", text="Name", anchor=tk.CENTER)
+        tree_student.heading("Year_Level", text="Year Level", anchor=tk.CENTER)
+        tree_student.heading("Course", text="Course", anchor=tk.CENTER)
+
+        # Display data for students in the treeview
+        for row in student_results:
+            tree_student.insert("", tk.END, values=row)
+
+    # Check if any faculty results are found
+    elif faculty_results:
         # Create a pop-up window to display the faculty search results
         faculty_popup = tk.Toplevel()
         faculty_popup.title("Faculty Search Results")
@@ -1262,6 +1266,8 @@ def person(search_entry):
 
         # Define columns and format columns for faculty
         tree_faculty["columns"] = ("Member_ID", "Address", "Contact_No", "Name", "Department", "Profession")
+        # ... (your column formatting code for faculty)
+
         # Format columns for faculty
         tree_faculty.column("#0", width=0, stretch=tk.NO)
         tree_faculty.column("Member_ID", width=100, anchor=tk.CENTER)
@@ -1284,6 +1290,11 @@ def person(search_entry):
         for row in faculty_results:
             tree_faculty.insert("", tk.END, values=row)
 
+    else:
+        # If no results for both student and faculty are found, display a message
+        messagebox.showinfo("No Results", "No matching results found.")
+        return
+
 
 def search_member(parent_frame):
     # Create the search entry
@@ -1294,8 +1305,6 @@ def search_member(parent_frame):
     search_button = tk.Button(parent_frame, text="Search", fg='#fff', bg='#FF0000', font=('Arial', 9, 'bold'),
                               command=lambda: person(search_entry))
     search_button.place(x=550, y=8)
-
-
 def members():
     addgui = newFrame()
     back = goBack(addgui)
@@ -1317,7 +1326,6 @@ def members():
         tree_view.delete(*selected_items)
 
     tree_view = viewmembers(addgui)
-
 
     add_member = lambda: addmember_window(tree_view, edit_button, add_button,
                                           remove_button, student_button, faculty_button, back)
@@ -1788,6 +1796,8 @@ def fine_add():
 
     # Commit the changes to the database
     conn.commit()
+
+
 def fees(search_entry):
     search_query = search_entry.get()
 
@@ -1839,6 +1849,7 @@ def fees(search_entry):
     for row in search_results:
         tree.insert("", tk.END, values=row)
 
+
 def search_fine(parent_frame):
     # Create the search entry
     search_entry = tk.Entry(parent_frame, width=40, bg='white')
@@ -1848,7 +1859,6 @@ def search_fine(parent_frame):
     search_button = tk.Button(parent_frame, text="Search", fg='#fff', bg='#FF0000', font=('Arial', 9, 'bold'),
                               command=lambda: fees(search_entry))
     search_button.place(x=550, y=8)
-
 
 
 def fine():
