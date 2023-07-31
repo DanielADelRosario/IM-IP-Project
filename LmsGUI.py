@@ -1,8 +1,5 @@
-# di pa narestrict yung accepting symbols, numbers or characters tsaka yung disabled button
-
 import tkinter as tk
 from tkinter import ttk
-from tkinter import *
 import sqlite3
 import datetime
 import time
@@ -38,7 +35,6 @@ def Header(lmsGui):
     return ig
 
 
-
 # GUI DISPLAY CURRENT DATE
 def Header2():
     dev = tk.Label(lmsGui, text="Developed by: De Omania | Del Rosario ", fg='black', bg='#fff',
@@ -47,7 +43,7 @@ def Header2():
     today = date.today()
     dat = tk.Label(lmsGui, text='Date : ', bg='#fff', fg='black', font=('Arial', 10, 'bold'))
     dat.place(x=730, y=83)
-    
+
     def update_date_label():
         today = date.today()
         dat2.config(text=today)
@@ -104,7 +100,7 @@ def homescreenImage(lmsGui):
 # FUNCTION TO INITIALIZE BUTTONS
 def addLibMat(button, command):
     button.config(text='Add Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
-                       command=command)
+                  command=command)
     logo = tk.PhotoImage(file='bt1.png')
     button.config(image=logo, compound=tk.LEFT)
     small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
@@ -113,17 +109,20 @@ def addLibMat(button, command):
 
 
 def remLibMat(button, command):
-    button.config(text='Delete Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
-                       command=command)
+    button.config(text='Delete Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center',
+                  width=183,
+                  command=command)
     logo = tk.PhotoImage(file='bt5.png')
     button.config(image=logo, compound=tk.LEFT)
     small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
     button.image = small_logo  # Store a reference to the image to prevent garbage collection
     button.config(image=small_logo)
 
-def dspLibMat(button,command):
-    button.config(text='Display Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
-                       command=command)
+
+def dspLibMat(button, command):
+    button.config(text='Display Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center',
+                  width=183,
+                  command=command)
     logo = tk.PhotoImage(file='bt2.png')
     button.config(image=logo, compound=tk.LEFT)
     small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
@@ -132,8 +131,9 @@ def dspLibMat(button,command):
 
 
 def borLibMat(button, command):
-    button.config(text='Borrow Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
-                       command=command)
+    button.config(text='Borrow Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center',
+                  width=183,
+                  command=command)
     logo = tk.PhotoImage(file='bt3.png')
     button.config(image=logo, compound=tk.LEFT)
     small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
@@ -142,8 +142,9 @@ def borLibMat(button, command):
 
 
 def retLibMat(button, command):
-    button.config(text='Return Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
-                       command=command)
+    button.config(text='Return Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center',
+                  width=183,
+                  command=command)
     logo = tk.PhotoImage(file='bt4.png')
     button.config(image=logo, compound=tk.LEFT)
     small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
@@ -153,7 +154,7 @@ def retLibMat(button, command):
 
 def dspMember(button, command):
     button.config(text='List Members', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
-                       command=command)
+                  command=command)
     logo = tk.PhotoImage(file='bt6.png')
     button.config(image=logo, compound=tk.LEFT)
     small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
@@ -163,7 +164,7 @@ def dspMember(button, command):
 
 def dspLoan(button, command):
     button.config(text='Record Log', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
-                       command=command)
+                  command=command)
     logo = tk.PhotoImage(file='bt8.png')
     button.config(image=logo, compound=tk.LEFT)
     small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
@@ -172,13 +173,15 @@ def dspLoan(button, command):
 
 
 def fineDetail(button, command):
-    button.config(text='View Late Fees', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
-                       command=command)
+    button.config(text='View Late Fees', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center',
+                  width=183,
+                  command=command)
     logo = tk.PhotoImage(file='bt7.png')
     button.config(image=logo, compound=tk.LEFT)
     small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
     button.image = small_logo  # Store a reference to the image to prevent garbage collection
     button.config(image=small_logo)
+
 
 # def logOut(command):
 #     button = tk.Button(text='Log Out', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), width=15, command=command)
@@ -190,24 +193,12 @@ def newFrame():
     addfm.place(x=0, y=110)
     return addfm
 
+
 # GO BACK TO HOMEPAGE
 def goBack(homePage):
     go_back_button = tk.Button(homePage, text="Go Back", fg='#fff', bg='#FF0000', command=lambda: homePage.destroy())
     return go_back_button
 
-
-# Create the ITEM table if it doesn't exist
-# conn.execute('''
-#    CREATE TABLE IF NOT EXISTS ITEM (
-#       Standard_No NVARCHAR(100) PRIMARY KEY NOT NULL,
-#       Publisher NVARCHAR(100) NOT NULL,
-#       Publish_Date DATE NOT NULL,
-#       Author NVARCHAR(100) NOT NULL,
-#       Title NVARCHAR(100) NOT NULL,
-#       Item_Type NVARCHAR(10) NOT NULL,
-#       Status TEXT DEFAULT 'Available'
-#   )
-# ''')
 
 # FUNCTION TO SET BUTTON COMMANDS
 def add_books():
@@ -271,7 +262,6 @@ def add_books():
         except sqlite3.Error as e:
             conn.rollback()
             messagebox.showerror("Error", f"An error occurred: {e}")
-
 
     addData = tk.Button(addgui, text='Add Material', fg='#fff', bg='#008000', font=('Arial', 10, 'bold'), width=52,
                         command=add_data_to_db)
@@ -391,21 +381,87 @@ def viewlogs(addgui):
     return tree
 
 
+def search_materials(search_entry):
+    search_query = search_entry.get()
+
+    # Retrieve data from the ITEM table that matches the search query
+    cursor = conn.execute(
+        "SELECT * FROM ITEM WHERE lower(Standard_No) = ? OR lower(Author) = ? OR lower(Title) = ? OR lower(ITEM_TYPE) = ? OR lower(STATUS) = ?",
+        (search_query.lower(), search_query.lower(), search_query.lower(), search_query.lower(), search_query.lower()))
+
+    # Fetch all rows from the cursor
+    search_results = cursor.fetchall()
+
+    # If no results are found, display a message
+    if not search_results:
+        messagebox.showinfo("No Results", "No matching results found.")
+        return
+
+    # Create a pop-up window to display the search results
+    popup = tk.Toplevel()
+    popup.title("Search Results")
+    popup.geometry("800x400")
+
+    # Create a Treeview widget in the pop-up window
+    tree = ttk.Treeview(popup)
+    tree.place(x=20, y=20, width=760, height=340)
+
+    # Define columns
+    tree["columns"] = ("Standard_No", "Publisher", "Publish_Date", "Author", "Title", "Item_Type", "Status")
+
+    # Format columns
+    tree.column("#0", width=0, stretch=tk.NO)
+    tree.column("Standard_No", width=100, anchor=tk.CENTER)
+    tree.column("Publisher", width=100, anchor=tk.CENTER)
+    tree.column("Publish_Date", width=100, anchor=tk.CENTER)
+    tree.column("Author", width=100, anchor=tk.CENTER)
+    tree.column("Title", width=100, anchor=tk.W)
+    tree.column("Item_Type", width=100, anchor=tk.CENTER)
+    tree.column("Status", width=100, anchor=tk.CENTER)
+
+    # Create headings
+    tree.heading("#0", text="", anchor=tk.CENTER)
+    tree.heading("Standard_No", text="Standard No", anchor=tk.CENTER)
+    tree.heading("Publisher", text="Publisher", anchor=tk.CENTER)
+    tree.heading("Publish_Date", text="Publish Date", anchor=tk.CENTER)
+    tree.heading("Author", text="Author", anchor=tk.CENTER)
+    tree.heading("Title", text="Title", anchor=tk.CENTER)
+    tree.heading("Item_Type", text="Item Type", anchor=tk.CENTER)
+    tree.heading("Status", text="Status", anchor=tk.CENTER)
+
+    for row in search_results:
+        tree.insert("", tk.END, values=row)
+
+
+def search_title(parent_frame):
+    # Create the search entry
+    search_entry = tk.Entry(parent_frame, width=40, bg='white')
+    search_entry.place(x=300, y=10)
+
+    # Create the search button
+    search_button = tk.Button(parent_frame, text="Search", fg='#fff', bg='#FF0000', font=('Arial', 9, 'bold'),
+                              command=lambda: search_materials(search_entry))
+    search_button.place(x=550, y=8)
+
+
 def remove_books():
     addgui = newFrame()
     back = goBack(addgui)
     back.place(x=40, y=10)
+
+    search_title(addgui)
+
     def remove_selected_materials(tree):
         selected_items = tree.selection()
         for item in selected_items:
             values = tree.item(item)['values']
             standard_no = values[0]  # Standard_No of the selected material
             check_stat = values[-1]
-            
+
             if check_stat == 'Borrowed':
                 messagebox.showerror("Error", "Cannot Remove Borrowed Item.")
                 return
-            
+
             # Remove the material from the ITEM table
             conn.execute("DELETE FROM ITEM WHERE Standard_No = ?", (standard_no,))
             conn.commit()
@@ -432,6 +488,7 @@ def disp_books():
     back.place(x=40, y=10)
 
     itemtree = treeView(addgui)
+    search_title(addgui)
 
     def edit_item():
         selected_item = itemtree.selection()
@@ -543,7 +600,7 @@ def disp_books():
 
 def borrow_input_window(treeview, borrow_button, back):
     borrow_button['state'] = tk.DISABLED
-    back['state']=tk.DISABLED
+    back['state'] = tk.DISABLED
     input_win = tk.Toplevel(lmsGui)
     input_win.title("Select Member")
     input_win.configure(bg="#fff")
@@ -628,7 +685,7 @@ def borrow_input_window(treeview, borrow_button, back):
                     conn.commit()
                     borrow_button['state'] = tk.NORMAL
                     back['state'] = tk.NORMAL
-        
+
         input_win.destroy()
         treeview.set(select_ID, "Status", "Borrowed")
 
@@ -663,6 +720,7 @@ def borrow_book():
     back.place(x=40, y=10)
 
     treeview = treeView(addgui)
+    search_title(addgui)
 
     borrowmaterial = lambda: borrow_input_window(treeview, borrow_button, back)
 
@@ -683,11 +741,73 @@ def borrow_book():
     treeview.bind("<<TreeviewSelect>>", selectrow)
 
 
+def search_return(search_entry):
+    search_query = search_entry.get()
+
+    # Retrieve data from the ITEM table that matches the search query
+    cursor = conn.execute(
+        "SELECT * FROM LOAN WHERE lower(Loan_ID) = ? OR lower(Standard_No) = ? OR lower(Member_ID) = ? OR lower(Due_Date) = ?",
+        (search_query.lower(), search_query.lower(), search_query.lower(), search_query.lower()))
+
+    # Fetch all rows from the cursor
+    search_results = cursor.fetchall()
+
+    # If no results are found, display a message
+    if not search_results:
+        messagebox.showinfo("No Results", "No matching results found.")
+        return
+
+    # Create a pop-up window to display the search results
+    popup = tk.Toplevel()
+    popup.title("Search Results")
+    popup.geometry("800x400")
+
+    # Create a Treeview widget in the pop-up window
+    tree = ttk.Treeview(popup)
+    tree.place(x=20, y=20, width=760, height=340)
+
+    # Create a Treeview widget in the pop-up window
+    tree["columns"] = ("Loan_ID", "Standard_No", "Member_ID", "Loan_Date", "Due_Date", "Return_Date")
+
+    # Format columns
+    tree.column("#0", width=0, stretch=tk.NO)
+    tree.column("Loan_ID", width=100, anchor=tk.CENTER)
+    tree.column("Standard_No", width=100, anchor=tk.CENTER)
+    tree.column("Member_ID", width=100, anchor=tk.CENTER)
+    tree.column("Loan_Date", width=100, anchor=tk.CENTER)
+    tree.column("Due_Date", width=100, anchor=tk.CENTER)
+    tree.column("Return_Date", width=100, anchor=tk.CENTER)
+
+    # Create headings
+    tree.heading("#0", text="", anchor=tk.CENTER)
+    tree.heading("Loan_ID", text="Loan ID", anchor=tk.CENTER)
+    tree.heading("Standard_No", text="Standard No", anchor=tk.CENTER)
+    tree.heading("Member_ID", text="Member ID", anchor=tk.CENTER)
+    tree.heading("Loan_Date", text="Loan Date", anchor=tk.CENTER)
+    tree.heading("Due_Date", text="Due Date", anchor=tk.CENTER)
+    tree.heading("Return_Date", text="Return Date", anchor=tk.CENTER)
+
+    for row in search_results:
+        tree.insert("", tk.END, values=row)
+
+
+def search_widget(parent_frame):
+    # Create the search entry
+    search_entry = tk.Entry(parent_frame, width=40, bg='white')
+    search_entry.place(x=300, y=10)
+
+    # Create the search button
+    search_button = tk.Button(parent_frame, text="Search", fg='#fff', bg='#FF0000', font=('Arial', 9, 'bold'),
+                              command=lambda: search_return(search_entry))
+    search_button.place(x=550, y=8)
+
+
 def return_books():
     addgui = newFrame()
     back = goBack(addgui)
     back.place(x=40, y=10)
     tree = viewlogs(addgui)
+    search_widget(addgui)
 
     # Retrieve data from the LOAN table where Return_Date is null
     cursor = conn.execute("SELECT * FROM LOAN WHERE Return_Date IS NULL")
@@ -723,6 +843,7 @@ def return_books():
     return_button = tk.Button(addgui, text="Return", fg='#fff', bg='#8B0000', font=('Arial', 10, 'bold'), width=10,
                               command=return_material)
     return_button.place(x=390, y=391)
+
 
 def editmember(tree_view, edit_button, add_button, remove_button, student_button, faculty_button, back):
     selected_item = tree_view.selection()
@@ -801,7 +922,6 @@ def editmember(tree_view, edit_button, add_button, remove_button, student_button
             profession_entry = tk.Entry(frame, width=50, bg='white')
             profession_entry.place(x=140, y=275)
 
-
         # FUNCTION TO UPDATE AND REFRESH TREEVIEW
         def clear_treeview(tree):
             for item in tree.get_children():
@@ -813,11 +933,11 @@ def editmember(tree_view, edit_button, add_button, remove_button, student_button
             name = entry_name.get()
             member_type = member_type_combobox.get()
 
-            if not (addr and contacts  and name and member_type):
+            if not (addr and contacts and name and member_type):
                 messagebox.showerror("Error", "Please fill in all the required fields.")
                 input_win.focus_force()
                 return
-            
+
             check_member_query = conn.execute("SELECT Member_ID FROM MEMBER WHERE Name = ?", (name,))
             existing_member = check_member_query.fetchone()
 
@@ -848,7 +968,6 @@ def editmember(tree_view, edit_button, add_button, remove_button, student_button
             student_button.config(state=tk.NORMAL)
             back.config(state=tk.NORMAL)
 
-
         def on_window_close():
             edit_button.config(state=tk.NORMAL)  # Enable the "Edit" button when the window is closed
             add_button.config(state=tk.NORMAL)
@@ -864,6 +983,7 @@ def editmember(tree_view, edit_button, add_button, remove_button, student_button
         save_button = tk.Button(input_win, text="Save", fg='#fff', bg='#8B0000', font=('Arial', 10, 'bold'), width=10,
                                 command=lambda: new_info())
         save_button.grid(row=12, columnspan=2, pady=150)
+
 
 def addmember_window(tree_view, edit_button, add_button, remove_button, student_button, faculty_button, back):
     edit_button.config(state=tk.DISABLED)
@@ -935,7 +1055,7 @@ def addmember_window(tree_view, edit_button, add_button, remove_button, student_
                 messagebox.showerror("Error", "Please fill in all the required fields.")
                 input_win.focus_force()
                 return
-            
+
             check_member_query = conn.execute("SELECT Member_ID FROM MEMBER WHERE Name = ?", (name,))
             existing_member = check_member_query.fetchone()
 
@@ -973,9 +1093,9 @@ def addmember_window(tree_view, edit_button, add_button, remove_button, student_
                 messagebox.showerror("Error", f"An error occurred: {e}")
 
         # Confirm Borrow button
-        btn_confirm_borrow = tk.Button(input_win, text="Add Member", fg='#fff', bg='#8B0000',
+        btn_confirm_add = tk.Button(input_win, text="Add Member", fg='#fff', bg='#8B0000',
                                        font=('Arial', 10, 'bold'), command=confirm_student_member)
-        btn_confirm_borrow.grid(row=13, column=0, pady=10)
+        btn_confirm_add.grid(row=13, column=0, pady=10)
 
     def show_faculty_info():
         department_label = tk.Label(input_win, text='Department:', fg='#fff', bg='#00008B', font=('calibri', 10))
@@ -1009,7 +1129,7 @@ def addmember_window(tree_view, edit_button, add_button, remove_button, student_
                 messagebox.showerror("Error", "Member Name already exist.")
                 input_win.focus_force()
                 return
-            
+
             try:
                 # Insert data into the MEMBER table
                 conn.execute("INSERT INTO MEMBER (Address, Contact_No, Name, Member_Type) VALUES (?, ?, ?, ?)",
@@ -1019,10 +1139,8 @@ def addmember_window(tree_view, edit_button, add_button, remove_button, student_
                 member_id = conn.execute("SELECT last_insert_rowid()").fetchone()[0]
 
                 # Insert data into the FACULTY and PROFESSIONAL tables with references to the MEMBER table
-                conn.execute("INSERT INTO FACULTY (Member_ID, Department) VALUES (?, ?)",
-                             (member_id, department))
-                conn.execute("INSERT INTO PROFESSIONAL (Member_ID, Profession) VALUES (?, ?)",
-                             (member_id, profession))
+                conn.execute("INSERT INTO FACULTY (Member_ID, Department, Profession) VALUES (?, ?, ?)",
+                             (member_id, department, profession))
 
                 conn.commit()
 
@@ -1045,7 +1163,7 @@ def addmember_window(tree_view, edit_button, add_button, remove_button, student_
 
         # Confirm Borrow button
         btn_add = tk.Button(input_win, text="Add Member", fg='#fff', bg='#8B0000',
-                                       font=('Arial', 10, 'bold'), command=confirm_faculty_member)
+                            font=('Arial', 10, 'bold'), command=confirm_faculty_member)
         btn_add.grid(row=13, column=0, pady=10)
 
     def on_window_close():
@@ -1060,19 +1178,154 @@ def addmember_window(tree_view, edit_button, add_button, remove_button, student_
     input_win.protocol("WM_DELETE_WINDOW", on_window_close)
 
 
+def person(search_entry):
+    search_query = search_entry.get()
+
+    # Retrieve student data that matches the search query
+    student_cursor = conn.execute("""
+        SELECT M.Member_ID, M.Address, M.Contact_No, M.Name, S.Year_Level, S.Course
+        FROM MEMBER M
+        LEFT JOIN STUDENT S ON M.Member_ID = S.Member_ID
+        WHERE
+            lower(M.Name) = ? OR
+            lower(M.Member_ID) = ? OR
+            lower(S.Year_Level) = ? OR
+            lower(S.Course) = ?
+    """, (search_query.lower(), search_query.lower(), search_query.lower(),
+          search_query.lower()))
+
+    # Fetch student data
+    student_results = student_cursor.fetchall()
+
+    # Retrieve faculty data that matches the search query
+    faculty_cursor = conn.execute("""
+        SELECT M.Member_ID, M.Address, M.Contact_No, M.Name, F.Department, F.Profession
+        FROM MEMBER M
+        LEFT JOIN FACULTY F ON M.Member_ID = F.Member_ID
+        WHERE
+            lower(M.Name) = ? OR
+            lower(M.Member_ID) = ? OR
+            lower(F.Department) = ? OR
+            lower(F.Profession) = ?
+    """, (search_query.lower(), search_query.lower(),
+          search_query.lower(), search_query.lower()))
+
+    # Fetch faculty data
+    faculty_results = faculty_cursor.fetchall()
+
+    # Check if any student results are found
+    if student_results:
+        # Create a pop-up window to display the student search results
+        student_popup = tk.Toplevel()
+        student_popup.title("Student Search Results")
+        student_popup.geometry("800x400")
+
+        # Create Treeview for students
+        tree_student = ttk.Treeview(student_popup)
+        tree_student.place(x=20, y=20, width=760, height=340)
+
+        # Define columns and format columns for students
+        tree_student["columns"] = ("Member_ID", "Address", "Contact_No", "Name", "Year_Level", "Course")
+        # ... (your column formatting code for students)
+
+        # Format columns for students
+        tree_student.column("#0", width=0, stretch=tk.NO)
+        tree_student.column("Member_ID", width=100, anchor=tk.CENTER)
+        tree_student.column("Address", width=100, anchor=tk.CENTER)
+        tree_student.column("Contact_No", width=100, anchor=tk.CENTER)
+        tree_student.column("Name", width=100, anchor=tk.CENTER)
+        tree_student.column("Year_Level", width=100, anchor=tk.CENTER)
+        tree_student.column("Course", width=100, anchor=tk.CENTER)
+
+        # Create headings for students
+        tree_student.heading("#0", text="", anchor=tk.CENTER)
+        tree_student.heading("Member_ID", text="Member ID", anchor=tk.CENTER)
+        tree_student.heading("Address", text="Address", anchor=tk.CENTER)
+        tree_student.heading("Contact_No", text="Contact No", anchor=tk.CENTER)
+        tree_student.heading("Name", text="Name", anchor=tk.CENTER)
+        tree_student.heading("Year_Level", text="Year Level", anchor=tk.CENTER)
+        tree_student.heading("Course", text="Course", anchor=tk.CENTER)
+
+        # Display data for students in the treeview
+        for row in student_results:
+            tree_student.insert("", tk.END, values=row)
+
+    # Check if any faculty results are found
+    elif faculty_results:
+        # Create a pop-up window to display the faculty search results
+        faculty_popup = tk.Toplevel()
+        faculty_popup.title("Faculty Search Results")
+        faculty_popup.geometry("800x400")
+
+        # Create Treeview for faculty
+        tree_faculty = ttk.Treeview(faculty_popup)
+        tree_faculty.place(x=20, y=20, width=760, height=340)
+
+        # Define columns and format columns for faculty
+        tree_faculty["columns"] = ("Member_ID", "Address", "Contact_No", "Name", "Department", "Profession")
+        # ... (your column formatting code for faculty)
+
+        # Format columns for faculty
+        tree_faculty.column("#0", width=0, stretch=tk.NO)
+        tree_faculty.column("Member_ID", width=100, anchor=tk.CENTER)
+        tree_faculty.column("Address", width=100, anchor=tk.CENTER)
+        tree_faculty.column("Contact_No", width=100, anchor=tk.CENTER)
+        tree_faculty.column("Name", width=100, anchor=tk.CENTER)
+        tree_faculty.column("Department", width=100, anchor=tk.CENTER)
+        tree_faculty.column("Profession", width=100, anchor=tk.CENTER)
+
+        # Create headings for faculty
+        tree_faculty.heading("#0", text="", anchor=tk.CENTER)
+        tree_faculty.heading("Member_ID", text="Member ID", anchor=tk.CENTER)
+        tree_faculty.heading("Address", text="Address", anchor=tk.CENTER)
+        tree_faculty.heading("Contact_No", text="Contact No", anchor=tk.CENTER)
+        tree_faculty.heading("Name", text="Name", anchor=tk.CENTER)
+        tree_faculty.heading("Department", text="Department", anchor=tk.CENTER)
+        tree_faculty.heading("Profession", text="Profession", anchor=tk.CENTER)
+
+        # Display data for faculty in the treeview
+        for row in faculty_results:
+            tree_faculty.insert("", tk.END, values=row)
+
+    else:
+        # If no results for both student and faculty are found, display a message
+        messagebox.showinfo("No Results", "No matching results found.")
+        return
+
+
+def search_member(parent_frame):
+    # Create the search entry
+    search_entry = tk.Entry(parent_frame, width=40, bg='white')
+    search_entry.place(x=300, y=10)
+
+    # Create the search button
+    search_button = tk.Button(parent_frame, text="Search", fg='#fff', bg='#FF0000', font=('Arial', 9, 'bold'),
+                              command=lambda: person(search_entry))
+    search_button.place(x=550, y=8)
+
 def members():
     addgui = newFrame()
     back = goBack(addgui)
     back.place(x=30, y=10)
+    search_member(addgui)
 
     def removemember(tree_view):
         selected_items = tree_view.selection()
 
         for item in selected_items:
-            # Get the member ID of the selected row
+            # Get the member ID and member type of the selected row
             member_id = tree_view.item(item, "values")[0]
+            member_type = tree_view.item(item, "values")[4]  # Assuming Member_Type is the fifth column
 
-            # Delete the corresponding record from the 'members' table
+            # Check if the member_type is Student or Faculty
+            if member_type == "Student":
+                # Delete the corresponding record from the 'STUDENT' table
+                conn.execute("DELETE FROM STUDENT WHERE Member_ID = ?", (member_id,))
+            elif member_type == "Faculty":
+                # Delete the corresponding records from the 'FACULTY' and 'PROFESSIONAL' tables
+                conn.execute("DELETE FROM FACULTY WHERE Member_ID = ?", (member_id,))
+
+            # Delete the corresponding record from the 'MEMBER' table
             conn.execute("DELETE FROM MEMBER WHERE Member_ID = ?", (member_id,))
 
         # Commit the changes and update the Treeview
@@ -1081,14 +1334,13 @@ def members():
 
     tree_view = viewmembers(addgui)
 
-    add_member = lambda: addmember_window(tree_view, edit_button, add_button, 
-                                remove_button, student_button, faculty_button, back)
-    
+    add_member = lambda: addmember_window(tree_view, edit_button, add_button,
+                                          remove_button, student_button, faculty_button, back)
+
     remove_member = lambda: removemember(tree_view)
 
-    edit_member = lambda: editmember(tree_view, edit_button, add_button, 
-                                remove_button, student_button, faculty_button, back)
-
+    edit_member = lambda: editmember(tree_view, edit_button, add_button,
+                                     remove_button, student_button, faculty_button, back)
 
     # Add button
     add_button = tk.Button(addgui, text="Add", fg='#fff', bg='#006400', font=('Arial', 10, 'bold'), width=8,
@@ -1176,6 +1428,7 @@ def members():
             def on_window_close():
                 btn_edit_student.config(state=tk.NORMAL)  # Enable the "Edit" button when the window is closed
                 edit_win.destroy()
+
             edit_win.protocol("WM_DELETE_WINDOW", on_window_close)
 
             # Save Changes button
@@ -1210,6 +1463,7 @@ def members():
             faculty_button.config(state=tk.NORMAL)
             back.config(state=tk.NORMAL)
             student_window.destroy()
+
         student_window.protocol("WM_DELETE_WINDOW", on_window_close)
 
         # Edit button
@@ -1242,7 +1496,7 @@ def members():
             # Ensure that only one item is selected for editing
             if len(selected_item) != 1:
                 messagebox.showerror("Error", "Please select one faculty member to edit.")
-                btn_edit_faculty.config(state=tk.NORMAL) 
+                btn_edit_faculty.config(state=tk.NORMAL)
                 data_window.focus_force()
                 return
 
@@ -1280,8 +1534,7 @@ def members():
                     return
 
                 # Update the faculty data in the database
-                conn.execute("UPDATE FACULTY SET Department = ? WHERE Member_ID = ?", (new_department, member_id))
-                conn.execute("UPDATE PROFESSIONAL SET Profession = ? WHERE Member_ID = ?", (new_profession, member_id))
+                conn.execute("UPDATE FACULTY SET Department = ?, Profession = ? WHERE Member_ID = ?", (new_department, new_profession, member_id))
                 conn.commit()
 
                 # Update the Treeview with the new data
@@ -1292,6 +1545,7 @@ def members():
             def on_window_close():
                 btn_edit_faculty.config(state=tk.NORMAL)  # Enable the "Edit" button when the window is closed
                 edit_win.destroy()
+
             edit_win.protocol("WM_DELETE_WINDOW", on_window_close)
 
             # Save Changes button
@@ -1308,10 +1562,9 @@ def members():
 
         # Fetch data from the 'FACULTY' and 'PROFESSIONAL' tables using JOIN
         cursor = conn.execute("""
-            SELECT M.Member_ID, F.Department, P.Profession
+            SELECT M.Member_ID, F.Department, F.Profession
             FROM MEMBER M
             LEFT JOIN FACULTY F ON M.Member_ID = F.Member_ID
-            LEFT JOIN PROFESSIONAL P ON M.Member_ID = P.Member_ID
             WHERE M.Member_Type = 'Faculty'
         """)
 
@@ -1327,7 +1580,7 @@ def members():
             faculty_button.config(state=tk.NORMAL)
             back.config(state=tk.NORMAL)
             data_window.destroy()
-        
+
         data_window.protocol("WM_DELETE_WINDOW", on_window_close)
 
         # Edit button
@@ -1355,6 +1608,7 @@ def loan():
     back = goBack(addgui)
     back.place(x=40, y=10)
     tree = viewlogs(addgui)
+    search_widget(addgui)
     # Retrieve data from the MEMBER table
     cursor = conn.execute("SELECT * FROM LOAN")
 
@@ -1362,8 +1616,11 @@ def loan():
     for row in cursor:
         tree.insert("", tk.END, values=row)
 
+
 # Global variable to store the selected row data
 selected_row_data = None
+
+
 def update_treeview(tree_view):
     # Clear existing data from the Treeview
     tree_view.delete(*tree_view.get_children())
@@ -1376,6 +1633,7 @@ def update_treeview(tree_view):
     for data in fine_data:
         tree_view.insert("", tk.END, values=data)
 
+
 def submit_payment(payment_method_var, tree_view, payment_window, payment_button, back):
     global selected_row_data
 
@@ -1387,43 +1645,39 @@ def submit_payment(payment_method_var, tree_view, payment_window, payment_button
             payment_window.focus()
             return
         # Get the necessary data from the selected row
-        fine_date = datetime.date.today()
+        payment_date = datetime.date.today()
         amount = 0
         reason_fine = "Late"
         payment_method = selected_method
-        standard_no = selected_row_data[1]
-        member_id = selected_row_data[2]
+        Loan_ID = selected_row_data[1]
+
 
         # Check if a record with the same standard_no and member_id already exists in FINE table
         cursor = conn.cursor()
         cursor.execute("""
             SELECT COUNT(*)
             FROM FINE
-            WHERE standard_no = ? AND member_id = ?
-        """, (standard_no, member_id))
+            WHERE Loan_ID = ? AND Amount > 0
+        """, (Loan_ID,))
         count = cursor.fetchone()[0]
 
-        if count > 0:
-            # If a record exists, update the payment method in the existing row
+        if count == 0:
+            # If amount is already 0, show an error message
+            messagebox.showerror("Error", "Member has already paid the fine.")
+        else:
+            # If a record exists and amount is not 0, update the payment method in the existing row
             cursor.execute("""
                 UPDATE FINE
-                SET fine_date = ?, amount = ?, reason_fine = ?, payment_method = ?
-                WHERE standard_no = ? AND member_id = ?
-            """, (fine_date, amount, reason_fine, payment_method, standard_no, member_id))
+                SET Payment_Date = ?, amount = ?, reason_fine = ?, payment_method = ?
+                WHERE Loan_ID = ?
+            """, (payment_date, amount, reason_fine, payment_method, Loan_ID))
             print("Data updated in FINE table successfully.")
-        else:
-            # If no record exists, insert the data into the FINE table
-            cursor.execute("""
-                INSERT INTO FINE (fine_date, amount, reason_fine, payment_method, standard_no, member_id)
-                VALUES (?, ?, ?, ?, ?, ?)
-            """, (fine_date, amount, reason_fine, payment_method, standard_no, member_id))
-            print("Data inserted into FINE table successfully.")
 
-        # Commit the changes to the database
-        conn.commit()
+            # Commit the changes to the database
+            conn.commit()
 
-        # Update the Treeview with the latest data
-        update_treeview(tree_view)
+            # Update the Treeview with the latest data
+            update_treeview(tree_view)
 
         payment_button.config(state=tk.NORMAL)
         back.config(state=tk.NORMAL)
@@ -1432,6 +1686,7 @@ def submit_payment(payment_method_var, tree_view, payment_window, payment_button
         messagebox.showerror("Error", "Please select a row from the table first.")
         return
 
+
 def payment_callback(tree, payment_button, back):
     global selected_row_data
     selected_row = tree.focus()  # Get the selected row ID
@@ -1439,6 +1694,7 @@ def payment_callback(tree, payment_button, back):
         payment_button.config(state=tk.DISABLED)
         back.config(state=tk.DISABLED)
         selected_row_data = tree.item(selected_row, 'values')
+
         payment_window = tk.Toplevel()
         payment_window.geometry("300x300+550+250")
         payment_window.title("Select Payment Method")
@@ -1483,7 +1739,8 @@ def payment_callback(tree, payment_button, back):
 
         confirm_button = tk.Button(payment_window, text="Confirm", fg='#fff', bg='#006400', font=('Arial', 9, 'bold'),
                                    width=8,
-                                   command=lambda: submit_payment(payment_method_var, tree, payment_window, payment_button, back))
+                                   command=lambda: submit_payment(payment_method_var, tree, payment_window,
+                                                                  payment_button, back))
         confirm_button.place(x=100, y=230)
 
     else:
@@ -1497,12 +1754,13 @@ def payment_callback(tree, payment_button, back):
 
     payment_window.protocol("WM_DELETE_WINDOW", on_window_close)
 
+
 def fine_add():
     cursor = conn.cursor()
 
     # Retrieve data from the LOAN table where Due_Date is less than Return_Date (indicating late returns)
     cursor.execute("""
-        SELECT Due_Date, Return_Date, standard_no, member_id
+        SELECT Loan_ID, Due_Date, Return_Date
         FROM LOAN
         WHERE Due_Date < Return_Date 
     """)
@@ -1510,55 +1768,119 @@ def fine_add():
 
     # Insert the loan_data into the FINE table with calculated fine amount
     for data in loan_data:
-        due_date_str, return_date_str, standard_no, member_id = data
+        Loan_id, due_date_str, return_date_str = data
 
         # Convert date strings to datetime.date objects
         due_date = datetime.datetime.strptime(due_date_str, '%Y-%m-%d').date()
         return_date = datetime.datetime.strptime(return_date_str, '%Y-%m-%d').date()
 
-        fine_date = datetime.date.today()
+        pay_date = ""
         fine_rate = 20  # Fine rate in pesos per day
         days_late = (return_date - due_date).days
         amount = fine_rate * days_late
         reason_fine = "Late"
         payment_method = ""
 
-        # Check if a record with the same standard_no and member_id already exists in FINE table
+        # Check if a record with the same loan_id already exists in FINE table
         cursor.execute("""
             SELECT COUNT(*)
             FROM FINE
-            WHERE standard_no = ? AND member_id = ?
-        """, (standard_no, member_id))
+            WHERE Loan_ID = ?
+        """, (Loan_id,))
         count = cursor.fetchone()[0]
 
         if count == 0:
             # If no record exists, insert the data into the FINE table
             cursor.execute("""
-                INSERT INTO FINE (fine_date, amount, reason_fine, payment_method, standard_no, member_id)
-                VALUES (?, ?, ?, ?, ?, ?)
-            """, (fine_date, amount, reason_fine, payment_method, standard_no, member_id))
+                INSERT INTO FINE (Loan_ID, Payment_Date, Amount, Reason_Fine, Payment_Method)
+                VALUES (?, ?, ?, ?, ?)
+            """, (Loan_id, pay_date, amount, reason_fine, payment_method))
 
     # Commit the changes to the database
     conn.commit()
 
-def fine():
-    addgui = newFrame()
-    back = goBack(addgui)
-    back.place(x=40, y=10)
 
-    # Create a Treeview widget
-    tree = ttk.Treeview(addgui)
-    tree.place(x=20, y=45, width=830, height=340)
+def fees(search_entry):
+    search_query = search_entry.get()
+
+    # Retrieve data from the ITEM table that matches the search query
+    cursor = conn.execute(
+        "SELECT * FROM FINE WHERE lower(Fine_ID) = ? OR lower(Standard_NO) = ? OR lower(Member_ID) = ? OR lower(Fine_Date) = ?",
+        (search_query.lower(), search_query.lower(), search_query.lower(), search_query.lower()))
+
+    # Fetch all rows from the cursor
+    search_results = cursor.fetchall()
+
+    # If no results are found, display a message
+    if not search_results:
+        messagebox.showinfo("No Results", "No matching results found.")
+        return
+
+    # Create a pop-up window to display the search results
+    popup = tk.Toplevel()
+    popup.title("Search Results")
+    popup.geometry("800x400")
+
+    # Create a Treeview widget in the pop-up window
+    tree = ttk.Treeview(popup)
+    tree.place(x=20, y=20, width=760, height=340)
 
     # Define columns
     tree["columns"] = ("Fine_ID", "Standard_No", "Member_ID", "Fine_Date", "Amount", "Reason_Fine", "Payment_Method")
 
     # Format columns
     tree.column("#0", width=0, stretch=tk.NO)
+    tree.column("Fine_ID", width=100, anchor=tk.CENTER)
+    tree.column("Standard_No", width=100, anchor=tk.CENTER)
+    tree.column("Member_ID", width=100, anchor=tk.CENTER)
+    tree.column("Fine_Date", width=100, anchor=tk.CENTER)
+    tree.column("Amount", width=100, anchor=tk.W)
+    tree.column("Reason_Fine", width=100, anchor=tk.CENTER)
+    tree.column("Payment_Method", width=100, anchor=tk.CENTER)
+
+    # Create headings
+    tree.heading("#0", text="", anchor=tk.CENTER)
+    tree.heading("Fine_ID", text="Fine_ID", anchor=tk.CENTER)
+    tree.heading("Standard_No", text="Standard_No", anchor=tk.CENTER)
+    tree.heading("Member_ID", text="Member_ID", anchor=tk.CENTER)
+    tree.heading("Fine_Date", text="Fine_Date", anchor=tk.CENTER)
+    tree.heading("Amount", text="Amount", anchor=tk.CENTER)
+    tree.heading("Reason_Fine", text="Reason_Fine", anchor=tk.CENTER)
+    tree.heading("Payment_Method", text="Payment_Method", anchor=tk.CENTER)
+
+    for row in search_results:
+        tree.insert("", tk.END, values=row)
+
+
+def search_fine(parent_frame):
+    # Create the search entry
+    search_entry = tk.Entry(parent_frame, width=40, bg='white')
+    search_entry.place(x=300, y=10)
+
+    # Create the search button
+    search_button = tk.Button(parent_frame, text="Search", fg='#fff', bg='#FF0000', font=('Arial', 9, 'bold'),
+                              command=lambda: fees(search_entry))
+    search_button.place(x=550, y=8)
+
+
+def fine():
+    addgui = newFrame()
+    back = goBack(addgui)
+    back.place(x=40, y=10)
+    search_fine(addgui)
+
+    # Create a Treeview widget
+    tree = ttk.Treeview(addgui)
+    tree.place(x=20, y=45, width=830, height=340)
+
+    # Define columns
+    tree["columns"] = ("Fine_ID", "Loan_ID", "Payment_Date", "Amount", "Reason_Fine", "Payment_Method")
+
+    # Format columns
+    tree.column("#0", width=0, stretch=tk.NO)
     tree.column("Fine_ID", width=120, anchor=tk.CENTER)
-    tree.column("Standard_No", width=120, anchor=tk.CENTER)
-    tree.column("Member_ID", width=120, anchor=tk.CENTER)
-    tree.column("Fine_Date", width=120, anchor=tk.CENTER)
+    tree.column("Loan_ID", width=120, anchor=tk.CENTER)
+    tree.column("Payment_Date", width=120, anchor=tk.CENTER)
     tree.column("Amount", width=110, anchor=tk.CENTER)
     tree.column("Reason_Fine", width=120, anchor=tk.CENTER)
     tree.column("Payment_Method", width=118, anchor=tk.CENTER)
@@ -1566,9 +1888,8 @@ def fine():
     # Create headings
     tree.heading("#0", text="", anchor=tk.CENTER)
     tree.heading("Fine_ID", text="Fine ID", anchor=tk.CENTER)
-    tree.heading("Standard_No", text="Standard No", anchor=tk.CENTER)
-    tree.heading("Member_ID", text="Member ID", anchor=tk.CENTER)
-    tree.heading("Fine_Date", text="Fine Date", anchor=tk.CENTER)
+    tree.heading("Loan_ID", text="Loan ID", anchor=tk.CENTER)
+    tree.heading("Payment_Date", text="Payment Date", anchor=tk.CENTER)
     tree.heading("Amount", text="Amount", anchor=tk.CENTER)
     tree.heading("Reason_Fine", text="Reason of Fine", anchor=tk.CENTER)
     tree.heading("Payment_Method", text="Payment Method", anchor=tk.CENTER)
@@ -1582,15 +1903,16 @@ def fine():
     for data in fine_data:
         tree.insert("", tk.END, values=data)
 
-
-    payment_button = tk.Button(addgui, text=" Mode of Payment", fg='#fff', bg='#006400', font=('Arial', 10, 'bold'), width=18,
-                           command=lambda: payment_callback(tree, payment_button, back))
+    payment_button = tk.Button(addgui, text=" Mode of Payment", fg='#fff', bg='#006400', font=('Arial', 10, 'bold'),
+                               width=18,
+                               command=lambda: payment_callback(tree, payment_button, back))
     payment_button.place(x=350, y=391)
 
     # Scrollbar
     scrollbar = ttk.Scrollbar(addgui, orient="vertical", command=tree.yview)
     scrollbar.place(x=843, y=45, height=340)
     tree.configure(yscrollcommand=scrollbar.set)
+
 
 # def log_out():
 #     print("logout button clicked")
