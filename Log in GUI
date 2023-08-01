@@ -1,0 +1,264 @@
+# GUI ONLY----------------------------------------------------------------------------------------------------------------
+import tkinter as tk
+from tkinter import ttk
+import sqlite3
+import datetime
+import time
+from datetime import date, timedelta
+import tkinter.messagebox as messagebox
+from tkcalendar import DateEntry
+
+conn = sqlite3.connect('system.db')
+
+# CREATE GUI WINDOW
+lmsGui = tk.Tk()
+lmsGui.title("Library System Dashboard")
+# SET GUI DIMENSIONS
+lmsGui.geometry("900x550+250+100")
+
+
+
+# GLOBAL VARIABLE-----------------------------------------------------------------------------------------------------------
+l = None
+
+def Screen(lmsGui):
+    # LOG IN DESTROY L FRAME
+    def Login():
+        l.destroy()
+    l = tk.Frame(lmsGui, height=550, width=900, bg='#0d2a4f')
+    l.place(x=0, y=115)
+    l.focus()
+    button = tk.Button(l, text='Log In', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=15,
+                  command=Login)
+    button.place(x=350, y=350)
+
+    return l
+
+# LOG OUT RECREATES LOG IN SCREEN
+def recreate_screen():
+    global l
+    if l is not None and l.winfo_exists():
+        l.destroy()
+    l = Screen(lmsGui)
+
+
+
+# GUI LIBRARY HEADER--------------------------------------------------------------------------------------------------------
+def Header(lmsGui):
+    fm = tk.Frame(lmsGui, height=550, width=900, bg='#fff')
+    fm.place(x=0, y=0)
+    f_m = tk.Frame(lmsGui, height=350, width=850, bg='#0d2a4f', relief='ridge', bd=10)
+    f_m.place(x=22, y=130)
+    f_m = tk.Frame(lmsGui, height=328, width=828, bg='white')
+    f_m.place(x=32, y=140)
+    fm2 = tk.Frame(lmsGui, bg='#0d2a4f', height=80, width=900)
+    fm2.place(x=0, y=0)
+    lbb = tk.Label(lmsGui, bg='#0d2a4f')
+    lbb.place(x=70, y=5)
+    ig = tk.PhotoImage(file='library.png')
+    lbb.config(image=ig)
+    lb3 = tk.Label(lmsGui, text='LIBRARY MATERIAL DASHBOARD', fg='#fff', bg='#0d2a4f', font=('Arial', 30, 'bold'))
+    lb3.place(x=160, y=17)
+    return ig
+
+
+# GUI DISPLAY CURRENT DATE
+def Header2():
+    dev = tk.Label(lmsGui, text="Developed by: De Omania | Del Rosario ", fg='black', bg='#fff',
+                   font=('Arial', 10, 'bold'))
+    dev.place(x=40, y=83)
+    today = date.today()
+    dat = tk.Label(lmsGui, text='Date : ', bg='#fff', fg='black', font=('Arial', 10, 'bold'))
+    dat.place(x=730, y=83)
+
+    def update_date_label():
+        today = date.today()
+        dat2.config(text=today)
+        # Schedule the function to run again after 1000ms (1 second)
+        lmsGui.after(1000, update_date_label)
+
+    dat2 = tk.Label(lmsGui, text=today, bg='#fff', fg='black', font=('Arial', 10, 'bold'))
+    dat2.place(x=775, y=83)
+    update_date_label()
+
+
+# DISPLAY CLOCK
+def clock(lb1_hr, lb3_hr, lb5_hr, lb7_hr):
+    h = str(time.strftime("%H"))
+    m = str(time.strftime("%M"))
+    s = str(time.strftime("%S"))
+
+    if int(h) >= 12 and int(m) >= 0:
+        lb7_hr.config(text="PM")
+        if int(h) > 12:
+            h = int(h) - 12
+            h = str(h)
+    lb1_hr.config(text=h)
+    lb3_hr.config(text=m)
+    lb5_hr.config(text=s)
+    lb1_hr.after(200, lambda: clock(lb1_hr, lb3_hr, lb5_hr, lb7_hr))
+
+
+def dispClock():
+    # DISPLAY HOURS
+    lb1_hr = tk.Label(lmsGui, text='00', font=('times new roman', 20, 'bold'), bg='#cf0404', fg='white')
+    lb1_hr.place(x=100, y=400, width=60, height=30)
+    # DISPLAY MINUTES
+    lb3_hr = tk.Label(lmsGui, text='00', font=('times new roman', 20, 'bold'), bg='#27db0f', fg='white')
+    lb3_hr.place(x=170, y=400, width=60, height=30)
+    # DISPLAY SECONDS
+    lb5_hr = tk.Label(lmsGui, text='00', font=('times new roman', 20, 'bold'), bg='#06afd1', fg='white')
+    lb5_hr.place(x=240, y=400, width=60, height=30)
+    # DISPLAY AM/PM
+    lb7_hr = tk.Label(lmsGui, text='AM', font=('times new roman', 17, 'bold'), bg='#2b1dff', fg='white')
+    lb7_hr.place(x=310, y=400, width=60, height=30)
+    clock(lb1_hr, lb3_hr, lb5_hr, lb7_hr)
+
+
+# DISPLAY LIB IMAGE
+def homescreenImage(lmsGui):
+    canvas = tk.Canvas(lmsGui, bg='black', width=400, height=300)
+    canvas.place(x=445, y=152)
+    photo = tk.PhotoImage(file='bb.png')
+    canvas.create_image(0, 0, image=photo, anchor=tk.NW)
+    return photo
+
+
+# FUNCTION TO INITIALIZE BUTTONS
+def addLibMat(button):
+    button.config(text='Add Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183)
+    logo = tk.PhotoImage(file='bt1.png')
+    button.config(image=logo, compound=tk.LEFT)
+    small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
+    button.image = small_logo  # Store a reference to the image to prevent garbage collection
+    button.config(image=small_logo)
+
+
+def remLibMat(button):
+    button.config(text='Delete Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center',
+                  width=183)
+    logo = tk.PhotoImage(file='bt5.png')
+    button.config(image=logo, compound=tk.LEFT)
+    small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
+    button.image = small_logo  # Store a reference to the image to prevent garbage collection
+    button.config(image=small_logo)
+
+
+def dspLibMat(button):
+    button.config(text='Display Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center',
+                  width=183)
+    logo = tk.PhotoImage(file='bt2.png')
+    button.config(image=logo, compound=tk.LEFT)
+    small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
+    button.image = small_logo  # Store a reference to the image to prevent garbage collection
+    button.config(image=small_logo)
+
+
+def borLibMat(button):
+    button.config(text='Borrow Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center',
+                  width=183)
+    logo = tk.PhotoImage(file='bt3.png')
+    button.config(image=logo, compound=tk.LEFT)
+    small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
+    button.image = small_logo  # Store a reference to the image to prevent garbage collection
+    button.config(image=small_logo)
+
+
+def retLibMat(button):
+    button.config(text='Return Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center',
+                  width=183)
+    logo = tk.PhotoImage(file='bt4.png')
+    button.config(image=logo, compound=tk.LEFT)
+    small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
+    button.image = small_logo  # Store a reference to the image to prevent garbage collection
+    button.config(image=small_logo)
+
+
+def dspMember(button):
+    button.config(text='List Members', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183)
+    logo = tk.PhotoImage(file='bt6.png')
+    button.config(image=logo, compound=tk.LEFT)
+    small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
+    button.image = small_logo  # Store a reference to the image to prevent garbage collection
+    button.config(image=small_logo)
+
+
+def dspLoan(button):
+    button.config(text='Record Log', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183)
+    logo = tk.PhotoImage(file='bt8.png')
+    button.config(image=logo, compound=tk.LEFT)
+    small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
+    button.image = small_logo  # Store a reference to the image to prevent garbage collection
+    button.config(image=small_logo)
+
+
+def fineDetail(button):
+    button.config(text='View Late Fees', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center',
+                  width=183)
+    logo = tk.PhotoImage(file='bt7.png')
+    button.config(image=logo, compound=tk.LEFT)
+    small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
+    button.image = small_logo  # Store a reference to the image to prevent garbage collection
+    button.config(image=small_logo)
+
+# GO BACK TO HOMEPAGE
+def goBack(homePage):
+    go_back_button = tk.Button(homePage, text="Go Back", fg='#fff', bg='#FF0000', command=lambda: homePage.destroy())
+    return go_back_button
+
+# MAIN
+
+Banner = Header(lmsGui)
+DateDev = Header2()
+hsi = homescreenImage(lmsGui)
+
+add_button = tk.Button(lmsGui)
+add_button.place(x=40, y=180)
+
+addLibMat(add_button)
+
+rem_button = tk.Button(lmsGui)
+rem_button.place(x=240, y=180)
+
+bt2 = remLibMat(rem_button)
+
+disp_button = tk.Button(lmsGui)
+disp_button.place(x=40, y=235)
+
+bt3 = dspLibMat(disp_button)
+
+bor_button = tk.Button(lmsGui)
+bor_button.place(x=240, y=235)
+
+bt4 = borLibMat(bor_button)
+
+ret_button = tk.Button(lmsGui)
+ret_button.place(x=40, y=290)
+
+bt5 = retLibMat(ret_button)
+
+mem_button = tk.Button(lmsGui)
+mem_button.place(x=240, y=290)
+
+bt6 = dspMember(mem_button)
+
+loan_button = tk.Button(lmsGui)
+loan_button.place(x=40, y=345)
+
+bt7 = dspLoan(loan_button)
+
+fine_button = tk.Button(lmsGui)
+fine_button.place(x=240, y=345)
+
+bt8 = fineDetail(fine_button)
+
+whatTime = dispClock()
+
+activate_button = tk.Button(lmsGui, text="log Out", fg='#fff', bg='#FF0000', command=recreate_screen)
+activate_button.place(x=40, y=500)
+
+Logout = Screen(lmsGui)
+
+# MAKE GUI VISIBLE
+lmsGui.resizable(False, False)
+lmsGui.mainloop()
