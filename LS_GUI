@@ -1,3 +1,4 @@
+# BSIT 2-1: De Omania | Del Rosario - IM/IP
 import tkinter as tk
 from tkinter import ttk
 import sqlite3
@@ -6,41 +7,146 @@ import time
 from datetime import date, timedelta
 import tkinter.messagebox as messagebox
 from tkcalendar import DateEntry
+from PIL import Image, ImageTk
 
 conn = sqlite3.connect('system.db')
 
 # CREATE GUI WINDOW
 lmsGui = tk.Tk()
-lmsGui.title("Library System Dashboard")
+lmsGui.title("Library System")
 # SET GUI DIMENSIONS
 lmsGui.geometry("900x550+250+100")
 
+
+
+# GLOBAL VARIABLE-----------------------------------------------------------------------------------------------------------
+l = None
+
+def Screen(lmsGui):
+    # LOG IN DESTROY L FRAME
+    def Login():
+        username = user.get()
+        password = code.get()
+
+        if username == 'admin' and password == '1234':
+            l.destroy()
+
+        elif username != 'admin' and password != '1234':
+            messagebox.showerror("Invalid", "invalid username and password")
+        elif password != "1234":
+            messagebox.showerror("Invalid", "invalid password")
+        elif username != "admin":
+            messagebox.showerror("Invalid", "invalid username")
+
+    l = tk.Frame(lmsGui, height=700, width=1000, bg="#fff")
+    l.place(x=0, y=0)
+    l.focus()
+    #insert here
+    img = Image.open('login1.png')  # Open the image
+    new_width = 460
+    new_height = 400
+    resized_img = img.resize((new_width, new_height))  # Resize the image
+    tk_img = ImageTk.PhotoImage(resized_img)  # Convert the resized image to a Tkinter-compatible format
+
+    img_label = tk.Label(l, image=tk_img, bg='white')
+    img_label.image = tk_img  # Keep a reference to the image to avoid garbage collection
+    img_label.place(x=0, y=60)
+
+    frame1 = tk.Frame(l, width=350, height=350, bg="white")
+    frame1.place(x=480, y=100)
+
+    heading01 = tk.Label(frame1, text='Sign in', fg='#57a1f8', bg='white', font=('Microsoft YaHei UI light', 23, 'bold'))
+    heading01.place(x=100, y=5)
+    ###################################################################
+    def on_enter(e):
+        user.delete(0, 'end')
+
+    def on_leave(e):
+        name = user.get()
+        if name == '':
+            user.insert(0, 'Username')
+
+    user = tk.Entry(frame1, width=25, fg='black', border=0, bg="white", font=('Microsoft YaHei UI light', 11))
+    user.place(x=30, y=80)
+    user.insert(0, 'Username')
+    user.bind('<FocusIn>', on_enter)
+    user.bind('<FocusOut>', on_leave)
+
+    tk.Frame(frame1, width=295, height=2, bg='black').place(x=25, y=107)
+    ##############-----------------------------------------------------------
+    def on_enter(e):
+        code.delete(0, 'end')
+        code.config(show='*')
+
+    def on_leave(e):
+        name = code.get()
+        if name == '':
+            code.insert(0, 'Password')
+
+    code = tk.Entry(frame1, width=25, fg='black', border=0, bg="white", font=('Microsoft YaHei UI light', 11))
+    code.place(x=30, y=150)
+    code.insert(0, 'Password')
+    code.bind('<FocusIn>', on_enter)
+    code.bind('<FocusOut>', on_leave)
+
+    tk.Frame(frame1, width=295, height=2, bg='black').place(x=25, y=177)
+
+    #################################################################################
+    tk.Button(frame1, width=39, pady=7, text='Sign in', bg='#57a1f8', fg='white', border=0, command=Login).place(x=35,
+                                                                                                               y=204)
+    return l
+
+# LOG OUT RECREATES LOG IN SCREEN
+def recreate_screen():
+    global l
+    if l is not None and l.winfo_exists():
+        l.destroy()
+    l = Screen(lmsGui)
+
+
+
+def add_image_to_frame(frame):
+    # Create a PhotoImage object with your image file path (replace 'path_to_image.png' with your actual image file)
+    image = tk.PhotoImage(file='26102.png')
+
+    # Create a Label to hold the image
+    image_label = tk.Label(frame, image=image, bg='#fff')
+
+    # Keep a reference to the image to prevent it from being garbage collected
+    image_label.image = image
+
+    # Place the Label within the frame
+    image_label.place(x=-3, y=0)
 # GUI LIBRARY HEADER
 def Header(lmsGui):
     fm = tk.Frame(lmsGui, height=550, width=900, bg='#fff')
     fm.place(x=0, y=0)
+    add_image_to_frame(fm)
+
     f_m = tk.Frame(lmsGui, height=350, width=850, bg='#0d2a4f', relief='ridge', bd=10)
-    f_m.place(x=22, y=130)
-    f_m = tk.Frame(lmsGui, height=328, width=828, bg='white')
-    f_m.place(x=32, y=140)
-    fm2 = tk.Frame(lmsGui, bg='#0d2a4f', height=80, width=900)
+    f_m.place(x=28, y=135)
+    f_m = tk.Frame(lmsGui, height=328, width=828, bg='#020D1D')
+    f_m.place(x=35, y=145)
+    fm2 = tk.Frame(lmsGui, bg='#0d2a4f', height=110, width=900)
     fm2.place(x=0, y=0)
+    fm3 = tk.Frame(lmsGui, bg='#0d2a4f', height=110, width=900)
+    fm3.place(x=0, y=510)
     lbb = tk.Label(lmsGui, bg='#0d2a4f')
     lbb.place(x=70, y=5)
-    ig = tk.PhotoImage(file='library.png')
+    ig = tk.PhotoImage(file='Logo.png')
     lbb.config(image=ig)
-    lb3 = tk.Label(lmsGui, text='LIBRARY MATERIAL DASHBOARD', fg='#fff', bg='#0d2a4f', font=('Arial', 30, 'bold'))
+    lb3 = tk.Label(lmsGui, text='LIBRARY MATERIAL DASHBOARD', fg='#fff', bg='#0d2a4f', font=('Montserrat', 30))
     lb3.place(x=160, y=17)
     return ig
 
 
 # GUI DISPLAY CURRENT DATE
 def Header2():
-    dev = tk.Label(lmsGui, text="Developed by: De Omania | Del Rosario ", fg='black', bg='#fff',
+    dev = tk.Label(lmsGui, text="Developed by: De Omania | Del Rosario ", fg='white', bg='#0d2a4f',
                    font=('Arial', 10, 'bold'))
     dev.place(x=40, y=83)
     today = date.today()
-    dat = tk.Label(lmsGui, text='Date : ', bg='#fff', fg='black', font=('Arial', 10, 'bold'))
+    dat = tk.Label(lmsGui, text='Date : ', bg='#0d2a4f', fg='white', font=('Arial', 10, 'bold'))
     dat.place(x=730, y=83)
 
     def update_date_label():
@@ -49,7 +155,7 @@ def Header2():
         # Schedule the function to run again after 1000ms (1 second)
         lmsGui.after(1000, update_date_label)
 
-    dat2 = tk.Label(lmsGui, text=today, bg='#fff', fg='black', font=('Arial', 10, 'bold'))
+    dat2 = tk.Label(lmsGui, text=today, bg='#0d2a4f', fg='white', font=('Arial', 10, 'bold'))
     dat2.place(x=775, y=83)
     update_date_label()
 
@@ -74,16 +180,16 @@ def clock(lb1_hr, lb3_hr, lb5_hr, lb7_hr):
 def dispClock():
     # DISPLAY HOURS
     lb1_hr = tk.Label(lmsGui, text='00', font=('times new roman', 20, 'bold'), bg='#cf0404', fg='white')
-    lb1_hr.place(x=100, y=400, width=60, height=30)
+    lb1_hr.place(x=100, y=430, width=60, height=30)
     # DISPLAY MINUTES
     lb3_hr = tk.Label(lmsGui, text='00', font=('times new roman', 20, 'bold'), bg='#27db0f', fg='white')
-    lb3_hr.place(x=170, y=400, width=60, height=30)
+    lb3_hr.place(x=170, y=430, width=60, height=30)
     # DISPLAY SECONDS
     lb5_hr = tk.Label(lmsGui, text='00', font=('times new roman', 20, 'bold'), bg='#06afd1', fg='white')
-    lb5_hr.place(x=240, y=400, width=60, height=30)
+    lb5_hr.place(x=240, y=430, width=60, height=30)
     # DISPLAY AM/PM
     lb7_hr = tk.Label(lmsGui, text='AM', font=('times new roman', 17, 'bold'), bg='#2b1dff', fg='white')
-    lb7_hr.place(x=310, y=400, width=60, height=30)
+    lb7_hr.place(x=310, y=430, width=60, height=30)
     clock(lb1_hr, lb3_hr, lb5_hr, lb7_hr)
 
 
@@ -98,104 +204,148 @@ def homescreenImage(lmsGui):
 
 # FUNCTION TO INITIALIZE BUTTONS
 def addLibMat(button, command):
-    button.config(text='Add Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
-                  command=command)
-    logo = tk.PhotoImage(file='bt1.png')
-    button.config(image=logo, compound=tk.LEFT)
-    small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
-    button.image = small_logo  # Store a reference to the image to prevent garbage collection
-    button.config(image=small_logo)
+    button_font = ('Montserrat', 13, 'normal')
+    button.config(text=" Add Material", compound='left', fg='#fff',  bg='#020D1D', bd=0, font=button_font,  command=command, width=170)
 
+    logo = tk.PhotoImage(file='image_5.png')
+
+    # Adjust the size of the image using the subsample method
+    width = 27 # Replace with your desired width
+    height = 27 # Replace with your desired height
+    small_logo = logo.subsample(logo.width() // width, logo.height() // height)
+
+    button.config(image=small_logo, compound=tk.LEFT)
+    button.image = small_logo  # Store a reference
 
 def remLibMat(button, command):
-    button.config(text='Delete Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center',
-                  width=183,
-                  command=command)
-    logo = tk.PhotoImage(file='bt5.png')
-    button.config(image=logo, compound=tk.LEFT)
-    small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
-    button.image = small_logo  # Store a reference to the image to prevent garbage collection
-    button.config(image=small_logo)
+    button_font = ('Montserrat', 13, 'normal')
+    button.config(text="Delete Material", compound='left', fg='#fff', bg='#020D1D', bd=0, font=button_font,  command=command, width=170)
 
+    logo = tk.PhotoImage(file='image_6.png')
+
+    # Adjust the size of the image using the subsample method
+    width = 27  # Replace with your desired width
+    height = 27  # Replace with your desired height
+    small_logo = logo.subsample(logo.width() // width, logo.height() // height)
+
+    button.config(image=small_logo, compound=tk.LEFT)
+    button.image = small_logo  # Store a reference
 
 def dspLibMat(button, command):
-    button.config(text='Display Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center',
-                  width=183,
-                  command=command)
-    logo = tk.PhotoImage(file='bt2.png')
-    button.config(image=logo, compound=tk.LEFT)
-    small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
-    button.image = small_logo  # Store a reference to the image to prevent garbage collection
-    button.config(image=small_logo)
+    button_font = ('Montserrat', 13, 'normal')
+    button.config(text=" Display Material", compound='left', fg='#fff', bg='#020D1D', bd=0, font=button_font,  command=command, width=170)
+
+    logo = tk.PhotoImage(file='image_3.png')
+
+    # Adjust the size of the image using the subsample method
+    width = 27  # Replace with your desired width
+    height = 27  # Replace with your desired height
+    small_logo = logo.subsample(logo.width() // width, logo.height() // height)
+
+    button.config(image=small_logo, compound=tk.LEFT)
+    button.image = small_logo  # Store a reference
 
 
 def borLibMat(button, command):
-    button.config(text='Borrow Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center',
-                  width=183,
-                  command=command)
-    logo = tk.PhotoImage(file='bt3.png')
-    button.config(image=logo, compound=tk.LEFT)
-    small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
-    button.image = small_logo  # Store a reference to the image to prevent garbage collection
-    button.config(image=small_logo)
+    button_font = ('Montserrat', 13, 'normal')
+    button.config(text=" Borrow Material", compound='left', fg='#fff', bg='#020D1D', bd=0, font=button_font,  command=command, width=170)
+
+    logo = tk.PhotoImage(file='image_8.png')
+
+    # Adjust the size of the image using the subsample method
+    width = 27  # Replace with your desired width
+    height = 27  # Replace with your desired height
+    small_logo = logo.subsample(logo.width() // width, logo.height() // height)
+
+    button.config(image=small_logo, compound=tk.LEFT)
+    button.image = small_logo  # Store a reference
 
 
 def retLibMat(button, command):
-    button.config(text='Return Material', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center',
-                  width=183,
-                  command=command)
-    logo = tk.PhotoImage(file='bt4.png')
-    button.config(image=logo, compound=tk.LEFT)
-    small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
-    button.image = small_logo  # Store a reference to the image to prevent garbage collection
-    button.config(image=small_logo)
+    button_font = ('Montserrat', 13, 'normal')
+    button.config(text=" Return Material", compound='left', fg='#fff', bg='#020D1D', bd=0, font=button_font,  command=command, width=170)
+
+    logo = tk.PhotoImage(file='image_7.png')
+
+    # Adjust the size of the image using the subsample method
+    width = 27  # Replace with your desired width
+    height = 27  # Replace with your desired height
+    small_logo = logo.subsample(logo.width() // width, logo.height() // height)
+
+    button.config(image=small_logo, compound=tk.LEFT)
+    button.image = small_logo  # Store a reference
 
 
 def dspMember(button, command):
-    button.config(text='List Members', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
-                  command=command)
-    logo = tk.PhotoImage(file='bt6.png')
-    button.config(image=logo, compound=tk.LEFT)
-    small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
-    button.image = small_logo  # Store a reference to the image to prevent garbage collection
-    button.config(image=small_logo)
+    button_font = ('Montserrat', 13, 'normal')
+    button.config(text=" List Members", compound='left', fg='#fff', bg='#020D1D', bd=0, font=button_font,  command=command, width=170)
+
+    logo = tk.PhotoImage(file='image_2.png')
+
+    # Adjust the size of the image using the subsample method
+    width = 27  # Replace with your desired width
+    height = 27  # Replace with your desired height
+    small_logo = logo.subsample(logo.width() // width, logo.height() // height)
+
+    button.config(image=small_logo, compound=tk.LEFT)
+    button.image = small_logo  # Store a reference
 
 
 def dspLoan(button, command):
-    button.config(text='Record Log', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=183,
-                  command=command)
-    logo = tk.PhotoImage(file='bt8.png')
-    button.config(image=logo, compound=tk.LEFT)
-    small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
-    button.image = small_logo  # Store a reference to the image to prevent garbage collection
-    button.config(image=small_logo)
+    button_font = ('Montserrat', 13, 'normal')
+    button.config(text=" Record Log", compound='left', fg='#fff', bg='#020D1D', bd=0, font=button_font,  command=command, width=170)
+
+    logo = tk.PhotoImage(file='image_1.png')
+
+    # Adjust the size of the image using the subsample method
+    width = 27  # Replace with your desired width
+    height = 27  # Replace with your desired height
+    small_logo = logo.subsample(logo.width() // width, logo.height() // height)
+
+    button.config(image=small_logo, compound=tk.LEFT)
+    button.image = small_logo  # Store a reference
 
 
 def fineDetail(button, command):
-    button.config(text='View Late Fees', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center',
-                  width=183,
-                  command=command)
-    logo = tk.PhotoImage(file='bt7.png')
-    button.config(image=logo, compound=tk.LEFT)
-    small_logo = logo.subsample(1, 1)  # Adjust the subsample factor as needed
-    button.image = small_logo  # Store a reference to the image to prevent garbage collection
-    button.config(image=small_logo)
+    button_font = ('Montserrat', 13, 'normal')
+    button.config(text=" View Late Fees", compound='left', fg='#fff', bg='#020D1D', bd=0, font=button_font,  command=command, width=170)
 
+    logo = tk.PhotoImage(file='image_4.png')
 
-# def logOut(command):
-#     button = tk.Button(text='Log Out', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), width=15, command=command)
-#     button.place(x=40, y=320)
+    # Adjust the size of the image using the subsample method
+    width = 27  # Replace with your desired width
+    height = 27  # Replace with your desired height
+    small_logo = logo.subsample(logo.width() // width, logo.height() // height)
+
+    button.config(image=small_logo, compound=tk.LEFT)
+    button.image = small_logo  # Store a reference
+
 
 # RE-DIRECT FRAME
 def newFrame():
-    addfm = tk.Frame(lmsGui, bg='#00008B', width=900, height=440, relief='ridge', bd=10)
+    addfm = tk.Frame(lmsGui, bg='#0d2a4f', width=900, height=440, bd=10, relief='ridge')
     addfm.place(x=0, y=110)
     return addfm
 
 
 # GO BACK TO HOMEPAGE
 def goBack(homePage):
-    go_back_button = tk.Button(homePage, text="Go Back", fg='#fff', bg='#FF0000', command=lambda: homePage.destroy())
+    button_font = ('Montserrat', 12, 'normal')
+    go_back_button = tk.Button(homePage, text=" Go Back", fg='#fff',bd=0, bg='#0d2a4f', command=lambda: homePage.destroy(), font=button_font)
+    # Load the image for "Go Back" button
+    img = Image.open('i_2.png')  # Replace 'go_back_icon.png' with the actual file name
+
+    # Resize the image if needed
+    new_width = 30
+    new_height = 30
+    resized_img = img.resize((new_width, new_height))
+
+    # Convert the resized image to a Tkinter-compatible format
+    tk_img = ImageTk.PhotoImage(resized_img)
+
+    # Set the image for the button
+    go_back_button.config(image=tk_img, compound=tk.LEFT)
+    go_back_button.image = tk_img  # Keep a reference to the image to avoid garbage collection
     return go_back_button
 
 
@@ -203,28 +353,29 @@ def goBack(homePage):
 def add_books():
     addgui = newFrame()
     back = goBack(addgui)
-    back.place(x=40, y=10)
-    ad = tk.Label(addgui, text='Standard Number:', fg='#fff', bg='#00008B', font=('times new roman', 12))
+    button_font = ('Montserrat', 10)
+    back.place(x=40, y=4)
+    ad = tk.Label(addgui, text='Standard Number:', fg='#fff', bg='#0d2a4f', font=button_font)
     ad.place(x=130, y=50)
     data = tk.Entry(addgui, width=70, bg='white')
     data.place(x=290, y=50)
-    ad1 = tk.Label(addgui, text='Publisher:', fg='#fff', bg='#00008B', font=('times new roman', 12))
+    ad1 = tk.Label(addgui, text='Publisher:', fg='#fff', bg='#0d2a4f', font=button_font)
     ad1.place(x=130, y=100)
     data1 = tk.Entry(addgui, width=70, bg='white')
     data1.place(x=290, y=100)
-    ad2 = tk.Label(addgui, text='Publish Date:', fg='#fff', bg='#00008B', font=('times new roman', 12))
+    ad2 = tk.Label(addgui, text='Publish Date:', fg='#fff', bg='#0d2a4f', font=button_font)
     ad2.place(x=130, y=150)
     data2 = DateEntry(addgui, width=12, background='green', foreground='white', borderwidth=2)
     data2.place(x=290, y=150)
-    ad3 = tk.Label(addgui, text='Author:', fg='#fff', bg='#00008B', font=('times new roman', 12))
+    ad3 = tk.Label(addgui, text='Author:', fg='#fff', bg='#0d2a4f', font=button_font)
     ad3.place(x=130, y=200)
     data3 = tk.Entry(addgui, width=70, bg='white')
     data3.place(x=290, y=200)
-    ad4 = tk.Label(addgui, text='Title:', fg='#fff', bg='#00008B', font=('times new roman', 12))
+    ad4 = tk.Label(addgui, text='Title:', fg='#fff', bg='#0d2a4f', font=button_font)
     ad4.place(x=130, y=250)
     data4 = tk.Entry(addgui, width=70, bg='white')
     data4.place(x=290, y=250)
-    ad5 = tk.Label(addgui, text='Item Type:', fg='#fff', bg='#00008B', font=('times new roman', 12))
+    ad5 = tk.Label(addgui, text='Item Type:', fg='#fff', bg='#0d2a4f', font=button_font)
     ad5.place(x=130, y=300)
     data5 = ttk.Combobox(addgui, values=["Book", "Journal"], width=67, state="readonly")
     data5.place(x=290, y=300)
@@ -262,9 +413,25 @@ def add_books():
             conn.rollback()
             messagebox.showerror("Error", f"An error occurred: {e}")
 
-    addData = tk.Button(addgui, text='Add Material', fg='#fff', bg='#008000', font=('Arial', 10, 'bold'), width=52,
-                        command=add_data_to_db)
-    addData.place(x=290, y=350)
+    img = Image.open('i_1.png')  # Replace 'login1.png' with the actual file name
+
+    # Resize the image if needed
+    new_width = 20
+    new_height = 20
+    resized_img = img.resize((new_width, new_height))
+
+    # Convert the resized image to a Tkinter-compatible format
+    tk_img = ImageTk.PhotoImage(resized_img)
+
+    # Create the "Add Material" button
+    addData = tk.Button(addgui, text='Add Material', fg='#fff', bg='#107C55', font=('Montserrat', 12, 'normal'), bd=0,
+                        width=876, height=29, command=add_data_to_db, compound=tk.LEFT)
+
+    # Set the image for the button
+    addData.config(image=tk_img)
+    addData.image = tk_img  # Keep a reference to the image to avoid garbage collection
+
+    addData.place(x=0, y=386)
 
 
 # FUNCTION FOR EVERY TREEVIEW INTERFACE (LIST OF MATERIALS)
@@ -437,16 +604,32 @@ def search_title(parent_frame):
     search_entry = tk.Entry(parent_frame, width=40, bg='white')
     search_entry.place(x=300, y=10)
 
-    # Create the search button
-    search_button = tk.Button(parent_frame, text="Search", fg='#fff', bg='#FF0000', font=('Arial', 9, 'bold'),
-                              command=lambda: search_materials(search_entry))
-    search_button.place(x=550, y=8)
+    # Load the image for the "Search" button
+    img = Image.open('i_4.png')  # Replace 'search_icon.png' with the actual file name
+
+    # Resize the image if needed
+    new_width = 30
+    new_height = 30
+    resized_img = img.resize((new_width, new_height))
+
+    # Convert the resized image to a Tkinter-compatible format
+    tk_img = ImageTk.PhotoImage(resized_img)
+
+    # Create the "Search" button
+    search_button = tk.Button(parent_frame, text="Search", fg='#fff', bg='#0d2a4f', font=('Montserrat', 12), bd=0,
+                              command=lambda: search_materials(search_entry), compound=tk.LEFT)
+
+    # Set the image for the button
+    search_button.config(image=tk_img)
+    search_button.image = tk_img  # Keep a reference to the image to avoid garbage collection
+
+    search_button.place(x=550, y=2)
 
 
 def remove_books():
     addgui = newFrame()
     back = goBack(addgui)
-    back.place(x=40, y=10)
+    back.place(x=40, y=4)
 
     search_title(addgui)
 
@@ -476,15 +659,31 @@ def remove_books():
     remove_material = lambda: remove_selected_materials(tree_view)
 
     # Remove button
-    remove_button = tk.Button(addgui, text="Remove", fg='#fff', bg='#8B0000', font=('Arial', 10, 'bold'), width=10,
-                              command=remove_material)
-    remove_button.place(x=410, y=388)
+    img = Image.open('i_3.png')  # Replace 'remove_icon.png' with the actual file name
+
+    # Resize the image if needed
+    new_width = 20
+    new_height = 20
+    resized_img = img.resize((new_width, new_height))
+
+    # Convert the resized image to a Tkinter-compatible format
+    tk_img = ImageTk.PhotoImage(resized_img)
+
+    # Create the "Remove" button
+    remove_button = tk.Button(addgui, text=" Remove", fg='#fff', bd=0, bg='#691F1F', font=('Montserrat', 12), width=876, height=29,
+                              command=remove_material, compound=tk.LEFT)
+
+    # Set the image for the button
+    remove_button.config(image=tk_img)
+    remove_button.image = tk_img  # Keep a reference to the image to avoid garbage collection
+
+    remove_button.place(x=0, y=386)
 
 
 def disp_books():
     addgui = newFrame()
     back = goBack(addgui)
-    back.place(x=40, y=10)
+    back.place(x=40, y=4)
 
     itemtree = treeView(addgui)
     search_title(addgui)
@@ -586,15 +785,47 @@ def disp_books():
             input_win.protocol("WM_DELETE_WINDOW", on_window_close)
 
             # SAVE BUTTON
-            save_button = tk.Button(input_win, text="Save", fg='#fff', bg='#8B0000', font=('Arial', 10, 'bold'),
-                                    width=10,
-                                    command=lambda: new_info())
-            save_button.grid(row=11, columnspan=2, padx=10, pady=10)
+            img = Image.open('i_9.png')  # Replace 'save_icon.png' with the actual file name
+
+            # Resize the image if needed
+            new_width = 20
+            new_height = 20
+            resized_img = img.resize((new_width, new_height))
+
+            # Convert the resized image to a Tkinter-compatible format
+            tk_img = ImageTk.PhotoImage(resized_img)
+
+            # Create the "Save" button
+            save_button = tk.Button(input_win, text="Save", fg='#fff', bg='#0d2a4f', font=('Arial', 10, 'bold'),
+                                    width=100,
+                                    command=lambda: new_info(), compound=tk.LEFT)
+
+            # Set the image for the button
+            save_button.config(image=tk_img)
+            save_button.image = tk_img  # Keep a reference to the image to avoid garbage collection
+
+            save_button.grid(row=11, columnspan=2, padx=10, pady=10)  # Place the button on the GUI
 
     # EDIT BUTTON
-    edit_button = tk.Button(addgui, text="Edit", fg='#fff', bg='#28a7c7', font=('Arial', 10, 'bold'), width=10,
-                            command=edit_item)
-    edit_button.place(x=390, y=391)
+    img = Image.open('i_5.png')  # Replace 'edit_icon.png' with the actual file name
+
+    # Resize the image if needed
+    new_width = 20
+    new_height = 20
+    resized_img = img.resize((new_width, new_height))
+
+    # Convert the resized image to a Tkinter-compatible format
+    tk_img = ImageTk.PhotoImage(resized_img)
+
+    # Create the "Edit" button
+    edit_button = tk.Button(addgui, text="Edit", fg='#fff', bg='#6A6239', font=('Montserrat', 12, 'bold'), width=876, height=29, bd=0,
+                            command=edit_item, compound=tk.LEFT)
+
+    # Set the image for the button
+    edit_button.config(image=tk_img)
+    edit_button.image = tk_img  # Keep a reference to the image to avoid garbage collection
+
+    edit_button.place(x=0, y=386)
 
 
 def borrow_input_window(treeview, borrow_button, back):
@@ -670,7 +901,6 @@ def borrow_input_window(treeview, borrow_button, back):
                 WHERE L.Member_ID = ? AND F.Amount > 0
                 """, (member_id,))
                 existing_amount = cursor.fetchone()
-
                 if existing_amount:
                     # If there is a pending fine with a non-zero amount, show an error message
                     messagebox.showerror("Error", "Member has pending fines and cannot borrow a book.")
@@ -681,7 +911,6 @@ def borrow_input_window(treeview, borrow_button, back):
                 check_member_query = conn.execute(
                     "SELECT Member_ID FROM LOAN WHERE Member_ID = ? AND Return_Date IS NULL", (member_id_to_check,))
                 existing_loan = check_member_query.fetchone()
-
                 if existing_loan:
                     messagebox.showerror("Error", "Member can only borrow one book.")
                     input_win.focus()
@@ -713,9 +942,23 @@ def borrow_input_window(treeview, borrow_button, back):
 
     input_win.protocol("WM_DELETE_WINDOW", on_window_close)
 
-    # Confirm Borrow button
-    btn_confirm_borrow = tk.Button(input_win, text="Confirm borrow", fg='#fff', bg='#8B0000',
-                                   font=('Arial', 10, 'bold'), width=15, command=confirm_borrow)
+    img = Image.open('i_9.png')
+
+    # Resize the image if needed
+    new_width = 20
+    new_height = 20
+    resized_img = img.resize((new_width, new_height))
+
+    # Convert the resized image to a Tkinter-compatible format
+    tk_img = ImageTk.PhotoImage(resized_img)
+
+    # Create the "Confirm borrow" button
+    btn_confirm_borrow = tk.Button(input_win, text=" Confirm", fg='#fff', bg='#0d2a4f',
+                                   font=('Arial', 10, 'bold'), width=100, command=confirm_borrow, compound=tk.LEFT)
+
+    # Set the image for the button
+    btn_confirm_borrow.config(image=tk_img)
+    btn_confirm_borrow.image = tk_img
 
     btn_confirm_borrow['state'] = tk.DISABLED
     btn_confirm_borrow.place(x=270, y=300)
@@ -733,7 +976,7 @@ def borrow_input_window(treeview, borrow_button, back):
 def borrow_book():
     addgui = newFrame()
     back = goBack(addgui)
-    back.place(x=40, y=10)
+    back.place(x=40, y=4)
 
     treeview = treeView(addgui)
     search_title(addgui)
@@ -741,11 +984,27 @@ def borrow_book():
     borrowmaterial = lambda: borrow_input_window(treeview, borrow_button, back)
 
     # Borrow button
-    borrow_button = tk.Button(addgui, text="Borrow", fg='#fff', bg='#8B0000', font=('Arial', 10, 'bold'), width=10,
-                              command=borrowmaterial)
+    img = Image.open('image_8.png')  # Replace 'borrow_button_icon.png' with the actual file name
+
+    # Resize the image if needed
+    new_width = 20
+    new_height = 20
+    resized_img = img.resize((new_width, new_height))
+
+    # Convert the resized image to a Tkinter-compatible format
+    tk_img = ImageTk.PhotoImage(resized_img)
+
+    # Create the "Borrow" button
+    borrow_button = tk.Button(addgui, text="Borrow", fg='#fff', bg='#6A6239', font=('Arial', 12, 'bold'), width=876, height=29, bd=0,
+                              command=borrowmaterial, compound=tk.LEFT)
+
+    # Set the image for the button
+    borrow_button.config(image=tk_img)
+    borrow_button.image = tk_img  # Keep a reference to the image to avoid garbage collection
+
     # Disable button
     borrow_button['state'] = tk.DISABLED
-    borrow_button.place(x=410, y=391)
+    borrow_button.place(x=0, y=386)
 
     def selectrow(event):
         selected_items = treeview.selection()
@@ -813,15 +1072,31 @@ def search_widget(parent_frame):
     search_entry.place(x=300, y=10)
 
     # Create the search button
-    search_button = tk.Button(parent_frame, text="Search", fg='#fff', bg='#FF0000', font=('Arial', 9, 'bold'),
-                              command=lambda: search_return(search_entry))
-    search_button.place(x=550, y=8)
+    img = Image.open('i_4.png')  # Replace 'search_button_icon.png' with the actual file name
+
+    # Resize the image if needed
+    new_width = 30
+    new_height = 30
+    resized_img = img.resize((new_width, new_height))
+
+    # Convert the resized image to a Tkinter-compatible format
+    tk_img = ImageTk.PhotoImage(resized_img)
+
+    # Create the "Search" button
+    search_button = tk.Button(parent_frame, text="Search", fg='#fff', bg='#0d2a4f', font=('Montserrat', 12), bd=0,
+                              command=lambda: search_return(search_entry), compound=tk.LEFT)
+
+    # Set the image for the button
+    search_button.config(image=tk_img)
+    search_button.image = tk_img  # Keep a reference to the image to avoid garbage collection
+
+    search_button.place(x=550, y=2)
 
 
 def return_books():
     addgui = newFrame()
     back = goBack(addgui)
-    back.place(x=40, y=10)
+    back.place(x=40, y=4)
     tree = viewlogs(addgui)
     search_widget(addgui)
 
@@ -856,9 +1131,25 @@ def return_books():
             tree.delete(item)
 
     # Return button
-    return_button = tk.Button(addgui, text="Return", fg='#fff', bg='#8B0000', font=('Arial', 10, 'bold'), width=10,
-                              command=return_material)
-    return_button.place(x=390, y=391)
+    img = Image.open('image_7.png')  # Replace 'return_button_icon.png' with the actual file name
+
+    # Resize the image if needed
+    new_width = 20
+    new_height = 20
+    resized_img = img.resize((new_width, new_height))
+
+    # Convert the resized image to a Tkinter-compatible format
+    tk_img = ImageTk.PhotoImage(resized_img)
+
+    # Create the "Return" button
+    return_button = tk.Button(addgui, text="Return", fg='#fff', bg='#6A6239', font=('Arial', 12, 'bold'), width=876, height=29, bd=0,
+                              command=return_material, compound=tk.LEFT)
+
+    # Set the image for the button
+    return_button.config(image=tk_img)
+    return_button.image = tk_img  # Keep a reference to the image to avoid garbage collection
+
+    return_button.place(x=0, y=386)
 
 
 def editmember(tree_view, edit_button, add_button, remove_button, student_button, faculty_button, back):
@@ -915,18 +1206,6 @@ def editmember(tree_view, edit_button, add_button, remove_button, student_button
                 messagebox.showerror("Error", "Please fill in all the required fields.")
                 input_win.focus_force()
                 return
-################################################################################################################################################
-            # Remove any leading spaces, if any, from the contact number
-            contacts = contacts.lstrip()
-
-            # Validate the contact number
-            valid_contact = (contacts.startswith('+63') or contacts.startswith('63') or contacts.startswith('09')or contacts.startswith('9')) \
-                            and contacts.replace('+63', '').replace('63', '').replace('09', '').isdigit()
-
-            if not valid_contact or len(contacts) not in [10, 11, 12, 13]:
-                messagebox.showerror("Error", "Invalid Philippine contact number.")
-                input_win.focus_force()
-                return
 
             check_member_query = conn.execute("SELECT Member_ID FROM MEMBER WHERE Name = ? AND Member_ID <> ?", (name, Item_ID))
             existing_member = check_member_query.fetchone()
@@ -935,7 +1214,28 @@ def editmember(tree_view, edit_button, add_button, remove_button, student_button
                 messagebox.showerror("Error", "Member Name already exist.")
                 input_win.focus_force()
                 return
+###########################################################---------------------------------
+            contacts = contacts.lstrip()
 
+            # Validate the contact number
+            valid_contact = (contacts.startswith('+63') or contacts.startswith('63') or contacts.startswith(
+                '09') or contacts.startswith('9')) \
+                            and contacts.replace('+63', '').replace('63', '').replace('09', '').isdigit()
+
+            if not valid_contact or len(contacts) not in [10, 11, 12, 13]:
+                messagebox.showerror("Error", "Invalid Philippine contact number.")
+                input_win.focus_force()
+                return
+
+            check_member_query = conn.execute("SELECT Member_ID FROM MEMBER WHERE Name = ? AND Member_ID <> ?",
+                                              (name, Item_ID))
+            existing_member = check_member_query.fetchone()
+
+            if existing_member:
+                messagebox.showerror("Error", "Member Name already exist.")
+                input_win.focus_force()
+                return
+#--------------------------------------------------------------------------------------------------------
             conn.execute("UPDATE MEMBER SET Address=?, "
                          "Contact_No=?, Name=? WHERE Member_ID=?", (addr, contacts, name, Item_ID))
             conn.commit()
@@ -968,8 +1268,24 @@ def editmember(tree_view, edit_button, add_button, remove_button, student_button
         input_win.protocol("WM_DELETE_WINDOW", on_window_close)
 
         # SAVE BUTTON
-        save_button = tk.Button(input_win, text="Save", fg='#fff', bg='#8B0000', font=('Arial', 10, 'bold'), width=10,
-                                command=lambda: new_info())
+        img = Image.open('i_9.png')  # Replace 'save_button_icon.png' with the actual file name
+
+        # Resize the image if needed
+        new_width = 20
+        new_height = 20
+        resized_img = img.resize((new_width, new_height))
+
+        # Convert the resized image to a Tkinter-compatible format
+        tk_img = ImageTk.PhotoImage(resized_img)
+
+        # Create the "Save" button
+        save_button = tk.Button(input_win, text="Save", fg='#fff', bg='#0d2a4f', font=('Arial', 10, 'bold'), width=100,
+                                command=lambda: new_info(), compound=tk.LEFT)
+
+        # Set the image for the button
+        save_button.config(image=tk_img)
+        save_button.image = tk_img  # Keep a reference to the image to avoid garbage collection
+
         save_button.grid(row=12, columnspan=2, pady=150)
 
 
@@ -1043,19 +1359,21 @@ def addmember_window(tree_view, edit_button, add_button, remove_button, student_
                 messagebox.showerror("Error", "Please fill in all the required fields.")
                 input_win.focus_force()
                 return
-###################################################################################################################################################
-            # Remove any leading spaces, if any, from the contact number
-            contacts = contact_no.lstrip()
+##################------------------------------------------------------------------
+                # Remove any leading spaces, if any, from the contact number
+                contacts = contact_no.lstrip()
 
-            # Validate the contact number
-            valid_contact = (contacts.startswith('+63') or contacts.startswith('63') or contacts.startswith('09') or contacts.startswith('9')) \
-                            and contacts.replace('+63', '').replace('63', '').replace('09', '').isdigit()
+                # Validate the contact number
+                valid_contact = (contacts.startswith('+63') or contacts.startswith('63') or contacts.startswith(
+                    '09') or contacts.startswith('9')) \
+                                and contacts.replace('+63', '').replace('63', '').replace('09', '').isdigit()
 
-            if not valid_contact or len(contacts) not in [10, 11, 12, 13]:
-                messagebox.showerror("Error", "Invalid Philippine contact number.")
-                input_win.focus_force()
-                return
+                if not valid_contact or len(contacts) not in [10, 11, 12, 13]:
+                    messagebox.showerror("Error", "Invalid Philippine contact number.")
+                    input_win.focus_force()
+                    return
 
+#-------------------------------------------------------------------------------------
             check_member_query = conn.execute("SELECT Member_ID FROM MEMBER WHERE Name = ?", (name,))
             existing_member = check_member_query.fetchone()
 
@@ -1093,9 +1411,25 @@ def addmember_window(tree_view, edit_button, add_button, remove_button, student_
                 messagebox.showerror("Error", f"An error occurred: {e}")
 
         # Confirm Borrow button
-        btn_confirm_add = tk.Button(input_win, text="Add Member", fg='#fff', bg='#8B0000',
-                                       font=('Arial', 10, 'bold'), command=confirm_student_member)
-        btn_confirm_add.grid(row=13, column=0, pady=10)
+        img = Image.open('i_1.png')  # Replace 'add_member_icon.png' with the actual file name
+
+        # Resize the image if needed
+        new_width = 20
+        new_height = 20
+        resized_img = img.resize((new_width, new_height))
+
+        # Convert the resized image to a Tkinter-compatible format
+        tk_img = ImageTk.PhotoImage(resized_img)
+
+        # Create the "Add Member" button
+        btn_add = tk.Button(input_win, text="Add Member", fg='#fff', bg='#0d2a4f',
+                            font=('Arial', 10, 'bold'), command=confirm_student_member, compound=tk.LEFT)
+
+        # Set the image for the button
+        btn_add.config(image=tk_img)
+        btn_add.image = tk_img  # Keep a reference to the image to avoid garbage collection
+
+        btn_add.grid(row=13, column=0, pady=10)
 
     def show_faculty_info():
         department_label = tk.Label(input_win, text='Department:', fg='#fff', bg='#00008B', font=('calibri', 10))
@@ -1162,9 +1496,24 @@ def addmember_window(tree_view, edit_button, add_button, remove_button, student_
                 messagebox.showerror("Error", f"An error occurred: {e}")
 
         # Confirm Borrow button
-        btn_add = tk.Button(input_win, text="Add Member", fg='#fff', bg='#8B0000',
-                            font=('Arial', 10, 'bold'), command=confirm_faculty_member)
+        img = Image.open('i_1.png')  # Replace 'add_member_icon.png' with the actual file name
+
+        # Resize the image if needed
+        new_width = 20
+        new_height = 20
+        resized_img = img.resize((new_width, new_height))
+
+        # Convert the resized image to a Tkinter-compatible format
+        tk_img = ImageTk.PhotoImage(resized_img)
+
+        # Create the "Add Member" button
+        btn_add = tk.Button(input_win, text="Add Member", fg='#fff', bg='#0d2a4f',
+                            font=('Arial', 10, 'bold'), command=confirm_faculty_member, image=tk_img, compound=tk.LEFT)
+
         btn_add.grid(row=13, column=0, pady=10)
+
+        # Keep a reference to the image to avoid garbage collection
+        btn_add.image = tk_img
 
     def on_window_close():
         edit_button.config(state=tk.NORMAL)  # Enable the "Edit" button when the window is closed
@@ -1299,14 +1648,30 @@ def search_member(parent_frame):
     search_entry.place(x=300, y=10)
 
     # Create the search button
-    search_button = tk.Button(parent_frame, text="Search", fg='#fff', bg='#FF0000', font=('Arial', 9, 'bold'),
-                              command=lambda: person(search_entry))
-    search_button.place(x=550, y=8)
+    img = Image.open('i_4.png')  # Replace 'search_icon.png' with the actual file name
+
+    # Resize the image if needed
+    new_width = 30
+    new_height = 30
+    resized_img = img.resize((new_width, new_height))
+
+    # Convert the resized image to a Tkinter-compatible format
+    tk_img = ImageTk.PhotoImage(resized_img)
+
+    # Create the "Search" button
+    search_button = tk.Button(parent_frame, text="Search", fg='#fff',bg='#0d2a4f', font=('Montserrat', 12), bd=0,
+                              command=lambda: person(search_entry),
+                              image=tk_img, compound=tk.LEFT)
+
+    search_button.place(x=550, y=2)
+
+    # Keep a reference to the image to avoid garbage collection
+    search_button.image = tk_img
 
 def members():
     addgui = newFrame()
     back = goBack(addgui)
-    back.place(x=30, y=10)
+    back.place(x=30, y=4)
     search_member(addgui)
 
     def removemember(tree_view):
@@ -1317,38 +1682,16 @@ def members():
             member_id = tree_view.item(item, "values")[0]
             member_type = tree_view.item(item, "values")[4]  # Assuming Member_Type is the fifth column
 
-            check_loan = conn.execute("""
-                SELECT L.Loan_ID
-                FROM LOAN L
-                LEFT JOIN FINE F ON L.Loan_ID = F.Loan_ID
-                WHERE L.Member_ID = ? AND F.Amount > 0
-                """, (member_id,))
-            existing_amount = check_loan.fetchone()
+            # Check if the member_type is Student or Faculty
+            if member_type == "Student":
+                # Delete the corresponding record from the 'STUDENT' table
+                conn.execute("DELETE FROM STUDENT WHERE Member_ID = ?", (member_id,))
+            elif member_type == "Faculty":
+                # Delete the corresponding records from the 'FACULTY' and 'PROFESSIONAL' tables
+                conn.execute("DELETE FROM FACULTY WHERE Member_ID = ?", (member_id,))
 
-            if existing_amount:
-                # If there is a pending fine with a non-zero amount, show an error message
-                messagebox.showerror("Error", "Member has pending fines and cannot be removed.")
-                return
-
-            member_id_to_check = member_id
-            check_member_query = conn.execute(
-                    "SELECT Member_ID FROM LOAN WHERE Member_ID = ? AND Return_Date IS NULL", (member_id_to_check,))
-            existing_loan = check_member_query.fetchone()
-                
-            if existing_loan:
-                messagebox.showerror("Error", "Member has borrowed a book and cannot be removed.")
-                return
-            else:
-                # Check if the member_type is Student or Faculty
-                if member_type == "Student":
-                    # Delete the corresponding record from the 'STUDENT' table
-                    conn.execute("DELETE FROM STUDENT WHERE Member_ID = ?", (member_id,))
-                elif member_type == "Faculty":
-                    # Delete the corresponding records from the 'FACULTY' and 'PROFESSIONAL' tables
-                    conn.execute("DELETE FROM FACULTY WHERE Member_ID = ?", (member_id,))
-
-                # Delete the corresponding record from the 'MEMBER' table
-                conn.execute("DELETE FROM MEMBER WHERE Member_ID = ?", (member_id,))
+            # Delete the corresponding record from the 'MEMBER' table
+            conn.execute("DELETE FROM MEMBER WHERE Member_ID = ?", (member_id,))
 
         # Commit the changes and update the Treeview
         conn.commit()
@@ -1364,20 +1707,68 @@ def members():
     edit_member = lambda: editmember(tree_view, edit_button, add_button,
                                      remove_button, student_button, faculty_button, back)
 
-    # Add button
-    add_button = tk.Button(addgui, text="Add", fg='#fff', bg='#006400', font=('Arial', 10, 'bold'), width=8,
-                           command=add_member)
-    add_button.place(x=20, y=90)
+        # Load the image for the "Add" button
+    add_img = Image.open('i_1.png')  # Replace 'add_icon.png' with the actual file name
 
-    # Remove button
-    remove_button = tk.Button(addgui, text="Remove", fg='#fff', bg='#006400', font=('Arial', 10, 'bold'), width=8,
-                              command=remove_member)
-    remove_button.place(x=20, y=140)
+    # Resize the image if needed
+    new_width = 20
+    new_height = 20
+    resized_add_img = add_img.resize((new_width, new_height))
 
-    # Edit button
-    edit_button = tk.Button(addgui, text="Edit", fg='#fff', bg='#006400', font=('Arial', 10, 'bold'), width=8,
-                            command=edit_member)
-    edit_button.place(x=20, y=190)
+    # Convert the resized image to a Tkinter-compatible format
+    tk_add_img = ImageTk.PhotoImage(resized_add_img)
+
+        # Create the "Add" button
+    add_button = tk.Button(addgui, text=" Add", fg='#fff', bg='#107C55', font=('Montserrat', 11), width=117, bd=0, height=30,
+                           command=add_member, image=tk_add_img, compound=tk.LEFT)
+
+    add_button.place(x=0, y=90)
+
+        # Keep a reference to the image to avoid garbage collection
+    add_button.image = tk_add_img
+
+
+        # Load the image for the "Remove" button
+    remove_img = Image.open('i_3.png')  # Replace 'remove_icon.png' with the actual file name
+
+        # Resize the image if needed
+    new_width = 20
+    new_height = 20
+    resized_remove_img = remove_img.resize((new_width, new_height))
+
+        # Convert the resized image to a Tkinter-compatible format
+    tk_remove_img = ImageTk.PhotoImage(resized_remove_img)
+
+        # Create the "Remove" button
+    remove_button = tk.Button(addgui, text="Remove", fg='#fff', bg='#691F1F', font=('Montserrat', 11), width=117, bd=0, height=30,
+                              command=remove_member, image=tk_remove_img, compound=tk.LEFT)
+
+    remove_button.place(x=0, y=140)
+
+    # Keep a reference to the image to avoid garbage collection
+    remove_button.image = tk_remove_img
+
+
+    # Load the image for the "Edit" button
+    edit_img = Image.open('i_5.png')  # Replace 'edit_icon.png' with the actual file name
+
+        # Resize the image if needed
+    new_width = 20
+    new_height = 20
+    resized_edit_img = edit_img.resize((new_width, new_height))
+
+    # Convert the resized image to a Tkinter-compatible format
+    tk_edit_img = ImageTk.PhotoImage(resized_edit_img)
+
+        # Create the "Edit" button
+    edit_button = tk.Button(addgui, text="Edit", fg='#fff', bg='#6A6239', font=('Montserrat', 11), width=117, bd=0, height=30,
+                            command=edit_member, image=tk_edit_img, compound=tk.LEFT)
+
+    edit_button.place(x=0, y=190)
+
+        # Keep a reference to the image to avoid garbage collection
+    edit_button.image = tk_edit_img
+
 
     def view_student_data():
         # Create a new window
@@ -1454,7 +1845,7 @@ def members():
             edit_win.protocol("WM_DELETE_WINDOW", on_window_close)
 
             # Save Changes button
-            btn_save_changes = tk.Button(edit_win, text="Save Changes", fg='#fff', bg='#8B0000',
+            btn_save_changes = tk.Button(edit_win, text="Save Changes", fg='#fff', bg='#0d2a4f',
                                          font=('Arial', 10, 'bold'), command=save_changes)
             btn_save_changes.grid(row=2, column=0, columnspan=2, pady=10)
 
@@ -1489,9 +1880,25 @@ def members():
         student_window.protocol("WM_DELETE_WINDOW", on_window_close)
 
         # Edit button
+        edit_img = Image.open('i_5.png')  # Replace 'edit_icon.png' with the actual file name
+
+        # Resize the image if needed
+        new_width = 20
+        new_height = 20
+        resized_edit_img = edit_img.resize((new_width, new_height))
+
+        # Convert the resized image to a Tkinter-compatible format
+        tk_edit_img = ImageTk.PhotoImage(resized_edit_img)
+
+        # Create the "Edit" button
         btn_edit_student = tk.Button(student_window, text="Edit", fg='#fff', bg='#28a7c7', font=('Arial', 10, 'bold'),
-                                     width=10, command=lambda: edit_student_data(btn_edit_student))
+                                     width=100, command=lambda: edit_student_data(btn_edit_student),
+                                     image=tk_edit_img, compound=tk.LEFT)
+
         btn_edit_student.place(x=10, y=240)
+
+        # Keep a reference to the image to avoid garbage collection
+        btn_edit_student.image = tk_edit_img
 
         scrollbar = ttk.Scrollbar(student_window, orient="vertical", command=tree_view_student.yview)
         scrollbar.place(x=583, y=1, height=224)
@@ -1571,9 +1978,26 @@ def members():
             edit_win.protocol("WM_DELETE_WINDOW", on_window_close)
 
             # Save Changes button
-            btn_save_changes = tk.Button(edit_win, text="Save Changes", fg='#fff', bg='#8B0000',
-                                         font=('Arial', 10, 'bold'), command=save_changes)
+            save_changes_img = Image.open(
+                'i_9.png')
+
+            # Resize the image if needed
+            new_width = 20
+            new_height = 20
+            resized_save_changes_img = save_changes_img.resize((new_width, new_height))
+
+            # Convert the resized image to a Tkinter-compatible format
+            tk_save_changes_img = ImageTk.PhotoImage(resized_save_changes_img)
+
+            # Create the "Save Changes" button
+            btn_save_changes = tk.Button(edit_win, text="Save Changes", fg='#fff', bg='#0d2a4f',
+                                         font=('Arial', 10, 'bold'), command=save_changes,
+                                         image=tk_save_changes_img, compound=tk.LEFT)
+
             btn_save_changes.grid(row=2, column=0, columnspan=2, pady=10)
+
+            # Keep a reference to the image to avoid garbage collection
+            btn_save_changes.image = tk_save_changes_img
 
         # Create a Treeview in the new window
         tree_view_data = ttk.Treeview(data_window, columns=("Member ID", "Department", "Profession"), show="headings")
@@ -1606,29 +2030,74 @@ def members():
         data_window.protocol("WM_DELETE_WINDOW", on_window_close)
 
         # Edit button
+        edit_img = Image.open('i_5.png')  # Replace 'edit_icon.png' with the actual file name
+
+        # Resize the image if needed
+        new_width = 20
+        new_height = 20
+        resized_edit_img = edit_img.resize((new_width, new_height))
+
+        # Convert the resized image to a Tkinter-compatible format
+        tk_edit_img = ImageTk.PhotoImage(resized_edit_img)
+
+        # Create the "Edit" button
         btn_edit_faculty = tk.Button(data_window, text="Edit", fg='#fff', bg='#28a7c7', font=('Arial', 10, 'bold'),
-                                     width=10, command=lambda: edit_faculty_data(btn_edit_faculty))
+                                     width=100, command=lambda: edit_faculty_data(btn_edit_faculty),
+                                     image=tk_edit_img, compound=tk.LEFT)
+
         btn_edit_faculty.place(x=10, y=240)
+
+        # Keep a reference to the image to avoid garbage collection
+        btn_edit_faculty.image = tk_edit_img
 
         scrollbar = ttk.Scrollbar(data_window, orient="vertical", command=tree_view_data.yview)
         scrollbar.place(x=583, y=1, height=224)
         tree_view_data.configure(yscrollcommand=scrollbar.set)
 
     # Student button
-    student_button = tk.Button(addgui, text="Student", fg='#fff', bg='#800080', font=('Arial', 10, 'bold'), width=8,
-                               command=view_student_data)
-    student_button.place(x=20, y=240)
+    student_img = Image.open('i_7.png')  # Replace 'student_icon.png' with the actual file name
+
+    # Resize the image if needed
+    new_width = 20
+    new_height = 20
+    resized_student_img = student_img.resize((new_width, new_height))
+
+    # Convert the resized image to a Tkinter-compatible format
+    tk_student_img = ImageTk.PhotoImage(resized_student_img)
+
+    # Create the "Student" button
+    student_button = tk.Button(addgui, text=" Student", fg='#fff', bg='#560A4A', font=('Montserrat', 11), width=117, bd=0, height=30,
+                               command=view_student_data, image=tk_student_img, compound=tk.LEFT)
+
+    student_button.place(x=0, y=240)
+
+    # Keep a reference to the image to avoid garbage collection
+    student_button.image = tk_student_img
 
     # Faculty button
-    faculty_button = tk.Button(addgui, text="Faculty", fg='#fff', bg='#800080', font=('Arial', 10, 'bold'), width=8,
-                               command=view_faculty_data)
-    faculty_button.place(x=20, y=290)
+    faculty_img = Image.open('i_6.png')  # Replace 'faculty_icon.png' with the actual file name
+
+    # Resize the image if needed
+    new_width = 20
+    new_height = 20
+    resized_faculty_img = faculty_img.resize((new_width, new_height))
+
+    # Convert the resized image to Tkinter-compatible format
+    tk_faculty_img = ImageTk.PhotoImage(resized_faculty_img)
+
+    # Create the "Faculty" button
+    faculty_button = tk.Button(addgui, text="Faculty", fg='#fff', bg='#560A4A', font=('Montserrat', 11), width=117, bd=0, height=30,
+                               command=view_faculty_data, image=tk_faculty_img, compound=tk.LEFT)
+    faculty_button.place(x=0, y=290)
+
+    # Keep a reference to the image to avoid garbage collection
+    faculty_button.image = tk_faculty_img
 
 
 def loan():
     addgui = newFrame()
     back = goBack(addgui)
-    back.place(x=40, y=10)
+    back.place(x=40, y=4)
     tree = viewlogs(addgui)
     search_widget(addgui)
     # Retrieve data from the MEMBER table
@@ -1759,11 +2228,25 @@ def payment_callback(tree, payment_button, back):
                                               value="Bank Transfer", style="DarkBlue.TRadiobutton")
         bank_transfer_radio.pack(anchor=tk.W, pady=5, padx=80)
 
+        confirm_img = Image.open('i_9.png')  # Replace 'confirm_icon.png' with the actual file name
+
+        # Resize the image if needed
+        new_width = 20
+        new_height = 20
+        resized_confirm_img = confirm_img.resize((new_width, new_height))
+
+        # Convert the resized image to Tkinter-compatible format
+        tk_confirm_img = ImageTk.PhotoImage(resized_confirm_img)
+
+        # Create the "Confirm" button with the image
         confirm_button = tk.Button(payment_window, text="Confirm", fg='#fff', bg='#006400', font=('Arial', 9, 'bold'),
-                                   width=8,
-                                   command=lambda: submit_payment(payment_method_var, tree, payment_window,
-                                                                  payment_button, back))
+                                   width=100, command=lambda: submit_payment(payment_method_var, tree, payment_window,
+                                                                           payment_button, back), image=tk_confirm_img,
+                                   compound=tk.LEFT)
         confirm_button.place(x=100, y=230)
+
+        # Keep a reference to the image to avoid garbage collection
+        confirm_button.image = tk_confirm_img
 
     else:
         messagebox.showerror("Error", "Please select a row from the table first.")
@@ -1877,15 +2360,29 @@ def search_fine(parent_frame):
     search_entry.place(x=300, y=10)
 
     # Create the search button
-    search_button = tk.Button(parent_frame, text="Search", fg='#fff', bg='#FF0000', font=('Arial', 9, 'bold'),
-                              command=lambda: fees(search_entry))
-    search_button.place(x=550, y=8)
+    search_img = Image.open('i_4.png')  # Replace 'search_icon.png' with the actual file name
+
+    # Resize the image if needed
+    new_width = 30
+    new_height = 30
+    resized_search_img = search_img.resize((new_width, new_height))
+
+    # Convert the resized image to Tkinter-compatible format
+    tk_search_img = ImageTk.PhotoImage(resized_search_img)
+
+    # Create the "Search" button with the image
+    search_button = tk.Button(parent_frame, text="Search", fg='#fff', bg='#0d2a4f', font=('Montserrat', 12), bd=0,
+                              command=lambda: fees(search_entry), image=tk_search_img, compound=tk.LEFT)
+    search_button.place(x=550, y=2)
+
+    # Keep a reference to the image to avoid garbage collection
+    search_button.image = tk_search_img
 
 
 def fine():
     addgui = newFrame()
     back = goBack(addgui)
-    back.place(x=40, y=10)
+    back.place(x=40, y=4)
     search_fine(addgui)
 
     # Create a Treeview widget
@@ -1922,19 +2419,29 @@ def fine():
     for data in fine_data:
         tree.insert("", tk.END, values=data)
 
-    payment_button = tk.Button(addgui, text=" Mode of Payment", fg='#fff', bg='#006400', font=('Arial', 10, 'bold'),
-                               width=18,
-                               command=lambda: payment_callback(tree, payment_button, back))
-    payment_button.place(x=350, y=391)
+    payment_img = Image.open('i_8.png')  # Replace 'payment_icon.png' with the actual file name
+
+    # Resize the image if needed
+    new_width = 20
+    new_height = 20
+    resized_payment_img = payment_img.resize((new_width, new_height))
+
+    # Convert the resized image to Tkinter-compatible format
+    tk_payment_img = ImageTk.PhotoImage(resized_payment_img)
+
+    # Create the "Mode of Payment" button with the image
+    payment_button = tk.Button(addgui, text=" Pay", fg='#fff', bg='#107C55', font=('Montserrat', 12, 'bold'), bd=0,
+                               width=876, height=29, command=lambda: payment_callback(tree, payment_button, back),
+                               image=tk_payment_img, compound=tk.LEFT)
+    payment_button.place(x=0, y=386)
+
+    # Keep a reference to the image to avoid garbage collection
+    payment_button.image = tk_payment_img
 
     # Scrollbar
     scrollbar = ttk.Scrollbar(addgui, orient="vertical", command=tree.yview)
     scrollbar.place(x=843, y=45, height=340)
     tree.configure(yscrollcommand=scrollbar.set)
-
-
-# def log_out():
-#     print("logout button clicked")
 
 
 # MAIN
@@ -1944,15 +2451,15 @@ DateDev = Header2()
 hsi = homescreenImage(lmsGui)
 
 add_button = tk.Button(lmsGui)
-add_button.place(x=40, y=180)
+add_button.place(x=35, y=180)
 addLibMat(add_button, add_books)
 
 rem_button = tk.Button(lmsGui)
-rem_button.place(x=240, y=180)
+rem_button.place(x=238, y=180)
 bt2 = remLibMat(rem_button, remove_books)
 
 disp_button = tk.Button(lmsGui)
-disp_button.place(x=40, y=235)
+disp_button.place(x=42, y=235)
 bt3 = dspLibMat(disp_button, disp_books)
 
 bor_button = tk.Button(lmsGui)
@@ -1964,11 +2471,11 @@ ret_button.place(x=40, y=290)
 bt5 = retLibMat(ret_button, return_books)
 
 mem_button = tk.Button(lmsGui)
-mem_button.place(x=240, y=290)
+mem_button.place(x=237, y=290)
 bt6 = dspMember(mem_button, members)
 
 loan_button = tk.Button(lmsGui)
-loan_button.place(x=40, y=345)
+loan_button.place(x=35, y=345)
 bt7 = dspLoan(loan_button, loan)
 
 fine_button = tk.Button(lmsGui)
@@ -1976,6 +2483,35 @@ fine_button.place(x=240, y=345)
 fineDetail(fine_button, fine)
 # bt9 = logOut(log_out)
 whatTime = dispClock()
+
+icon_image = Image.open('image_9.png')  # Replace 'image_9.png' with the actual file name
+
+# Resize the image to the desired dimensions
+new_width = 20
+new_height = 20
+resized_icon_image = icon_image.resize((new_width, new_height))
+
+# Convert the resized image to Tkinter-compatible format
+tk_icon_image = ImageTk.PhotoImage(resized_icon_image)
+
+# Create the "Log Out" button with Montserrat Regular font, size 10
+activate_button = tk.Button(
+    lmsGui, text="  Log Out",
+    image=tk_icon_image,
+    compound='left',
+    fg='#fff',
+    bg='#0d2a4f',bd=0,
+    command=recreate_screen,
+    font=('Montserrat', 13),
+    width=900
+)
+activate_button.place(x=0, y=510, height=40)
+
+# Keep a reference to the image to avoid garbage collection
+activate_button.image = tk_icon_image
+
+Logout = Screen(lmsGui)
+
 
 # MAKE GUI VISIBLE
 lmsGui.resizable(False, False)
