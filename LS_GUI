@@ -915,6 +915,18 @@ def editmember(tree_view, edit_button, add_button, remove_button, student_button
                 messagebox.showerror("Error", "Please fill in all the required fields.")
                 input_win.focus_force()
                 return
+################################################################################################################################################
+            # Remove any leading spaces, if any, from the contact number
+            contacts = contacts.lstrip()
+
+            # Validate the contact number
+            valid_contact = (contacts.startswith('+63') or contacts.startswith('63') or contacts.startswith('09')or contacts.startswith('9')) \
+                            and contacts.replace('+63', '').replace('63', '').replace('09', '').isdigit()
+
+            if not valid_contact or len(contacts) not in [10, 11, 12, 13]:
+                messagebox.showerror("Error", "Invalid Philippine contact number.")
+                input_win.focus_force()
+                return
 
             check_member_query = conn.execute("SELECT Member_ID FROM MEMBER WHERE Name = ? AND Member_ID <> ?", (name, Item_ID))
             existing_member = check_member_query.fetchone()
@@ -1029,6 +1041,18 @@ def addmember_window(tree_view, edit_button, add_button, remove_button, student_
             # Check if any of the required fields are empty
             if not (address and contact_no and name and member_type and year_level and course):
                 messagebox.showerror("Error", "Please fill in all the required fields.")
+                input_win.focus_force()
+                return
+###################################################################################################################################################
+            # Remove any leading spaces, if any, from the contact number
+            contacts = contact_no.lstrip()
+
+            # Validate the contact number
+            valid_contact = (contacts.startswith('+63') or contacts.startswith('63') or contacts.startswith('09') or contacts.startswith('9')) \
+                            and contacts.replace('+63', '').replace('63', '').replace('09', '').isdigit()
+
+            if not valid_contact or len(contacts) not in [10, 11, 12, 13]:
+                messagebox.showerror("Error", "Invalid Philippine contact number.")
                 input_win.focus_force()
                 return
 
