@@ -15,29 +15,6 @@ lmsGui.title("Library System Dashboard")
 # SET GUI DIMENSIONS
 lmsGui.geometry("900x550+250+100")
 
-# GLOBAL VARIABLE
-l = None
-
-def Screen(lmsGui):
-    # LOG IN DESTROY L FRAME
-    def Login():
-        l.destroy()
-    l = tk.Frame(lmsGui, height=550, width=900, bg='#0d2a4f')
-    l.place(x=0, y=115)
-    l.focus()
-    button = tk.Button(l, text='Log In', fg='#fff', bg='#006400', font=('Arial', 15, 'bold'), anchor='center', width=15,
-                  command=Login)
-    button.place(x=350, y=350)
-
-    return l
-
-# LOG OUT RECREATES LOG IN SCREEN
-def recreate_screen():
-    global l
-    if l is not None and l.winfo_exists():
-        l.destroy()
-    l = Screen(lmsGui)
-
 # GUI LIBRARY HEADER
 def Header(lmsGui):
     fm = tk.Frame(lmsGui, height=550, width=900, bg='#fff')
@@ -693,6 +670,7 @@ def borrow_input_window(treeview, borrow_button, back):
                 WHERE L.Member_ID = ? AND F.Amount > 0
                 """, (member_id,))
                 existing_amount = cursor.fetchone()
+
                 if existing_amount:
                     # If there is a pending fine with a non-zero amount, show an error message
                     messagebox.showerror("Error", "Member has pending fines and cannot borrow a book.")
@@ -703,6 +681,7 @@ def borrow_input_window(treeview, borrow_button, back):
                 check_member_query = conn.execute(
                     "SELECT Member_ID FROM LOAN WHERE Member_ID = ? AND Return_Date IS NULL", (member_id_to_check,))
                 existing_loan = check_member_query.fetchone()
+
                 if existing_loan:
                     messagebox.showerror("Error", "Member can only borrow one book.")
                     input_win.focus()
@@ -1314,16 +1293,38 @@ def members():
             member_id = tree_view.item(item, "values")[0]
             member_type = tree_view.item(item, "values")[4]  # Assuming Member_Type is the fifth column
 
-            # Check if the member_type is Student or Faculty
-            if member_type == "Student":
-                # Delete the corresponding record from the 'STUDENT' table
-                conn.execute("DELETE FROM STUDENT WHERE Member_ID = ?", (member_id,))
-            elif member_type == "Faculty":
-                # Delete the corresponding records from the 'FACULTY' and 'PROFESSIONAL' tables
-                conn.execute("DELETE FROM FACULTY WHERE Member_ID = ?", (member_id,))
+            check_loan = conn.execute("""
+                SELECT L.Loan_ID
+                FROM LOAN L
+                LEFT JOIN FINE F ON L.Loan_ID = F.Loan_ID
+                WHERE L.Member_ID = ? AND F.Amount > 0
+                """, (member_id,))
+            existing_amount = check_loan.fetchone()
 
-            # Delete the corresponding record from the 'MEMBER' table
-            conn.execute("DELETE FROM MEMBER WHERE Member_ID = ?", (member_id,))
+            if existing_amount:
+                # If there is a pending fine with a non-zero amount, show an error message
+                messagebox.showerror("Error", "Member has pending fines and cannot be removed.")
+                return
+
+            member_id_to_check = member_id
+            check_member_query = conn.execute(
+                    "SELECT Member_ID FROM LOAN WHERE Member_ID = ? AND Return_Date IS NULL", (member_id_to_check,))
+            existing_loan = check_member_query.fetchone()
+                
+            if existing_loan:
+                messagebox.showerror("Error", "Member has borrowed a book and cannot be removed.")
+                return
+            else:
+                # Check if the member_type is Student or Faculty
+                if member_type == "Student":
+                    # Delete the corresponding record from the 'STUDENT' table
+                    conn.execute("DELETE FROM STUDENT WHERE Member_ID = ?", (member_id,))
+                elif member_type == "Faculty":
+                    # Delete the corresponding records from the 'FACULTY' and 'PROFESSIONAL' tables
+                    conn.execute("DELETE FROM FACULTY WHERE Member_ID = ?", (member_id,))
+
+                # Delete the corresponding record from the 'MEMBER' table
+                conn.execute("DELETE FROM MEMBER WHERE Member_ID = ?", (member_id,))
 
         # Commit the changes and update the Treeview
         conn.commit()
@@ -1951,11 +1952,6 @@ fine_button.place(x=240, y=345)
 fineDetail(fine_button, fine)
 # bt9 = logOut(log_out)
 whatTime = dispClock()
-
-activate_button = tk.Button(lmsGui, text="log Out", fg='#fff', bg='#FF0000', command=recreate_screen)
-activate_button.place(x=40, y=500)
-
-Logout = Screen(lmsGui)
 
 # MAKE GUI VISIBLE
 lmsGui.resizable(False, False)
